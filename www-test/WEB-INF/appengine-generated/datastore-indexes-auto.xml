@@ -1,0 +1,11 @@
+<!-- Indices written at Fri, 20 May 2016 04:36:46 JST -->
+
+<datastore-indexes>
+
+    <!-- Used 3 times in query history -->
+    <datastore-index kind="Template" ancestor="false" source="auto">
+        <property name="slim3.classHierarchyList" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>
