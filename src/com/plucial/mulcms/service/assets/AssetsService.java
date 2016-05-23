@@ -39,6 +39,15 @@ public class AssetsService {
     }
     
     /**
+     * テンプレートの設定
+     * @param model
+     */
+    public static void settingTemplate(Assets model) {
+        Template template = (Template)model.getTemplateRef().getModel();
+        model.setTemplate(template);
+    }
+    
+    /**
      * 削除
      * @param keyString
      */

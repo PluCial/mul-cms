@@ -20,7 +20,9 @@ public class AddEntryController extends Controller {
         String name = asString("name");
         String html = asString("html");
         
+        // HTML補完(htmlタグ、bodyタグなど自動追加)
         JsoupService JsoupService = new JsoupService(html);
+        
         PageTemplateService.put(name, JsoupService.getDoc());
         
         

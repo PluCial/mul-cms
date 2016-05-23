@@ -2,8 +2,6 @@ package com.plucial.mulcms.service.template;
 
 import java.util.List;
 
-import org.jsoup.nodes.Document;
-
 import com.plucial.mulcms.dao.WidgetTemplateDao;
 import com.plucial.mulcms.model.WidgetTemplate;
 
@@ -20,9 +18,9 @@ public class WidgetTemplateService extends TemplateService {
      * @param cssQuery
      * @return
      */
-    public static WidgetTemplate put(String name, Document doc, String cssQuery) {
+    public static WidgetTemplate put(String name, String html, String cssQuery) {
         WidgetTemplate model = new WidgetTemplate();
-        settingNewModel(model, name, doc.outerHtml());
+        settingNewModel(model, name, html);
         
         model.setCssQuery(cssQuery);
         
@@ -30,6 +28,7 @@ public class WidgetTemplateService extends TemplateService {
         
         return model;
     }
+    
     
     /**
      * リストの取得

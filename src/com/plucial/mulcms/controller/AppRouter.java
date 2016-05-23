@@ -14,19 +14,19 @@ public class AppRouter extends RouterImpl {
 	public AppRouter() {
         addRouting(
             "/{lang}/{p1}.html",
-            "/front?path=/{p1}&lang={lang}");
+            "/mulcms/front?path=/{p1}.html&lang={lang}");
         addRouting(
             "/{lang}/{p1}/{p2}.html",
-            "/front?path=/{p1}/{p2}&lang={lang}");
+            "/mulcms/front?path=/{p1}/{p2}.html&lang={lang}");
         addRouting(
             "/{lang}/{p1}/{p2}/{p3}.html",
-            "/front?path=/{p1}/{p2}/{p3}&lang={lang}");
+            "/mulcms/front?path=/{p1}/{p2}/{p3}.html&lang={lang}");
         addRouting(
             "/{lang}/{p1}/{p2}/{p3}/{p4}.html",
-            "/front?path=/{p1}/{p2}/{p3}/{p4}&lang={lang}");
+            "/mulcms/front?path=/{p1}/{p2}/{p3}/{p4}.html&lang={lang}");
         addRouting(
             "/{lang}/{p1}/{p2}/{p3}/{p4}/{p5}.html",
-            "/front?path=/{p1}/{p2}/{p3}/{p4}/{p5}&lang={lang}");
+            "/mulcms/front?path=/{p1}/{p2}/{p3}/{p4}/{p5}.html&lang={lang}");
         
 	}
 	

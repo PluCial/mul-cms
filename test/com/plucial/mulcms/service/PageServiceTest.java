@@ -26,7 +26,7 @@ public class PageServiceTest extends AppEngineTestCase {
         
         PageTemplate pageTemp = PageTemplateService.put("TOP", new JsoupService("<html><head><title>First parse</title></head><body></body></html>").getDoc());
         
-        WidgetTemplate partsTemp1 = WidgetTemplateService.put("about Section", new JsoupService("<div class='about'><p>about</p></div>").getDoc(), "body");
+        WidgetTemplate partsTemp1 = WidgetTemplateService.put("about Section", "<div class='about'><p>about</p></div>", "body");
         
         Page index = PageService.put("index", pageTemp);
         WidgetService.put(index, partsTemp1);

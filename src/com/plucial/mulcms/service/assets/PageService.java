@@ -2,6 +2,8 @@ package com.plucial.mulcms.service.assets;
 
 import java.util.List;
 
+import org.jsoup.nodes.Document;
+
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.PageDao;
@@ -56,18 +58,25 @@ public class PageService extends AssetsService {
     }
     
     /**
-     * HTML 取得
+     * 取得
      * @param keyString
-     * @param lang
      * @return
      * @throws ObjectNotExistException
      */
-    public static String getHtml(String keyString, Lang lang) throws ObjectNotExistException {
-        
-        // ページの取得
+    public static Page get(String keyString) throws ObjectNotExistException {
         Page model = dao.getOrNull(createKey(keyString));
         if(model == null) throw new ObjectNotExistException();
         
+        return model;
+    }
+    
+    /**
+     * HTMLドキュメントの取得
+     * @param page
+     * @return
+     * @throws ObjectNotExistException
+     */
+    public static Document getHtmlDocument(Page model) throws ObjectNotExistException {
         // Pageテンプレートの取得
         PageTemplate pageTemp = (PageTemplate)model.getTemplateRef().getModel();
         JsoupService jsoupService = new JsoupService(pageTemp.getContentString());
@@ -79,7 +88,30 @@ public class PageService extends AssetsService {
             jsoupService.renderingHTML(widgetTemp.getCssQuery(), widgetTemp.getContentString(), RenderingAction.append);
         }
         
-        return jsoupService.getDoc().outerHtml();
+        return jsoupService.getDoc();
+    }
+    
+    /**
+     * HTML 取得
+     * @param keyString
+     * @param lang
+     * @return
+     * @throws ObjectNotExistException
+     */
+    public static String getHtml(String keyString, Lang lang) throws ObjectNotExistException {
+        
+        // ページの取得
+        Page model = get(keyString);
+        
+        return getHtmlDocument(model).outerHtml();
+    }
+    
+    /**
+     * 更新
+     * @param model
+     */
+    public static void update(Page model) {
+        dao.put(model);
     }
 
 }

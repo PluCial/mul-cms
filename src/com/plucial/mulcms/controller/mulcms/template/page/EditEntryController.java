@@ -14,7 +14,7 @@ public class EditEntryController extends Controller {
     public Navigation run() throws Exception {
      // 入力チェック
         if (!isPost() || !validate()) {
-            return forward("/mulcms/template/page/add.jsp");
+            return forward("/mulcms/template/page/edit");
         }
         
         String keyString = asString("keyString");
@@ -26,7 +26,6 @@ public class EditEntryController extends Controller {
         modal.setContent(new Text(html));
         
         TemplateService.update(modal);
-        
         
         return redirect("/mulcms/template/page/");
     }

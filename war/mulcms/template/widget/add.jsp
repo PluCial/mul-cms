@@ -3,6 +3,10 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
+<%@ page import="org.slim3.controller.validator.Errors" %>
+<%
+Errors errors =(Errors) request.getAttribute("errors");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +39,16 @@
 					</div><!-- /.col -->
             
 					<div class="col-md-9">
+						<%if (!errors.isEmpty()){ %>
+						<!-- alert -->
+						<div class="alert alert-warning alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<h4><i class="icon fa fa-warning"></i> Alert!</h4>
+							<%=errors.get(0) %>
+						</div>
+						<!-- /alert -->
+						<%} %>
+						
 						<div class="box box-primary">
 
 							<!-- form start -->
