@@ -18,11 +18,9 @@ public class WidgetTemplateService extends TemplateService {
      * @param cssQuery
      * @return
      */
-    public static WidgetTemplate put(String name, String html, String cssQuery) {
+    public static WidgetTemplate put(String name, String html) {
         WidgetTemplate model = new WidgetTemplate();
         settingNewModel(model, name, html);
-        
-        model.setCssQuery(cssQuery);
         
         dao.put(model);
         

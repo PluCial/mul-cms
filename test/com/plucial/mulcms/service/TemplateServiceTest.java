@@ -17,8 +17,8 @@ public class TemplateServiceTest extends AppEngineTestCase {
     @Before 
     public void initialize() {
         PageTemplateService.put("about page", new JsoupService("<html><body></body></html>").getDoc());
-        WidgetTemplateService.put("about parts1", "<html><body></body></html>", "#aaa");
-        WidgetTemplateService.put("about parts2", "<html><body></body></html>", "#aaa");
+        WidgetTemplateService.put("about parts1", "<html><body></body></html>");
+        WidgetTemplateService.put("about parts2", "<html><body></body></html>");
     }
 
     @Test

@@ -11,6 +11,7 @@ import org.slim3.datastore.ModelRef;
 import org.slim3.datastore.ModificationDate;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 
 @Model(schemaVersion = 1)
 public class Assets implements Serializable {
@@ -29,6 +30,9 @@ public class Assets implements Serializable {
     
     /** ソート順 */
     private double sortOrder = 0.0;
+    
+    @Attribute(unindexed = true)
+    private Text html;
     
     /**
      * 作成日時
@@ -129,6 +133,14 @@ public class Assets implements Serializable {
         }
         return true;
     }
+    
+    /**
+     * コンテンツの文字列を取得
+     * @return
+     */
+    public String getHtmlString() {
+        return html == null ? null : html.getValue();
+    }
 
     public Template getTemplate() {
         return template;
@@ -184,5 +196,13 @@ public class Assets implements Serializable {
 
     public ModelRef<Assets> getParentRef() {
         return parentRef;
+    }
+
+    public Text getHtml() {
+        return html;
+    }
+
+    public void setHtml(Text html) {
+        this.html = html;
     }
 }

@@ -16,7 +16,7 @@ public class EditController extends Controller {
         
         requestScope("template", template);
         requestScope("name", template.getName());
-        requestScope("html", template.getContentString());
+        requestScope("html", template.getHtmlString());
         
         return forward("edit.jsp");
     }

@@ -33,7 +33,7 @@ public class Template implements Serializable {
      * コンテンツ
      */
     @Attribute(unindexed = true)
-    private Text content;
+    private Text html;
     
     // ----------------------------------------------------------------------
     // その他
@@ -128,8 +128,8 @@ public class Template implements Serializable {
      * コンテンツの文字列を取得
      * @return
      */
-    public String getContentString() {
-        return content == null ? null : content.getValue();
+    public String getHtmlString() {
+        return html == null ? null : html.getValue();
     }
 
     public Date getCreateDate() {
@@ -148,14 +148,6 @@ public class Template implements Serializable {
         this.updateDate = updateDate;
     }
 
-    public Text getContent() {
-        return content;
-    }
-
-    public void setContent(Text content) {
-        this.content = content;
-    }
-
     public String getName() {
         return name;
     }
@@ -170,5 +162,13 @@ public class Template implements Serializable {
 
     public void setRenderingList(List<Rendering> renderingList) {
         this.renderingList = renderingList;
+    }
+
+    public Text getHtml() {
+        return html;
+    }
+
+    public void setHtml(Text html) {
+        this.html = html;
     }
 }

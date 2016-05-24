@@ -12,7 +12,6 @@ import com.plucial.mulcms.exception.TooManyException;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.PageTemplate;
 import com.plucial.mulcms.model.Widget;
-import com.plucial.mulcms.model.WidgetTemplate;
 import com.plucial.mulcms.service.JsoupService;
 
 
@@ -40,7 +39,8 @@ public class PageService extends AssetsService {
         }
         
         Page model = new Page();
-        settingNewModel(model, template);
+        String html = template.getHtmlString();
+        settingNewModel(model, template, html);
         
         model.setKey(createKey(keyString));
         
@@ -76,16 +76,14 @@ public class PageService extends AssetsService {
      * @return
      * @throws ObjectNotExistException
      */
-    public static Document getHtmlDocument(Page model) throws ObjectNotExistException {
+    public static Document getHtmlDocument(Page page) throws ObjectNotExistException {
         // Pageテンプレートの取得
-        PageTemplate pageTemp = (PageTemplate)model.getTemplateRef().getModel();
-        JsoupService jsoupService = new JsoupService(pageTemp.getContentString());
+        JsoupService jsoupService = new JsoupService(page.getHtmlString());
         
         // Widget List の取得
-        List<Widget> widgetList = WidgetService.getList(model);
+        List<Widget> widgetList = WidgetService.getList(page);
         for(Widget widget: widgetList) {
-            WidgetTemplate widgetTemp = (WidgetTemplate)widget.getTemplateRef().getModel();
-            jsoupService.renderingHTML(widgetTemp.getCssQuery(), widgetTemp.getContentString(), RenderingAction.append);
+            jsoupService.renderingHTML(widget.getCssQuery(), widget.getHtmlString(), RenderingAction.append);
         }
         
         return jsoupService.getDoc();

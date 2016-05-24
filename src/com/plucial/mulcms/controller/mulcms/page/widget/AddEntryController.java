@@ -21,11 +21,12 @@ public class AddEntryController extends Controller {
         
         String keyString = asString("keyString");
         String templateKey = asString("template");
+        String cssQuery = asString("cssQuery");
         
         Page page = PageService.get(keyString);
         WidgetTemplate template = (WidgetTemplate)TemplateService.get(templateKey);
         
-        WidgetService.put(page, template);
+        WidgetService.put(page, template, cssQuery);
         
         return redirect("/mulcms/page/page/view?keyString=" + keyString);
     }
@@ -39,6 +40,7 @@ public class AddEntryController extends Controller {
 
         v.add("keyString", v.required());
         v.add("template", v.required());
+        v.add("cssQuery", v.required());
         
         return v.validate();
     }

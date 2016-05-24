@@ -115,14 +115,14 @@ List<WidgetTemplate> widgetTemplateList = (List<WidgetTemplate>) request.getAttr
 								<div class="timeline-item">
 						            <span class="time"><i class="fa fa-angle-down"></i> <i class="fa fa-angle-up"></i></span>
 						
-						            <h3 class="timeline-header"><%=HtmlUtils.htmlEscape(template.getCssQuery()) %></h3>
+						            <h3 class="timeline-header"><%=HtmlUtils.htmlEscape(widget.getCssQuery()) %></h3>
 						
 						            <div class="timeline-body">
 						                <b>Template: <a href="/mulcms/template/widget/edit?keyString=<%=template.getKey().getName() %>"><%=template.getName() %></a></b>
 						            </div>
 						
-						            <div class='timeline-footer'>
-						                <a class="btn btn-danger btn-xs">Delete</a>
+						            <div class='timeline-footer text-right'>
+						                <a class="btn btn-danger btn-xs" href="/mulcms/page/widget/deleteEntry?keyString=<%=widget.getKey().getName() %>">Delete</a>
 						            </div>
 						        </div>
 						    </li>
@@ -130,23 +130,30 @@ List<WidgetTemplate> widgetTemplateList = (List<WidgetTemplate>) request.getAttr
 						    <%} %>
 						    <li>
 						    	<div class="timeline-item">
-						    		<div class="timeline-body">
-						    			<form action="/mulcms/page/widget/addEntry" method="post">
-							    			<div class="input-group input-group-sm">
-	                    						<select name="template" class="form-control">
+						    		<form action="/mulcms/page/widget/addEntry" method="post">
+						    			<div class="timeline-body">
+						    			
+						    				<div class="form-group margin">
+												<label for="exampleInputEmail1">Name</label>
+												<select name="template" class="form-control">
 													<option value="">-- Select Template --</option>
 													<%for(Template temp: widgetTemplateList) { %>
 													<option value="<%=temp.getKey().getName() %>"><%=temp.getName() %></option>
 													<%} %>
 												</select>
-												<input type="hidden" name="keyString" value="<%=targetPage.getKey().getName() %>" />
-												
-							                    <span class="input-group-btn">
-							                      <button class="btn btn-primary" type="submit">Add</button>
-							                    </span>
 											</div>
-										</form>
-						            </div>
+												
+											<div class="form-group margin">
+												<label for="exampleInputEmail1">Name</label>
+												<input ${f:text("cssQuery")} class="form-control" placeholder="Css Query">
+											</div>
+										
+						            	</div>
+						            	<input type="hidden" name="keyString" value="<%=targetPage.getKey().getName() %>" />
+						            	<div class='timeline-footer text-right'>
+							                <button class="btn btn-primary margin" type="submit">Add</button>
+							            </div>
+						            </form>
 						        </div>
 						    </li>
 

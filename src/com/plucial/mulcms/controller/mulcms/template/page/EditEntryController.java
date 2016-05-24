@@ -23,7 +23,7 @@ public class EditEntryController extends Controller {
         
         PageTemplate modal = (PageTemplate)TemplateService.get(keyString);
         modal.setName(name);
-        modal.setContent(new Text(html));
+        modal.setHtml(new Text(html));
         
         TemplateService.update(modal);
         

@@ -17,11 +17,10 @@ public class AddEntryController extends Controller {
         }
         
         String name = asString("name");
-        String cssQuery = asString("cssQuery");
         String html = asString("html");
         
 //        JsoupService JsoupService = new JsoupService(html);
-        WidgetTemplateService.put(name, html, cssQuery);
+        WidgetTemplateService.put(name, html);
         
         return redirect("/mulcms/template/widget/");
     }
@@ -35,7 +34,6 @@ public class AddEntryController extends Controller {
 
         v.add("name", v.required());
         v.add("html", v.required());
-        v.add("cssQuery", v.required());
         
         return v.validate();
     }

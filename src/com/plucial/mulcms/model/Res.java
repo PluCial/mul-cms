@@ -6,11 +6,11 @@ import java.util.Date;
 import org.slim3.datastore.Attribute;
 import org.slim3.datastore.CreationDate;
 import org.slim3.datastore.Model;
+import org.slim3.datastore.ModelRef;
 import org.slim3.datastore.ModificationDate;
 
 import com.google.appengine.api.datastore.Key;
 import com.plucial.global.Lang;
-import com.plucial.mulcms.enums.ResScope;
 
 @Model(schemaVersion = 1)
 public class Res implements Serializable {
@@ -23,14 +23,17 @@ public class Res implements Serializable {
     @Attribute(version = true)
     private Long version;
     
-    /** スコープ */
-    private ResScope scope;
+    /** リソースID */
+    private String resId;
     
     /** 言語 */
     private Lang lang;
     
     /** グローバルソコープ */
-    private boolean globalScope;
+    private boolean appScope = false;
+    
+    /** Pageとの関連 */
+    private ModelRef<Assets> assetsRef = new ModelRef<Assets>(Assets.class);
     
     /**
      * 作成日時
@@ -112,14 +115,6 @@ public class Res implements Serializable {
         return true;
     }
 
-    public ResScope getScope() {
-        return scope;
-    }
-
-    public void setScope(ResScope scope) {
-        this.scope = scope;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -144,11 +139,23 @@ public class Res implements Serializable {
         this.lang = lang;
     }
 
-    public boolean isGlobalScope() {
-        return globalScope;
+    public boolean isAppScope() {
+        return appScope;
     }
 
-    public void setGlobalScope(boolean globalScope) {
-        this.globalScope = globalScope;
+    public void setAppScope(boolean appScope) {
+        this.appScope = appScope;
+    }
+
+    public ModelRef<Assets> getAssetsRef() {
+        return assetsRef;
+    }
+
+    public String getResId() {
+        return resId;
+    }
+
+    public void setResId(String resId) {
+        this.resId = resId;
     }
 }

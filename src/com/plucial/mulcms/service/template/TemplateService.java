@@ -20,11 +20,13 @@ public class TemplateService {
     /**
      * 新しいモデルの設定
      * @param model
+     * @param name
+     * @param html
      */
-    protected static void settingNewModel(Template model, String name, String content) {
+    protected static void settingNewModel(Template model, String name, String html) {
         model.setKey(createKey());
         model.setName(name);
-        model.setContent(new Text(content));
+        model.setHtml(new Text(html));
     }
     
     /**

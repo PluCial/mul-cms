@@ -20,15 +20,18 @@ public class WidgetService extends AssetsService {
      * 追加
      * @param page
      * @param template
+     * @param cssQuery
      * @return
      */
-    public static Widget put(Page page, WidgetTemplate template) {
+    public static Widget put(Page page, WidgetTemplate template, String cssQuery) {
         Widget model = new Widget();
-        settingNewModel(model, template);
+        String html = template.getHtmlString();
+        settingNewModel(model, template, html);
         
         model.setKey(createKey());
         model.getParentRef().setModel(page);
         model.setSortOrder(page.getChildSortOrderMax() + 1);
+        model.setCssQuery(cssQuery);
         
         Transaction tx = Datastore.beginTransaction();
         try {
@@ -45,6 +48,14 @@ public class WidgetService extends AssetsService {
         }
         
         return model;
+    }
+    
+    /**
+     * 削除
+     * @param model
+     */
+    public static void delete(Widget model) {
+        dao.delete(model.getKey());
     }
     
     /**

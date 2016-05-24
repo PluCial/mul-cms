@@ -20,12 +20,10 @@ public class EditEntryController extends Controller {
         String keyString = asString("keyString");
         String name = asString("name");
         String html = asString("html");
-        String cssQuery = asString("cssQuery");
         
         WidgetTemplate modal = (WidgetTemplate)TemplateService.get(keyString);
         modal.setName(name);
-        modal.setContent(new Text(html));
-        modal.setCssQuery(cssQuery);
+        modal.setHtml(new Text(html));
         
         TemplateService.update(modal);
         
@@ -43,7 +41,6 @@ public class EditEntryController extends Controller {
         v.add("keyString", v.required());
         v.add("name", v.required());
         v.add("html", v.required());
-        v.add("cssQuery", v.required());
         
         return v.validate();
     }

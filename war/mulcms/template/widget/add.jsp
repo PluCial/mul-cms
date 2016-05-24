@@ -55,15 +55,9 @@ Errors errors =(Errors) request.getAttribute("errors");
 							<form action="/mulcms/template/widget/addEntry" method="post">
 								<div class="box-body">
                   					
-                  					<div class="row">
-										<div class="form-group col-md-6">
-											<label for="exampleInputEmail1">Name</label>
-											<input ${f:text("name")} class="form-control" id="exampleInputEmail1" placeholder="Template Name">
-										</div>
-										<div class="form-group col-md-6">
-											<label for="exampleInputEmail1">Css Query</label>
-											<input ${f:text("cssQuery")} class="form-control" id="exampleInputEmail1" placeholder="#aaa > bbb.ccc">
-										</div>
+                  					<div class="form-group">
+										<label for="exampleInputEmail1">Name</label>
+										<input ${f:text("name")} class="form-control" id="exampleInputEmail1" placeholder="Template Name">
 									</div>
 									<div class="form-group">
 										<label for="exampleInputPassword1">HTML</label>
