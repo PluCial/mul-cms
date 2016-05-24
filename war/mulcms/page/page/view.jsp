@@ -28,7 +28,9 @@ List<WidgetTemplate> widgetTemplateList = (List<WidgetTemplate>) request.getAttr
 		<!-- /site-header -->
       
 		<!-- Left side column. contains the logo and sidebar -->
-		<jsp:include page="/mulcms/includes/main_sidebar.jsp" />
+		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
+			<jsp:param name="contentsType" value="page" />
+		</jsp:include>
       
 
 		<!-- Content Wrapper. Contains page content -->
@@ -65,7 +67,7 @@ List<WidgetTemplate> widgetTemplateList = (List<WidgetTemplate>) request.getAttr
 					<!-- /alert -->
 					<%} %>
 	            	
-	            	<div class="box box-primary">
+	            	<%-- <div class="box box-primary">
 						<!-- form start -->
 						<form action="/mulcms/page/page/editEntry" method="post">
 							<div class="box-header with-border">
@@ -94,7 +96,7 @@ List<WidgetTemplate> widgetTemplateList = (List<WidgetTemplate>) request.getAttr
 								<button type="submit" class="btn btn-primary">Submit</button>
 							</div>
 						</form>
-					</div><!-- /.box -->
+					</div> --%><!-- /.box -->
 					
 					
 					<div>
@@ -144,8 +146,8 @@ List<WidgetTemplate> widgetTemplateList = (List<WidgetTemplate>) request.getAttr
 											</div>
 												
 											<div class="form-group margin">
-												<label for="exampleInputEmail1">Name</label>
-												<input ${f:text("cssQuery")} class="form-control" placeholder="Css Query">
+												<label for="exampleInputEmail1">Css Query</label>
+												<input ${f:text("cssQuery")} class="form-control" placeholder="#id, .class, tag Name">
 											</div>
 										
 						            	</div>

@@ -29,7 +29,7 @@ public class ViewController extends Controller {
         Page targetPage = PageService.get(asString("keyString"));
         requestScope("targetPage", targetPage);
         
-        Document pageDoc = PageService.getHtmlDocument(targetPage);
+        Document pageDoc = PageService.getHtmlDocument(targetPage, "");
         requestScope("pageHtml", HtmlUtils.htmlEscape(pageDoc.outerHtml()));
         
         List<Widget> widgetList = WidgetService.getList(targetPage);

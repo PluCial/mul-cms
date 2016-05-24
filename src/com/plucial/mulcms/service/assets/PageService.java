@@ -2,7 +2,9 @@ package com.plucial.mulcms.service.assets;
 
 import java.util.List;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Text;
@@ -47,7 +49,8 @@ public class PageService extends AssetsService {
         
         Transaction tx = Datastore.beginTransaction();
         try {
-            Document doc = settingTextRes(tx, model, lang, template);
+            Document doc = Jsoup.parse(template.getHtmlString());
+            settingTextRes(tx, model, lang, doc);
             
             model.setHtml(new Text(doc.outerHtml()));
 
@@ -91,7 +94,7 @@ public class PageService extends AssetsService {
      * @return
      * @throws ObjectNotExistException
      */
-    public static Document getHtmlDocument(Page page) throws ObjectNotExistException {
+    public static Document getHtmlDocument(Page page, String packetName) throws ObjectNotExistException {
         // Pageテンプレートの取得
         JsoupService jsoupService = new JsoupService(page.getHtmlString());
         
@@ -100,6 +103,39 @@ public class PageService extends AssetsService {
         for(Widget widget: widgetList) {
             jsoupService.renderingHTML(widget.getCssQuery(), widget.getHtmlString(), RenderingAction.append);
         }
+        
+        Element head = jsoupService.getDoc().head();
+        head.prepend("<base href='" + "https://storage.googleapis.com/" + packetName + "/'>");
+        
+//        // CSS リンクの書き換え
+//        Elements linkTags = jsoupService.getDoc().select("link");
+//        for(Element linkTag: linkTags) {
+//            String href = linkTag.attr("href");
+//            href = href.replace("../", "");
+//            href = "https://storage.googleapis.com/" + packetName + "/" + href;
+//            
+//            linkTag.attr("href", href);
+//        }
+//        
+//        // script srcの書き換え
+//        Elements scriptTags = jsoupService.getDoc().select("script");
+//        for(Element scriptTag: scriptTags) {
+//            String src = scriptTag.attr("src");
+//            src = src.replace("../", "");
+//            src = "https://storage.googleapis.com/" + packetName + "/" + src;
+//            
+//            scriptTag.attr("src", src);
+//        }
+//        
+//        // img srcの書き換え
+//        Elements imgTags = jsoupService.getDoc().select("img");
+//        for(Element tag: imgTags) {
+//            String src = tag.attr("src");
+//            src = src.replace("../", "");
+//            src = "https://storage.googleapis.com/" + packetName + "/" + src;
+//            
+//            tag.attr("src", src);
+//        }
         
         return jsoupService.getDoc();
     }
@@ -111,12 +147,12 @@ public class PageService extends AssetsService {
      * @return
      * @throws ObjectNotExistException
      */
-    public static String getHtml(String keyString, Lang lang) throws ObjectNotExistException {
+    public static String getHtml(String keyString, Lang lang, String packetName) throws ObjectNotExistException {
         
         // ページの取得
         Page model = get(keyString);
         
-        return getHtmlDocument(model).outerHtml();
+        return getHtmlDocument(model, packetName).outerHtml();
     }
     
     /**

@@ -2,6 +2,7 @@ package com.plucial.mulcms.service.assets;
 
 import java.util.List;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slim3.datastore.Datastore;
 
@@ -39,9 +40,10 @@ public class WidgetService extends AssetsService {
         
         Transaction tx = Datastore.beginTransaction();
         try {
-            Document doc = settingTextRes(tx, page, lang, template);
+            Document doc = Jsoup.parseBodyFragment(template.getHtmlString());
+            settingTextRes(tx, page, lang, doc);
             
-            model.setHtml(new Text(doc.outerHtml()));
+            model.setHtml(new Text(doc.html()));
             
             page.setChildSortOrderMax(page.getChildSortOrderMax() + 1);
             Datastore.put(tx, page, model);

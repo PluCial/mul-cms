@@ -21,7 +21,9 @@ Errors errors =(Errors) request.getAttribute("errors");
 		<!-- /site-header -->
       
 		<!-- Left side column. contains the logo and sidebar -->
-		<jsp:include page="/mulcms/includes/main_sidebar.jsp" />
+		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
+			<jsp:param name="contentsType" value="page" />
+		</jsp:include>
       
 
 		<!-- Content Wrapper. Contains page content -->
@@ -34,13 +36,8 @@ Errors errors =(Errors) request.getAttribute("errors");
         <!-- Main content -->
 		<section class="content">
 			<div class="row">
-				<div class="col-md-3">
-					<jsp:include page="/mulcms/includes/mulcms_main_nav.jsp" >
-						<jsp:param name="contentsType" value="page" />
-					</jsp:include>
-				</div><!-- /.col -->
             
-	            <div class="col-md-9">
+	            <div class="col-md-8 col-md-offset-2">
 	            
 	            	<%if (!errors.isEmpty()){ %>
 					<!-- alert -->

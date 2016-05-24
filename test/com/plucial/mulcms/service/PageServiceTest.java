@@ -31,6 +31,6 @@ public class PageServiceTest extends AppEngineTestCase {
         Page index = PageService.put("index", Lang.ja, pageTemp);
         WidgetService.put(index, Lang.ja, partsTemp1, "body");
         
-        System.out.println(PageService.getHtml("index", Lang.ja));
+        System.out.println(PageService.getHtml("index", Lang.ja, "http://localhost:8888/"));
     }
 }

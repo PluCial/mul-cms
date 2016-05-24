@@ -2,7 +2,6 @@ package com.plucial.mulcms.service.assets;
 
 import java.util.UUID;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -72,11 +71,10 @@ public class AssetsService {
      * @param tx
      * @param page
      * @param lang
-     * @param template
-     * @return
+     * @param doc
      */
-    protected static Document settingTextRes(Transaction tx, Page page, Lang lang, Template template) {
-        Document doc = Jsoup.parseBodyFragment(template.getHtmlString());
+    protected static void settingTextRes(Transaction tx, Page page, Lang lang, Document doc) {
+
         Elements elms = doc.select("[" + HtmlDataAttrType.mulCms.getAttr() + "]");
 
         for(Element elem: elms) {
@@ -90,8 +88,6 @@ public class AssetsService {
                 elem.attr(HtmlDataAttrType.textResId.getAttr(), textRes.getResId());
             }
         }
-        
-        return doc;
     }
     
     // ----------------------------------------------------------------------
