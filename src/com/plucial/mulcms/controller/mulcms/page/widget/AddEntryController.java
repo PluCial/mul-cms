@@ -4,6 +4,7 @@ import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
+import com.plucial.global.Lang;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.WidgetTemplate;
 import com.plucial.mulcms.service.assets.PageService;
@@ -26,7 +27,7 @@ public class AddEntryController extends Controller {
         Page page = PageService.get(keyString);
         WidgetTemplate template = (WidgetTemplate)TemplateService.get(templateKey);
         
-        WidgetService.put(page, template, cssQuery);
+        WidgetService.put(page, Lang.ja, template, cssQuery);
         
         return redirect("/mulcms/page/page/view?keyString=" + keyString);
     }

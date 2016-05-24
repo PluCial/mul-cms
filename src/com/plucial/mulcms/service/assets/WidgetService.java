@@ -2,9 +2,12 @@ package com.plucial.mulcms.service.assets;
 
 import java.util.List;
 
+import org.jsoup.nodes.Document;
 import org.slim3.datastore.Datastore;
 
+import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.datastore.Transaction;
+import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.WidgetDao;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.Widget;
@@ -19,11 +22,12 @@ public class WidgetService extends AssetsService {
     /**
      * 追加
      * @param page
+     * @param lang
      * @param template
      * @param cssQuery
      * @return
      */
-    public static Widget put(Page page, WidgetTemplate template, String cssQuery) {
+    public static Widget put(Page page, Lang lang, WidgetTemplate template, String cssQuery) {
         Widget model = new Widget();
         String html = template.getHtmlString();
         settingNewModel(model, template, html);
@@ -35,6 +39,9 @@ public class WidgetService extends AssetsService {
         
         Transaction tx = Datastore.beginTransaction();
         try {
+            Document doc = settingTextRes(tx, page, lang, template);
+            
+            model.setHtml(new Text(doc.outerHtml()));
             
             page.setChildSortOrderMax(page.getChildSortOrderMax() + 1);
             Datastore.put(tx, page, model);
@@ -64,7 +71,7 @@ public class WidgetService extends AssetsService {
      * @return
      */
     public static List<Widget> getList(Page page) {
-        return dao.getList();
+        return dao.getList(page);
     }
 
 }

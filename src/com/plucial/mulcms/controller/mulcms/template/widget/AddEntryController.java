@@ -1,5 +1,7 @@
 package com.plucial.mulcms.controller.mulcms.template.widget;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
@@ -18,9 +20,9 @@ public class AddEntryController extends Controller {
         
         String name = asString("name");
         String html = asString("html");
-        
-//        JsoupService JsoupService = new JsoupService(html);
-        WidgetTemplateService.put(name, html);
+
+        Document doc = Jsoup.parseBodyFragment(html);
+        WidgetTemplateService.put(name, doc.body().html());
         
         return redirect("/mulcms/template/widget/");
     }

@@ -3,7 +3,10 @@ package com.plucial.mulcms.service.assets;
 import java.util.List;
 
 import org.jsoup.nodes.Document;
+import org.slim3.datastore.Datastore;
 
+import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.PageDao;
@@ -23,12 +26,12 @@ public class PageService extends AssetsService {
     /**
      * 追加
      * @param keyString
+     * @param lang
      * @param template
-     * @param name
      * @return
-     * @throws TooManyException 
+     * @throws TooManyException
      */
-    public static Page put(String keyString, PageTemplate template) throws TooManyException {
+    public static Page put(String keyString, Lang lang, PageTemplate template) throws TooManyException {
         
         // 重複チェック
         try {
@@ -39,12 +42,24 @@ public class PageService extends AssetsService {
         }
         
         Page model = new Page();
-        String html = template.getHtmlString();
-        settingNewModel(model, template, html);
-        
         model.setKey(createKey(keyString));
+        model.getTemplateRef().setModel(template);
         
-        dao.put(model);
+        Transaction tx = Datastore.beginTransaction();
+        try {
+            Document doc = settingTextRes(tx, model, lang, template);
+            
+            model.setHtml(new Text(doc.outerHtml()));
+
+            Datastore.put(tx, model);
+
+            tx.commit();
+
+        }finally {
+            if(tx.isActive()) {
+                tx.rollback();
+            }
+        }
         
         return model;
     }

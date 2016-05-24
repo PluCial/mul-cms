@@ -7,6 +7,7 @@ import org.slim3.datastore.Datastore;
 import org.slim3.datastore.Sort;
 
 import com.plucial.mulcms.meta.WidgetMeta;
+import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.Widget;
 
 public class WidgetDao extends DaoBase<Widget>{
@@ -21,6 +22,17 @@ public class WidgetDao extends DaoBase<Widget>{
     public List<Widget> getList() {
         return  Datastore.query(meta)
                     .sort(new Sort(meta.sortOrder)).asList();
+    }
+    
+    /**
+     * リストの取得
+     * @return
+     */
+    public List<Widget> getList(Page page) {
+        return  Datastore.query(meta).filter(
+            meta.parentRef.equal(page.getKey())
+                )
+                .sort(new Sort(meta.sortOrder)).asList();
     }
 
 }

@@ -28,8 +28,8 @@ public class PageServiceTest extends AppEngineTestCase {
         
         WidgetTemplate partsTemp1 = WidgetTemplateService.put("about Section", "<div class='about'><p>about</p></div>");
         
-        Page index = PageService.put("index", pageTemp);
-        WidgetService.put(index, partsTemp1, "body");
+        Page index = PageService.put("index", Lang.ja, pageTemp);
+        WidgetService.put(index, Lang.ja, partsTemp1, "body");
         
         System.out.println(PageService.getHtml("index", Lang.ja));
     }

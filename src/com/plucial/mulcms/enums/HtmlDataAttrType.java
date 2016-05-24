@@ -9,6 +9,8 @@ package com.plucial.mulcms.enums;
  *
  */
 public enum HtmlDataAttrType {
+    mulCms("data-mul"),
+    textResId("data-mul-text-id"),
     data_lang("data-lang"),
     datq_public_uri("data-public-uri"),
     data_res_edit_type("data-res-edit-type");

@@ -1,10 +1,15 @@
 package com.plucial.mulcms.controller.mulcms.template.page;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
 import com.google.appengine.api.datastore.Text;
+import com.plucial.mulcms.enums.HtmlDataAttrType;
 import com.plucial.mulcms.model.PageTemplate;
 import com.plucial.mulcms.service.template.TemplateService;
 
@@ -27,7 +32,25 @@ public class EditEntryController extends Controller {
         
         TemplateService.update(modal);
         
+        getData(html);
+        
         return redirect("/mulcms/template/page/");
+    }
+    
+    private void getData(String html) {
+        Document doc = Jsoup.parse(html);
+        Elements elms = doc.select("[" + HtmlDataAttrType.mulCms.getAttr() + "]");
+        
+        for(Element elem: elms) {
+            if(elem.hasAttr(HtmlDataAttrType.textResId.getAttr())) {
+                System.out.println(elem.attr(HtmlDataAttrType.textResId.getAttr()));
+            }else {
+                elem.attr(HtmlDataAttrType.textResId.getAttr(), "new res id");
+            }
+        }
+        
+
+        System.out.println(doc.outerHtml());
     }
     
     /**
