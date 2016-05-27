@@ -8,7 +8,7 @@
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
-Page pageObj = (Page) request.getAttribute("page");
+Template template = (Template) request.getAttribute("template");
 %>
 <!DOCTYPE html>
 <html>
@@ -23,7 +23,7 @@ Page pageObj = (Page) request.getAttribute("page");
       
 		<!-- Left side column. contains the logo and sidebar -->
 		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
-			<jsp:param name="contentsType" value="page" />
+			<jsp:param name="contentsType" value="pageTemplate" />
 		</jsp:include>
       
 
@@ -40,12 +40,12 @@ Page pageObj = (Page) request.getAttribute("page");
 			                  <h3 class="box-title">Delete</h3>
 			                </div><!-- /.box-header -->
 			                <div class="box-body">
-			                  Do you really want to delete the <b>[<%=pageObj.getKey().getName() %>]</b>?
+			                  Do you really want to delete the <b>[<%=template.getName() %>]</b>?
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
-			                  <form action="/mulcms/page/deleteEntry" method="post">
-			                  	<input type="hidden" name="keyString" value="<%=pageObj.getKey().getName() %>">
-			                  	<a href="/mulcms/page/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  <form action="/mulcms/template/page/deleteEntry" method="post">
+			                  	<input type="hidden" name="keyString" value="<%=template.getKey().getName() %>">
+			                  	<a href="/mulcms/template/page/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
 			                  </form>
 			                </div>

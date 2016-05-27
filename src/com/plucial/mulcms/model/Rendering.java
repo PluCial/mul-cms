@@ -6,7 +6,7 @@ import org.slim3.datastore.Attribute;
 import org.slim3.datastore.Model;
 
 import com.google.appengine.api.datastore.Key;
-import com.plucial.mulcms.enums.RenderingAction;
+import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.enums.ResScope;
 
 @Model(schemaVersion = 1)
@@ -31,7 +31,7 @@ public class Rendering implements Serializable {
     private String cssQuery;
     
     /** RenderingAction */
-    private RenderingAction action;
+    private RenderingType action;
 
     /**
      * Returns the key.
@@ -101,11 +101,11 @@ public class Rendering implements Serializable {
         return true;
     }
 
-    public RenderingAction getAction() {
+    public RenderingType getAction() {
         return action;
     }
 
-    public void setAction(RenderingAction action) {
+    public void setAction(RenderingType action) {
         this.action = action;
     }
 

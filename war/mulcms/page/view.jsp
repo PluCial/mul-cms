@@ -6,15 +6,13 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.slim3.controller.validator.Errors" %>
 <%@ page import="com.plucial.mulcms.utils.*" %>
+<%@ page import="com.plucial.mulcms.utils.*" %>
 <%
-List<PageTemplate> templateList = (List<PageTemplate>) request.getAttribute("templateList");
-Errors errors =(Errors) request.getAttribute("errors");
-
 Page targetPage =  (Page) request.getAttribute("targetPage");
 String html =(String) request.getAttribute("pageHtml");
 
-List<Widget> widgetList = (List<Widget>) request.getAttribute("widgetList");
-List<WidgetTemplate> widgetTemplateList = (List<WidgetTemplate>) request.getAttribute("widgetTemplateList");
+List<TextRes> appTextResList = (List<TextRes>) request.getAttribute("appTextResList");
+List<TextRes> pageTextResList = (List<TextRes>) request.getAttribute("pageTextResList");
 %>
 <!DOCTYPE html>
 <html>
@@ -35,159 +33,117 @@ List<WidgetTemplate> widgetTemplateList = (List<WidgetTemplate>) request.getAttr
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
-		<!-- Content Header (Page header) -->
-		<section class="content-header">
-			<h1><%=targetPage.getKey().getName() %><small>designer</small></h1>
-		</section>
-
-        <!-- Main content -->
-		<section class="content">
-			<div class="row">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1><%=targetPage.getKey().getName() %><small>designer</small></h1>
+			</section>
 			
-				<div class="col-md-8">
-	            	<div class="box box-primary">
-						<div class="box-header with-border">
-							<h3 class="box-title">Page Src Preview</h3>
-						</div><!-- /.box-header -->
-							
-						<div class="box-body">
-<pre class="prettyprint" style="min-height:500px;max-height: 500px;"><code class="lang-html"><%=html %></code></pre>
-						</div>
-					</div><!-- /.box -->
-	            </div><!-- /.col -->
-            
-	            <div class="col-md-4">
-	            	<%if (!errors.isEmpty()){ %>
-					<!-- alert -->
-					<div class="alert alert-warning alert-dismissable">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-					<h4><i class="icon fa fa-warning"></i> Alert!</h4>
-					<%=errors.get(0) %>
-					</div>
-					<!-- /alert -->
-					<%} %>
-	            	
-	            	<%-- <div class="box box-primary">
-						<!-- form start -->
-						<form action="/mulcms/page/page/editEntry" method="post">
+			<section class="content">
+				<div class="row">
+					<div class="col-md-10">
+						<div class="box box-primary">
 							<div class="box-header with-border">
-								<h3 class="box-title">Edit Page Meta</h3>
+								<h3 class="box-title">App Text Resource</h3>
 							</div><!-- /.box-header -->
-							
-							<div class="box-body">
-								<div class="form-group">
-									<label for="exampleInputEmail1">Path(URL)</label>
-									<input type="text" name="url" class="form-control" id="exampleInputEmail1" placeholder="/aaaa/xxx.html" value="<%=targetPage.getKey().getName() %>" disabled />
-								</div>
-								<div class="form-group">
-									<label for="exampleInputEmail1">Template</label>
-									<select name="template" class="form-control">
-										<option value="">-- Select Template --</option>
-										<%for(Template temp: templateList) { %>
-										<option value="<%=temp.getKey().getName() %>" <%=temp.getKey().getName().equals(targetPage.getTemplateRef().getKey().getName()) ? "selected" : "" %>><%=temp.getName() %></option>
-										<%} %>
-									</select>
-								</div>
-							</div><!-- /.box-body -->
-							
-							<input type="hidden" name="keyString" value="<%=targetPage.getKey().getName() %>" />
 	
-							<div class="box-footer text-right">
-								<button type="submit" class="btn btn-primary">Submit</button>
-							</div>
-						</form>
-					</div> --%><!-- /.box -->
-					
-					
-					<div>
-						<ul class="timeline">
-							<!-- timeline time label -->
-							<li class="time-label">
-								<span class="bg-green">Widget List</span>
-							</li>
-							<!-- /.timeline-label -->
-							
-							<%for(Widget widget: widgetList) { 
-								WidgetTemplate template = (WidgetTemplate)widget.getTemplate();
-							%>
-							<!-- timeline item -->
-							<li>
-								<!-- timeline icon -->
-								<i class="fa fa-arrow-left bg-blue"></i>
-								<div class="timeline-item">
-						            <span class="time"><i class="fa fa-angle-down"></i> <i class="fa fa-angle-up"></i></span>
-						
-						            <h3 class="timeline-header"><%=HtmlUtils.htmlEscape(widget.getCssQuery()) %></h3>
-						
-						            <div class="timeline-body">
-						                <b>Template: <a href="/mulcms/template/widget/edit?keyString=<%=template.getKey().getName() %>"><%=template.getName() %></a></b>
-						            </div>
-						
-						            <div class='timeline-footer text-right'>
-						                <a class="btn btn-danger btn-xs" href="/mulcms/page/widget/deleteEntry?keyString=<%=widget.getKey().getName() %>">Delete</a>
-						            </div>
-						        </div>
-						    </li>
-						    <!-- END timeline item -->
-						    <%} %>
-						    <li>
-						    	<div class="timeline-item">
-						    		<form action="/mulcms/page/widget/addEntry" method="post">
-						    			<div class="timeline-body">
-						    			
-						    				<div class="form-group margin">
-												<label for="exampleInputEmail1">Name</label>
-												<select name="template" class="form-control">
-													<option value="">-- Select Template --</option>
-													<%for(Template temp: widgetTemplateList) { %>
-													<option value="<%=temp.getKey().getName() %>"><%=temp.getName() %></option>
-													<%} %>
-												</select>
-											</div>
-												
-											<div class="form-group margin">
-												<label for="exampleInputEmail1">Css Query</label>
-												<input ${f:text("cssQuery")} class="form-control" placeholder="#id, .class, tag Name">
-											</div>
-										
-						            	</div>
-						            	<input type="hidden" name="keyString" value="<%=targetPage.getKey().getName() %>" />
-						            	<div class='timeline-footer text-right'>
-							                <button class="btn btn-primary margin" type="submit">Add</button>
-							            </div>
-						            </form>
-						        </div>
-						    </li>
+							<div class=".box-body">
+								<div class="table-responsive mailbox-messages">
+									<table class="table table-hover table-striped">
+										<tbody>
+											<tr>
+												<th>ID</th>
+												<th>Css Query</th>
+												<th>Rendering Type</th>
+												<th>Value</th>
+											</tr>
+											<%for(TextRes res: appTextResList) { %>
+											<tr>
+												<td class="mailbox-name"><%=res.getResId() %></td>
+												<td><%=HtmlUtils.htmlEscape(res.getCssQuery()) %></td>
+												<td><%=res.getRenderingType() %></td>
+												<td class="mailbox-date" style="width:300px;">
+													<form>
+														<div class="input-group input-group-sm">
+															<input type="text" name="content" class="form-control" value="<%=res.getContentString() %>">
+															<span class="input-group-btn">
+																<button class="btn btn-primary btn-flat" type="button">Update</button>
+															</span>
+														</div>
+														
+													</form>
+												</td>
+											</tr>
+											<%} %>
 
-						</ul>
+										</tbody>
+									</table><!-- /.table -->
+								</div><!-- /.mail-box-messages -->
+		                	</div><!-- /.box-body -->
+						</div><!-- /. box -->
+						
+						<div class="box box-primary">
+							<div class="box-header with-border">
+								<h3 class="box-title"><%=targetPage.getKey().getName() %> Text Resource</h3>
+							</div><!-- /.box-header -->
+	
+							<div class=".box-body">
+								<div class="table-responsive mailbox-messages">
+									<table class="table table-hover table-striped">
+										<tbody>
+											<tr>
+												<th>ID</th>
+												<th>Css Query</th>
+												<th>Rendering Type</th>
+												<th>Value</th>
+											</tr>
+											<%for(TextRes res: pageTextResList) { %>
+											<tr>
+												<td class="mailbox-name"><%=res.getResId() %></td>
+												<td><%=HtmlUtils.htmlEscape(res.getCssQuery()) %></td>
+												<td><%=res.getRenderingType() %></td>
+												<td class="mailbox-date" style="width:300px;">
+													<form>
+														<div class="input-group input-group-sm">
+															<input type="text" name="content" class="form-control" value="<%=res.getContentString() %>">
+															<span class="input-group-btn">
+																<button class="btn btn-primary btn-flat" type="button">Update</button>
+															</span>
+														</div>
+														
+													</form>
+												</td>
+											</tr>
+											<%} %>
+
+										</tbody>
+									</table><!-- /.table -->
+								</div><!-- /.mail-box-messages -->
+		                	</div><!-- /.box-body -->
+						</div><!-- /. box -->
 					</div>
-					
-	            </div><!-- /.col -->
-	            
-	            
-          
-          </div><!-- /.row -->
-        </section><!-- /.content -->
-        <!-- /.content -->
-      </div><!-- /.content-wrapper -->
-      
-	<!-- Control Sidebar -->
-	<jsp:include page="/mulcms/includes/control_sidebar.jsp" />   
-	<!-- /.control-sidebar -->
-	
-	<!-- page footer -->
-    <jsp:include page="/mulcms/includes/site_footer.jsp" />
-	<!-- /page footer -->
-      
-	<!-- Add the sidebar's background. This div must be placed
-           immediately after the control sidebar -->
-	<div class='control-sidebar-bg'></div>
-    </div><!-- ./wrapper -->
+				</div>
+			</section>
 
-    
-    <!-- page script -->
-    <jsp:include page="/mulcms/includes/html_script.jsp" />
-    <!-- page script -->
+
+		</div><!-- /.content-wrapper -->
+      
+		<!-- Control Sidebar -->
+		<jsp:include page="/mulcms/includes/control_sidebar.jsp" />   
+		<!-- /.control-sidebar -->
+		
+		<!-- page footer -->
+	    <jsp:include page="/mulcms/includes/site_footer.jsp" />
+		<!-- /page footer -->
+	      
+		<!-- Add the sidebar's background. This div must be placed
+	           immediately after the control sidebar -->
+		<div class='control-sidebar-bg'></div>
+	    </div><!-- ./wrapper -->
+	
+	    
+	    <!-- page script -->
+	    <jsp:include page="/mulcms/includes/html_script.jsp" />
+	    <!-- page script -->
 
   </body>
 </html>

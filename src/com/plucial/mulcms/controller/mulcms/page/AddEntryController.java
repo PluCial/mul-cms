@@ -16,7 +16,7 @@ public class AddEntryController extends Controller {
         
         // 入力チェック
         if (!isPost() || !validate()) {
-            return forward("/mulcms/page/page/add");
+            return forward("/mulcms/page/add");
         }
         
         String url = asString("url");
@@ -26,7 +26,7 @@ public class AddEntryController extends Controller {
         
         PageService.put(url, Lang.ja, template);
         
-        return redirect("/mulcms/page/page/");
+        return redirect("/mulcms/page/");
     }
     
     /**

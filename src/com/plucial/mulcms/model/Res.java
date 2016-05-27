@@ -11,6 +11,7 @@ import org.slim3.datastore.ModificationDate;
 
 import com.google.appengine.api.datastore.Key;
 import com.plucial.global.Lang;
+import com.plucial.mulcms.enums.RenderingType;
 
 @Model(schemaVersion = 1)
 public class Res implements Serializable {
@@ -31,6 +32,12 @@ public class Res implements Serializable {
     
     /** グローバルソコープ */
     private boolean appScope = false;
+    
+    /** Css Query */
+    private String cssQuery;
+    
+    /** Rendering Type */
+    private RenderingType renderingType;
     
     /** Pageとの関連 */
     private ModelRef<Assets> assetsRef = new ModelRef<Assets>(Assets.class);
@@ -157,5 +164,21 @@ public class Res implements Serializable {
 
     public void setResId(String resId) {
         this.resId = resId;
+    }
+
+    public String getCssQuery() {
+        return cssQuery;
+    }
+
+    public void setCssQuery(String cssQuery) {
+        this.cssQuery = cssQuery;
+    }
+
+    public RenderingType getRenderingType() {
+        return renderingType;
+    }
+
+    public void setRenderingType(RenderingType renderingType) {
+        this.renderingType = renderingType;
     }
 }

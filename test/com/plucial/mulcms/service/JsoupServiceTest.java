@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 import org.junit.Test;
 import org.slim3.tester.AppEngineTestCase;
 
-import com.plucial.mulcms.enums.RenderingAction;
+import com.plucial.mulcms.enums.RenderingType;
 
 public class JsoupServiceTest extends AppEngineTestCase {
 
@@ -20,7 +20,7 @@ public class JsoupServiceTest extends AppEngineTestCase {
     public void test() throws Exception {
         assertThat(service, is(notNullValue()));
         
-        Document doc = service.renderingHTML("body", "<p id='aaa'>append</p>", RenderingAction.append);
+        Document doc = service.renderingHTML("body", "<p id='aaa'>append</p>", RenderingType.append);
         service.addAttr("body > p", "id", "bbb");
         System.out.println(doc.outerHtml());
     }

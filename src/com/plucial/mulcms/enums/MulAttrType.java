@@ -8,9 +8,11 @@ package com.plucial.mulcms.enums;
  * @author takahara
  *
  */
-public enum HtmlDataAttrType {
-    mulCms("data-mul"),
-    textResId("data-mul-text-id"),
+public enum MulAttrType {
+    mulAppTextId("data-mul-app-text-id"),
+    mulPageText("data-mul-page-text"),
+    mulPageTextId("data-mul-page-text-id"),
+    mulLongText("data-mul-long-text"),
     data_lang("data-lang"),
     datq_public_uri("data-public-uri"),
     data_res_edit_type("data-res-edit-type");
@@ -22,7 +24,7 @@ public enum HtmlDataAttrType {
      * コンストラクター
      * @param attr
      */
-    private HtmlDataAttrType(String attr) {
+    private MulAttrType(String attr) {
         this.setAttr(attr);
     }
     

@@ -3,6 +3,10 @@ package com.plucial.mulcms.service.res;
 import java.util.List;
 import java.util.UUID;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
@@ -10,8 +14,11 @@ import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.TextResDao;
+import com.plucial.mulcms.enums.MulAttrType;
+import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.meta.ResMeta;
 import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.Template;
 import com.plucial.mulcms.model.TextRes;
 
 
@@ -53,6 +60,43 @@ public class TextResService extends ResService {
     }
     
     /**
+     * テキストリソースの追加
+     * @param tx
+     * @param page
+     * @param lang
+     * @param doc
+     */
+    public static void addTextResByPage(Transaction tx, Page page, Lang lang, Document doc) {
+
+        // ------------------------------------------------------
+        // App Text Res
+        // ------------------------------------------------------
+        Elements appTexts = doc.select("[" + MulAttrType.mulAppTextId.getAttr() + "]");
+        for(Element elem: appTexts) {
+            // 存在しない場合のみ追加
+            try {
+                TextResService.get(elem.attr(MulAttrType.mulAppTextId.getAttr()), lang);
+            } catch (ObjectNotExistException e) {
+                TextResService.put(tx, elem.attr(MulAttrType.mulAppTextId.getAttr()), lang, elem.text());
+            }
+            
+        }
+        
+        // ------------------------------------------------------
+        // Page Text Res
+        // ------------------------------------------------------
+        Elements pageTexts = doc.select("[" + MulAttrType.mulPageText.getAttr() + "]");
+        for(Element elem: pageTexts) {
+            // IDが振られていない時のみ追加
+            if(!elem.hasAttr(MulAttrType.mulPageTextId.getAttr())) {
+                // App Scope Text Res
+                TextRes textRes = TextResService.put(tx, page, lang, elem.text());
+                elem.attr(MulAttrType.mulPageTextId.getAttr(), textRes.getResId());
+            }
+        }
+    }
+    
+    /**
      * 追加(Scope: App)
      * @param resId
      * @param lang
@@ -86,9 +130,13 @@ public class TextResService extends ResService {
     public static TextRes put(Transaction tx, String resId, Lang lang, String content) {
         TextRes model = new TextRes();
         model.setKey(createKey(resId, lang));
+        model.setLang(lang);
         model.setResId(resId);
         model.setAppScope(true);
         model.setStringToContent(content);
+        
+        model.setCssQuery("[" + MulAttrType.mulAppTextId.getAttr() + "=" + resId + "]");
+        model.setRenderingType(RenderingType.text);
         
         // 保存
         Datastore.put(tx, model);
@@ -135,9 +183,13 @@ public class TextResService extends ResService {
         UUID resId = UUID.randomUUID();
         
         model.setKey(createKey(resId.toString(), lang));
+        model.setLang(lang);
         model.setResId(resId.toString());
         model.setStringToContent(content);
         model.getAssetsRef().setModel(page);
+        
+        model.setCssQuery("[" + MulAttrType.mulPageTextId.getAttr() + "=" + resId + "]");
+        model.setRenderingType(RenderingType.text);
         
         // 保存
         Datastore.put(tx, model);
@@ -151,6 +203,36 @@ public class TextResService extends ResService {
      */
     public static void delete(Transaction tx, TextRes model) {
         Datastore.delete(tx, model.getKey());
+    }
+    
+    /**
+     * リソースの初期化
+     * @param page
+     */
+    public static void initialize(Page page, Lang lang) {
+        List<TextRes> list = getPageResList(page, lang);
+        
+        Transaction tx = Datastore.beginTransaction();
+        try {
+            // 削除
+            for(TextRes model: list) {
+                Datastore.delete(model.getKey());
+            }
+            
+            // テンプレートの取得
+            Template template = page.getTemplateRef().getModel();
+            Document doc = Jsoup.parse(template.getHtmlString());
+            
+            // 登録
+            addTextResByPage(tx, page, lang, doc);
+            
+            tx.commit();
+
+        }finally {
+            if(tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
     
     // ----------------------------------------------------------------------

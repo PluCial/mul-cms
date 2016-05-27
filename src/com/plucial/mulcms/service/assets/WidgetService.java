@@ -13,6 +13,7 @@ import com.plucial.mulcms.dao.WidgetDao;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.Widget;
 import com.plucial.mulcms.model.WidgetTemplate;
+import com.plucial.mulcms.service.res.TextResService;
 
 
 public class WidgetService extends AssetsService {
@@ -41,7 +42,7 @@ public class WidgetService extends AssetsService {
         Transaction tx = Datastore.beginTransaction();
         try {
             Document doc = Jsoup.parseBodyFragment(template.getHtmlString());
-            settingTextRes(tx, page, lang, doc);
+            TextResService.addTextResByPage(tx, page, lang, doc);
             
             model.setHtml(new Text(doc.html()));
             

@@ -8,6 +8,6 @@ package com.plucial.mulcms.enums;
  * @author takahara
  *
  */
-public enum RenderingAction {
-    html,text,prepend,append,wrap,addClass,removeClass;
+public enum RenderingType {
+    html,text,prepend,append,wrap,addClass,removeClass, removeAttr;
 }

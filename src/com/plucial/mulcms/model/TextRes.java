@@ -18,6 +18,10 @@ public class TextRes extends Res implements Serializable {
      */
     @Attribute(unindexed = true)
     private Text content;
+    
+    /** isLongText */
+    @Attribute(unindexed = true)
+    private boolean isLongText = false;
 
     public Text getContent() {
         return content;
@@ -47,5 +51,13 @@ public class TextRes extends Res implements Serializable {
 
         // 改行をすべて統一
         this.content = new Text(com.plucial.gae.global.utils.StringUtil.unityIndention(content));
+    }
+
+    public boolean isLongText() {
+        return isLongText;
+    }
+
+    public void setLongText(boolean isLongText) {
+        this.isLongText = isLongText;
     }
 }

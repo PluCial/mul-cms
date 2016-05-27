@@ -52,7 +52,7 @@ Errors errors =(Errors) request.getAttribute("errors");
 	            	<div class="box box-primary">
 	
 						<!-- form start -->
-						<form action="/mulcms/page/page/addEntry" method="post">
+						<form action="/mulcms/page/addEntry" method="post">
 							<div class="box-header with-border">
 								<h3 class="box-title">Add Page</h3>
 							</div><!-- /.box-header -->

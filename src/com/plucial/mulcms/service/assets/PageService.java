@@ -12,10 +12,11 @@ import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.PageDao;
-import com.plucial.mulcms.enums.RenderingAction;
+import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.exception.TooManyException;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.PageTemplate;
+import com.plucial.mulcms.model.Template;
 import com.plucial.mulcms.model.TextRes;
 import com.plucial.mulcms.model.Widget;
 import com.plucial.mulcms.service.JsoupService;
@@ -52,7 +53,7 @@ public class PageService extends AssetsService {
         Transaction tx = Datastore.beginTransaction();
         try {
             Document doc = Jsoup.parse(template.getHtmlString());
-            settingTextRes(tx, model, lang, doc);
+            TextResService.addTextResByPage(tx, model, lang, doc);
             
             model.setHtml(new Text(doc.outerHtml()));
 
@@ -75,6 +76,15 @@ public class PageService extends AssetsService {
      */
     public static List<Page> getList() {
         return dao.getList();
+    }
+    
+    /**
+     * 
+     * @param template
+     * @return
+     */
+    public static List<Page> getList(Template template) {
+        return dao.getList(template);
     }
     
     /**
@@ -103,7 +113,7 @@ public class PageService extends AssetsService {
         // Widget List の取得
         List<Widget> widgetList = WidgetService.getList(page);
         for(Widget widget: widgetList) {
-            jsoupService.renderingHTML(widget.getCssQuery(), widget.getHtmlString(), RenderingAction.append);
+            jsoupService.renderingHTML(widget.getCssQuery(), widget.getHtmlString(), RenderingType.append);
         }
         
         Element head = jsoupService.getDoc().head();

@@ -15,11 +15,16 @@ String contentsType = request.getParameter("contentsType");
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li class="<%=contentsType.equals("page") ? "active" : "" %>">
-              <a href="/mulcms/page/page/">
-                <i class="fa fa fa-file-powerpoint-o"></i> <span>Page</span>
+              <a href="/mulcms/page/">
+                <i class="fa fa-files-o"></i> <span>Page</span>
               </a>
             </li>
-            <li class="treeview <%=contentsType.equals("pageTemplate") || contentsType.equals("widgetTemplate") ? "active" : "" %>">
+            <li class="<%=contentsType.equals("pageTemplate") ? "active" : "" %>">
+              <a href="/mulcms/template/page/">
+                <i class="fa fa-file-text"></i> <span>Template</span>
+              </a>
+            </li>
+            <%-- <li class="treeview <%=contentsType.equals("pageTemplate") || contentsType.equals("widgetTemplate") ? "active" : "" %>">
               <a href="#">
                 <i class="fa fa-files-o"></i>
                 <span>Template</span>
@@ -29,7 +34,7 @@ String contentsType = request.getParameter("contentsType");
                 <li class="<%=contentsType.equals("pageTemplate") ? "active" : "" %>"><a href="/mulcms/template/page/"><i class="fa fa-circle-o"></i> Page Template</a></li>
                 <li class="<%=contentsType.equals("widgetTemplate") ? "active" : "" %>"><a href="/mulcms/template/widget/"><i class="fa fa-circle-o"></i> Widget Template</a></li>
               </ul>
-            </li>
+            </li> --%>
             
             
             <li>
