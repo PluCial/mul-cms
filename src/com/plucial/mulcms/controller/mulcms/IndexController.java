@@ -7,6 +7,6 @@ public class IndexController extends Controller {
 
     @Override
     public Navigation run() throws Exception {
-        return redirect("/mulcms/page/page/");
+        return redirect("/mulcms/page/");
     }
 }

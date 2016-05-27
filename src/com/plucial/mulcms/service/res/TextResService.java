@@ -145,6 +145,14 @@ public class TextResService extends ResService {
         return model;
     }
     
+    /**
+     * 削除
+     * @param model
+     */
+    public static void delete(Transaction tx, TextRes model) {
+        Datastore.delete(tx, model.getKey());
+    }
+    
     // ----------------------------------------------------------------------
     // キーの作成
     // ----------------------------------------------------------------------

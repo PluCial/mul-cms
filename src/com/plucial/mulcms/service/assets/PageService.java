@@ -16,8 +16,10 @@ import com.plucial.mulcms.enums.RenderingAction;
 import com.plucial.mulcms.exception.TooManyException;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.PageTemplate;
+import com.plucial.mulcms.model.TextRes;
 import com.plucial.mulcms.model.Widget;
 import com.plucial.mulcms.service.JsoupService;
+import com.plucial.mulcms.service.res.TextResService;
 
 
 public class PageService extends AssetsService {
@@ -161,6 +163,30 @@ public class PageService extends AssetsService {
      */
     public static void update(Page model) {
         dao.put(model);
+    }
+    
+    /**
+     * 削除
+     * @param model
+     */
+    public static void delete(Page model, Lang lang) {
+        
+        List<TextRes> resList = TextResService.getPageResList(model, lang);
+        
+        Transaction tx = Datastore.beginTransaction();
+        try {
+            for(TextRes res: resList) {
+                TextResService.delete(tx, res);
+            }
+            Datastore.delete(tx, model.getKey());
+
+            tx.commit();
+
+        }finally {
+            if(tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
 }
