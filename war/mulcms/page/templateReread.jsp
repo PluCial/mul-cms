@@ -40,13 +40,13 @@ Page pageObj = (Page) request.getAttribute("page");
 			                  <h3 class="box-title">Delete</h3>
 			                </div><!-- /.box-header -->
 			                <div class="box-body">
-			                  Do you really want to delete the <b>[<%=pageObj.getKey().getName() %>]</b>?
+			                  Are you sure you want to initialize the resources of <b>[<%=pageObj.getKey().getName() %>]</b>?
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
-			                  <form action="/mulcms/page/deleteEntry" method="post">
+			                  <form action="/mulcms/page/templateRereadEntry" method="post">
 			                  	<input type="hidden" name="keyString" value="<%=pageObj.getKey().getName() %>">
 			                  	<a href="/mulcms/page/view?keyString=<%=pageObj.getKey().getName() %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
-			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
+			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Initialize</button>
 			                  </form>
 			                </div>
 			              </div>

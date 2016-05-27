@@ -40,10 +40,14 @@ List<TextRes> pageTextResList = (List<TextRes>) request.getAttribute("pageTextRe
 			
 			<section class="content">
 				<div class="row">
+					
 					<div class="col-md-10">
 						<div class="box box-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title">App Text Resource</h3>
+								<div class="box-tools pull-right">
+									<a href="/mulcms/page/add" class="btn btn-primary btn-sm">Translate</a>
+								</div><!-- /.box-tools -->
 							</div><!-- /.box-header -->
 	
 							<div class=".box-body">
@@ -55,6 +59,7 @@ List<TextRes> pageTextResList = (List<TextRes>) request.getAttribute("pageTextRe
 												<th>Css Query</th>
 												<th>Rendering Type</th>
 												<th>Value</th>
+												<th>Delete</th>
 											</tr>
 											<%for(TextRes res: appTextResList) { %>
 											<tr>
@@ -62,16 +67,19 @@ List<TextRes> pageTextResList = (List<TextRes>) request.getAttribute("pageTextRe
 												<td><%=HtmlUtils.htmlEscape(res.getCssQuery()) %></td>
 												<td><%=res.getRenderingType() %></td>
 												<td class="mailbox-date" style="width:300px;">
-													<form>
+													<form action="/mulcms/page/updateTextResEntry" method="post">
 														<div class="input-group input-group-sm">
 															<input type="text" name="content" class="form-control" value="<%=res.getContentString() %>">
+															<input type="hidden" name="keyString" value="<%=res.getKey().getName() %>" />
+															<input type="hidden" name="pageKey" value="<%=targetPage.getKey().getName() %>" />
 															<span class="input-group-btn">
-																<button class="btn btn-primary btn-flat" type="button">Update</button>
+																<button class="btn btn-default btn-flat" type="submit">Update</button>
 															</span>
 														</div>
 														
 													</form>
 												</td>
+												<td style="width:60px"><a class="btn btn-danger btn-sm" href="/mulcms/page/deleteTextRes?keyString=<%=res.getKey().getName() %>&pageKey=<%=targetPage.getKey().getName() %>"><i class="fa fa-trash"></i></a></td>
 											</tr>
 											<%} %>
 
@@ -84,6 +92,9 @@ List<TextRes> pageTextResList = (List<TextRes>) request.getAttribute("pageTextRe
 						<div class="box box-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title"><%=targetPage.getKey().getName() %> Text Resource</h3>
+								<div class="box-tools pull-right">
+									<a href="/mulcms/page/add" class="btn btn-primary btn-sm">Translate</a>
+								</div><!-- /.box-tools -->
 							</div><!-- /.box-header -->
 	
 							<div class=".box-body">
@@ -95,6 +106,7 @@ List<TextRes> pageTextResList = (List<TextRes>) request.getAttribute("pageTextRe
 												<th>Css Query</th>
 												<th>Rendering Type</th>
 												<th>Value</th>
+												<th>Delete</th>
 											</tr>
 											<%for(TextRes res: pageTextResList) { %>
 											<tr>
@@ -102,16 +114,19 @@ List<TextRes> pageTextResList = (List<TextRes>) request.getAttribute("pageTextRe
 												<td><%=HtmlUtils.htmlEscape(res.getCssQuery()) %></td>
 												<td><%=res.getRenderingType() %></td>
 												<td class="mailbox-date" style="width:300px;">
-													<form>
+													<form action="/mulcms/page/updateTextResEntry" method="post">
 														<div class="input-group input-group-sm">
 															<input type="text" name="content" class="form-control" value="<%=res.getContentString() %>">
+															<input type="hidden" name="keyString" value="<%=res.getKey().getName() %>" />
+															<input type="hidden" name="pageKey" value="<%=targetPage.getKey().getName() %>" />
 															<span class="input-group-btn">
-																<button class="btn btn-primary btn-flat" type="button">Update</button>
+																<button class="btn btn-default btn-flat" type="submit">Update</button>
 															</span>
 														</div>
 														
 													</form>
 												</td>
+												<td style="width:60px"><a class="btn btn-danger btn-sm" href="/mulcms/page/deleteTextRes?keyString=<%=res.getKey().getName() %>&pageKey=<%=targetPage.getKey().getName() %>"><i class="fa fa-trash"></i></a></td>
 											</tr>
 											<%} %>
 
@@ -121,6 +136,13 @@ List<TextRes> pageTextResList = (List<TextRes>) request.getAttribute("pageTextRe
 		                	</div><!-- /.box-body -->
 						</div><!-- /. box -->
 					</div>
+					
+					<div class="col-md-2">
+						<a href="/mulcms/page/templateReread?keyString=<%=targetPage.getKey().getName() %>" class="btn btn-primary btn-block margin-bottom">Translate all</a>
+						<a href="/mulcms/page/templateReread?keyString=<%=targetPage.getKey().getName() %>" class="btn btn-warning btn-block margin-bottom">Template re-read</a>
+						<a class="btn btn-danger btn-block margin-bottom" href="/mulcms/page/delete?keyString=<%=targetPage.getKey().getName() %>">Delete</a>
+					</div>
+					
 				</div>
 			</section>
 

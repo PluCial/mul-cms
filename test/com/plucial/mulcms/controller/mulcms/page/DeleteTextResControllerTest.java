@@ -5,14 +5,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-public class InitializeResourcesEntryControllerTest extends ControllerTestCase {
+public class DeleteTextResControllerTest extends ControllerTestCase {
 
     @Test
     public void run() throws Exception {
-        tester.start("/mulcms/page/initializeResourcesEntry");
-        TemplateRereadEntryController controller = tester.getController();
+        tester.start("/mulcms/page/deleteTextRes");
+        DeleteTextResController controller = tester.getController();
         assertThat(controller, is(notNullValue()));
         assertThat(tester.isRedirect(), is(false));
-        assertThat(tester.getDestinationPath(), is(nullValue()));
+        assertThat(tester.getDestinationPath(), is("/mulcms/page/deleteTextRes.jsp"));
     }
 }

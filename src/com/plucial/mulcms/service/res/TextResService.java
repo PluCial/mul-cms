@@ -3,7 +3,6 @@ package com.plucial.mulcms.service.res;
 import java.util.List;
 import java.util.UUID;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -18,7 +17,6 @@ import com.plucial.mulcms.enums.MulAttrType;
 import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.meta.ResMeta;
 import com.plucial.mulcms.model.Page;
-import com.plucial.mulcms.model.Template;
 import com.plucial.mulcms.model.TextRes;
 
 
@@ -26,6 +24,19 @@ public class TextResService extends ResService {
     
     /** DAO */
     private static final TextResDao dao = new TextResDao();
+    
+    /**
+     * リソースの取得
+     * @param resId
+     * @param lang
+     * @return
+     * @throws ObjectNotExistException
+     */
+    public static TextRes get(String keyString) throws ObjectNotExistException {
+        TextRes model =  dao.getOrNull(createKey(keyString));
+        if(model == null) throw new ObjectNotExistException();
+        return model;
+    }
     
     /**
      * リソースの取得
@@ -87,12 +98,9 @@ public class TextResService extends ResService {
         // ------------------------------------------------------
         Elements pageTexts = doc.select("[" + MulAttrType.mulPageText.getAttr() + "]");
         for(Element elem: pageTexts) {
-            // IDが振られていない時のみ追加
-            if(!elem.hasAttr(MulAttrType.mulPageTextId.getAttr())) {
-                // App Scope Text Res
-                TextRes textRes = TextResService.put(tx, page, lang, elem.text());
-                elem.attr(MulAttrType.mulPageTextId.getAttr(), textRes.getResId());
-            }
+            // App Scope Text Res
+            TextRes textRes = TextResService.put(tx, page, lang, elem.text());
+            elem.attr(MulAttrType.mulPageTextId.getAttr(), textRes.getResId());
         }
     }
     
@@ -198,7 +206,16 @@ public class TextResService extends ResService {
     }
     
     /**
+     * 更新
+     * @param model
+     */
+    public static void update(TextRes model) {
+        dao.put(model);
+    }
+    
+    /**
      * 削除
+     * @param tx
      * @param model
      */
     public static void delete(Transaction tx, TextRes model) {
@@ -206,38 +223,41 @@ public class TextResService extends ResService {
     }
     
     /**
+     * 削除
+     * @param model
+     */
+    public static void delete(TextRes model) {
+        dao.delete(model.getKey());
+    }
+    
+    /**
      * リソースの初期化
      * @param page
      */
-    public static void initialize(Page page, Lang lang) {
+    public static void initialize(Transaction tx, Page page, Lang lang, Document templateDoc) {
         List<TextRes> list = getPageResList(page, lang);
         
-        Transaction tx = Datastore.beginTransaction();
-        try {
-            // 削除
-            for(TextRes model: list) {
-                Datastore.delete(model.getKey());
-            }
-            
-            // テンプレートの取得
-            Template template = page.getTemplateRef().getModel();
-            Document doc = Jsoup.parse(template.getHtmlString());
-            
-            // 登録
-            addTextResByPage(tx, page, lang, doc);
-            
-            tx.commit();
-
-        }finally {
-            if(tx.isActive()) {
-                tx.rollback();
-            }
+        // 削除
+        for(TextRes model: list) {
+            Datastore.delete(model.getKey());
         }
+        
+        // 登録
+        addTextResByPage(tx, page, lang, templateDoc);
     }
     
     // ----------------------------------------------------------------------
     // キーの作成
     // ----------------------------------------------------------------------
+    /**
+     * キーの作成
+     * @param keyString
+     * @return
+     */
+    protected static Key createKey(String keyString) {
+        return Datastore.createKey(ResMeta.get(), keyString);
+    }
+    
     /**
      * キーの作成
      * @param keyString

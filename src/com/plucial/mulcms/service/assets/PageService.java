@@ -12,13 +12,11 @@ import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.PageDao;
-import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.exception.TooManyException;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.PageTemplate;
 import com.plucial.mulcms.model.Template;
 import com.plucial.mulcms.model.TextRes;
-import com.plucial.mulcms.model.Widget;
 import com.plucial.mulcms.service.JsoupService;
 import com.plucial.mulcms.service.res.TextResService;
 
@@ -109,12 +107,12 @@ public class PageService extends AssetsService {
     public static Document getHtmlDocument(Page page, String packetName) throws ObjectNotExistException {
         // Pageテンプレートの取得
         JsoupService jsoupService = new JsoupService(page.getHtmlString());
-        
-        // Widget List の取得
-        List<Widget> widgetList = WidgetService.getList(page);
-        for(Widget widget: widgetList) {
-            jsoupService.renderingHTML(widget.getCssQuery(), widget.getHtmlString(), RenderingType.append);
-        }
+//        
+//        // Widget List の取得
+//        List<Widget> widgetList = WidgetService.getList(page);
+//        for(Widget widget: widgetList) {
+//            jsoupService.renderingHTML(widget.getCssQuery(), widget.getHtmlString(), RenderingType.append);
+//        }
         
         Element head = jsoupService.getDoc().head();
         head.prepend("<base href='" + "https://storage.googleapis.com/" + packetName + "/'>");
@@ -173,6 +171,35 @@ public class PageService extends AssetsService {
      */
     public static void update(Page model) {
         dao.put(model);
+    }
+    
+    /**
+     * テンプレート再読み込み
+     * @param page
+     * @param lang
+     */
+    public static void templateReread(Page model, Lang lang) {
+        Transaction tx = Datastore.beginTransaction();
+        try {
+            
+            // テンプレートの取得
+            Template template = model.getTemplateRef().getModel();
+            Document doc = Jsoup.parse(template.getHtmlString());
+            
+            // リソースの初期化
+            TextResService.initialize(tx, model, lang, doc);
+            
+            // Page Html の更新
+            model.setHtml(new Text(doc.outerHtml()));
+            Datastore.put(tx, model);
+            
+            tx.commit();
+
+        }finally {
+            if(tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
     
     /**

@@ -55,7 +55,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 												<th>Template</th>
 												<th>Create Date</th>
 												<th>Update Date</th>
-												<th>Action</th>
+												<th>View</th>
 											</tr>
 											<%for(Page pageObj: pageList) { %>
 											<tr>
@@ -67,7 +67,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 												<td class="mailbox-date"><%=dateSdf.format(pageObj.getCreateDate()) %></td>
 												<td class="mailbox-date"><%=dateSdf.format(pageObj.getUpdateDate()) %></td>
 												<td>
-													<a class="btn btn-danger btn-xs" href="/mulcms/page/delete?keyString=<%=pageObj.getKey().getName() %>">Delete</a>
+													<a class="btn btn-default btn-xs" target="view" href="/ja<%=pageObj.getKey().getName() %>"><i class="fa fa-external-link"></i></a>
 												</td>
 											</tr>
 											<%} %>

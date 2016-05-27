@@ -10,7 +10,7 @@ public class InitializeResourcesControllerTest extends ControllerTestCase {
     @Test
     public void run() throws Exception {
         tester.start("/mulcms/page/initializeResources");
-        InitializeResourcesController controller = tester.getController();
+        TemplateRereadController controller = tester.getController();
         assertThat(controller, is(notNullValue()));
         assertThat(tester.isRedirect(), is(false));
         assertThat(tester.getDestinationPath(), is("/mulcms/page/initializeResources.jsp"));

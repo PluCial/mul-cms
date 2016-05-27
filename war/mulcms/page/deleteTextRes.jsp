@@ -8,7 +8,8 @@
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
-Page pageObj = (Page) request.getAttribute("page");
+TextRes textRes = (TextRes) request.getAttribute("textRes");
+String pageKey = (String) request.getAttribute("pageKey");
 %>
 <!DOCTYPE html>
 <html>
@@ -40,12 +41,14 @@ Page pageObj = (Page) request.getAttribute("page");
 			                  <h3 class="box-title">Delete</h3>
 			                </div><!-- /.box-header -->
 			                <div class="box-body">
-			                  Do you really want to delete the <b>[<%=pageObj.getKey().getName() %>]</b>?
+			                  <b>Are you sure you want to delete this resource?</b><br /><br />
+			                  <%=textRes.getContentString() %>
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
-			                  <form action="/mulcms/page/deleteEntry" method="post">
-			                  	<input type="hidden" name="keyString" value="<%=pageObj.getKey().getName() %>">
-			                  	<a href="/mulcms/page/view?keyString=<%=pageObj.getKey().getName() %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  <form action="/mulcms/page/deleteTextResEntry" method="post">
+			                  	<input type="hidden" name="keyString" value="<%=textRes.getKey().getName() %>">
+			                  	<input type="hidden" name="pageKey" value="<%=pageKey %>">
+			                  	<a href="/mulcms/page/view?keyString=<%=pageKey %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
 			                  </form>
 			                </div>
