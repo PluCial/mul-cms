@@ -53,7 +53,7 @@ public class App {
     // GOOGLE PROJECT 定数(本番)
     // ---------------------------------------------------------------------------
     /** アプリケーション名(Google API 用) */
-    public static final String GOOGLE_API_APPLICATION_NAME = "guidebooq";
+    public static final String GOOGLE_API_APPLICATION_NAME = "mul-cms";
     
     /** サーバー API キー(Translate API, Map Geocoding API) */
     public static final String GOOGLE_API_PUBLIC_SERVER_KEY = "AIzaSyCPDuS7Uox7OjO6x-4bxQOZDQfUxKkWiSs";

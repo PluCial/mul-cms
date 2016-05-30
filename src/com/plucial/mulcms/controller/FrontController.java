@@ -1,32 +1,30 @@
-package com.plucial.mulcms.controller.mulcms;
+package com.plucial.mulcms.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
-import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 
 import com.google.apphosting.api.ApiProxy;
+import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
+import com.plucial.mulcms.controller.AppController;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.TextRes;
 import com.plucial.mulcms.service.JsoupService;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.res.TextResService;
 
-public class FrontController extends Controller {
+public class FrontController extends AppController {
 
     @Override
-    public Navigation run() throws Exception {
+    public Navigation execute(Lang localeLang) throws Exception {
         
         System.out.println(asString("lang") + ": " + asString("path"));
         
         ApiProxy.Environment env = ApiProxy.getCurrentEnvironment();
         String packetName = env.getAttributes().get("com.google.appengine.runtime.default_version_hostname").toString();
-        
-        Lang lang = Lang.valueOf(asString("lang"));
         
         try {
             Page page = PageService.get(asString("path"));
@@ -37,9 +35,7 @@ public class FrontController extends Controller {
             head.prepend("<base href='" + "https://storage.googleapis.com/" + packetName + "/'>");
             
             // テキストリソースを取得と合成
-            List<TextRes> textResList = new ArrayList<TextRes>();
-            textResList.addAll(TextResService.getAppResList(lang));
-            textResList.addAll(TextResService.getPageResList(page, lang));
+            List<TextRes> textResList = TextResService.getPageAllResList(page, localeLang);
             
             // リソースの挿入
             for(TextRes res: textResList) {
@@ -50,7 +46,7 @@ public class FrontController extends Controller {
             
             
         }catch(ObjectNotExistException e) {
-            
+            throw new NoContentsException();
         }
         
         return forward("front.jsp");

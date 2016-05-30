@@ -1,5 +1,6 @@
 package com.plucial.mulcms.service.res;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,6 +70,20 @@ public class TextResService extends ResService {
     public static List<TextRes> getPageResList(Page page, Lang lang) {
         return dao.getPageResList(page, lang);
     }
+    
+    /**
+     * App Res List + Page Res List
+     * @param page
+     * @param lang
+     * @return
+     */
+    public static List<TextRes> getPageAllResList(Page page, Lang lang) {
+        List<TextRes> textResList = new ArrayList<TextRes>();
+        textResList.addAll(getAppResList(lang));
+        textResList.addAll(getPageResList(page, lang));
+        
+        return textResList;
+    } 
     
     /**
      * テキストリソースの追加
@@ -172,6 +187,33 @@ public class TextResService extends ResService {
                 tx.rollback();
             }
         }
+        
+        return model;
+    }
+    
+    /**
+     * 追加(Scope: Page)
+     * @param tx
+     * @param page
+     * @param keyString
+     * @param lang
+     * @param content
+     * @return
+     */
+    public static TextRes put(Transaction tx, String resId, Page page, Lang lang, String content) {
+        TextRes model = new TextRes();
+        
+        model.setKey(createKey(resId.toString(), lang));
+        model.setLang(lang);
+        model.setResId(resId);
+        model.setStringToContent(content);
+        model.getAssetsRef().setModel(page);
+        
+        model.setCssQuery("[" + MulAttrType.mulPageTextId.getAttr() + "=" + resId + "]");
+        model.setRenderingType(RenderingType.text);
+        
+        // 保存
+        Datastore.put(tx, model);
         
         return model;
     }

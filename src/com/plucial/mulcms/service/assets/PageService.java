@@ -10,13 +10,16 @@ import org.slim3.datastore.Datastore;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
+import com.plucial.gae.global.exception.TransException;
 import com.plucial.global.Lang;
+import com.plucial.mulcms.App;
 import com.plucial.mulcms.dao.PageDao;
 import com.plucial.mulcms.exception.TooManyException;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.PageTemplate;
 import com.plucial.mulcms.model.Template;
 import com.plucial.mulcms.model.TextRes;
+import com.plucial.mulcms.service.GoogleTransService;
 import com.plucial.mulcms.service.JsoupService;
 import com.plucial.mulcms.service.res.TextResService;
 
@@ -47,6 +50,7 @@ public class PageService extends AssetsService {
         Page model = new Page();
         model.setKey(createKey(keyString));
         model.getTemplateRef().setModel(template);
+        model.getLangList().add(lang);
         
         Transaction tx = Datastore.beginTransaction();
         try {
@@ -202,6 +206,39 @@ public class PageService extends AssetsService {
         }
     }
     
+    /**
+     * 翻訳
+     * @param page
+     * @param transSrcLang
+     * @param transTargetLang
+     * @throws TransException 
+     * @throws ObjectNotExistException 
+     */
+    public static void trans(Page model, Lang transSrcLang, Lang transTargetLang) throws TransException, ObjectNotExistException {
+     // ---------------------------------------------------
+        // 翻訳元のコンテンツリスト
+        // ---------------------------------------------------
+        List<TextRes> transSrcList = TextResService.getPageAllResList(model, transSrcLang);
+        if(transSrcList.size() <= 0) throw new ObjectNotExistException();
+
+        Transaction tx = Datastore.beginTransaction();
+        try {
+            
+            GoogleTransService googleTransService = 
+                    new GoogleTransService(App.GOOGLE_API_PUBLIC_SERVER_KEY, App.GOOGLE_API_APPLICATION_NAME);
+            googleTransService.machineTrans(tx, model, transSrcLang, transTargetLang, transSrcList);
+
+            model.getLangList().add(transTargetLang);
+            Datastore.put(tx, model);
+
+            tx.commit();
+        }finally {
+            if(tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
     /**
      * 削除
      * @param model

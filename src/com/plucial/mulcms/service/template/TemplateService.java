@@ -7,6 +7,7 @@ import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.TemplateDao;
 import com.plucial.mulcms.meta.TemplateMeta;
 import com.plucial.mulcms.model.Template;
@@ -33,9 +34,12 @@ public class TemplateService {
      * 取得
      * @param keyString
      * @return
+     * @throws ObjectNotExistException 
      */
-    public static Template get(String keyString) {
-        return dao.get(createKey(keyString));
+    public static Template get(String keyString) throws ObjectNotExistException {
+        Template model = dao.get(createKey(keyString));
+        if(model == null) throw new ObjectNotExistException();
+        return model;
     }
     
     /**

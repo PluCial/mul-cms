@@ -7,7 +7,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/plucial-gae-global-app.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/plucial-global-app-enum.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsoup-1.9.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-services-translate-v2-rev42-1.21.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.gdt.eclipse.managedapis.MANAGED_API_CONTAINER/plus-v1r395lv1.18.0-rc"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
