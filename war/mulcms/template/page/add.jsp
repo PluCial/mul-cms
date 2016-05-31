@@ -4,6 +4,7 @@
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="org.slim3.controller.validator.Errors" %>
+<%@ page import="com.plucial.global.Lang" %>
 <%
 Errors errors =(Errors) request.getAttribute("errors");
 %>
@@ -52,9 +53,20 @@ Errors errors =(Errors) request.getAttribute("errors");
 							<!-- form start -->
 							<form action="/mulcms/template/page/addEntry" method="post">
 								<div class="box-body">
-									<div class="form-group">
-										<label for="inputName">Name</label>
-										<input ${f:text("name")} class="form-control" id="inputName" placeholder="Name">
+									<div class="row">
+										<div class="form-group col-md-6">
+											<label for="inputName">Name</label>
+											<input ${f:text("name")} class="form-control" id="inputName" placeholder="Name">
+										</div>
+										<div class="form-group col-md-6">
+											<label for="inputName">Template Lang</label>
+											<select name="lang" class="form-control">
+												<option value="">-- Select Lang --</option>
+												<%for(Lang lang: Lang.values()) { %>
+												<option value="<%=lang.toString() %>"><%=lang.getName() %></option>
+												<%} %>
+											</select>
+										</div>
 									</div>
 									<div class="form-group">
 										<label for="exampleInputPassword1">HTML</label>

@@ -2,7 +2,6 @@ package com.plucial.mulcms.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import org.slim3.datastore.Attribute;
 import org.slim3.datastore.CreationDate;
@@ -11,6 +10,7 @@ import org.slim3.datastore.ModificationDate;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.plucial.global.Lang;
 
 @Model(schemaVersion = 1)
 public class Template implements Serializable {
@@ -35,6 +35,12 @@ public class Template implements Serializable {
     @Attribute(unindexed = true)
     private Text html;
     
+    /**
+     * 言語
+     */
+    @Attribute(unindexed = true)
+    private Lang lang;
+    
     // ----------------------------------------------------------------------
     // その他
     // ----------------------------------------------------------------------
@@ -49,12 +55,6 @@ public class Template implements Serializable {
      */
     @Attribute(listener = ModificationDate.class)
     private Date updateDate;
-    
-    // ----------------------------------------------------------------------
-    // 非永久化項目
-    // ----------------------------------------------------------------------
-    @Attribute(persistent = false)
-    private List<Rendering> renderingList;
 
     /**
      * Returns the key.
@@ -156,19 +156,19 @@ public class Template implements Serializable {
         this.name = name;
     }
 
-    public List<Rendering> getRenderingList() {
-        return renderingList;
-    }
-
-    public void setRenderingList(List<Rendering> renderingList) {
-        this.renderingList = renderingList;
-    }
-
     public Text getHtml() {
         return html;
     }
 
     public void setHtml(Text html) {
         this.html = html;
+    }
+
+    public Lang getLang() {
+        return lang;
+    }
+
+    public void setLang(Lang lang) {
+        this.lang = lang;
     }
 }

@@ -5,6 +5,7 @@
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="org.slim3.controller.validator.Errors" %>
 <%@ page import="com.plucial.mulcms.model.*" %>
+<%@ page import="com.plucial.global.Lang" %>
 <%
 Errors errors =(Errors) request.getAttribute("errors");
 PageTemplate template = (PageTemplate)request.getAttribute("template");
@@ -55,9 +56,20 @@ String html = (String)request.getAttribute("html");
 							<!-- form start -->
 							<form action="/mulcms/template/page/editEntry" method="post">
 								<div class="box-body">
-									<div class="form-group">
-										<label for="inputName">Name</label>
-										<input ${f:text("name")} class="form-control" id="inputName" placeholder="Name">
+									<div class="row">
+										<div class="form-group col-md-6">
+											<label for="inputName">Name</label>
+											<input ${f:text("name")} class="form-control" id="inputName" placeholder="Name">
+										</div>
+										<div class="form-group col-md-6">
+											<label for="inputName">Template Lang</label>
+											<select name="lang" class="form-control">
+												<option value="">-- Select Lang --</option>
+												<%for(Lang lang: Lang.values()) { %>
+												<option value="<%=lang.toString() %>" <%=template.getLang() == lang ? "selected" : "" %>><%=lang.getName() %></option>
+												<%} %>
+											</select>
+										</div>
 									</div>
 									<div class="form-group">
 										<label for="exampleInputPassword1">HTML</label>

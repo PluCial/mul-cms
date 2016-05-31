@@ -7,8 +7,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="org.slim3.controller.validator.Errors" %>
 <%
+Errors errors =(Errors) request.getAttribute("errors");
+
 List<Page> pageList = (List<Page>) request.getAttribute("pageList");
+List<PageTemplate> templateList = (List<PageTemplate>) request.getAttribute("templateList");
 
 SimpleDateFormat dateSdf = new SimpleDateFormat("yyyy/MM/dd/ HH:mm");
 dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
@@ -35,15 +39,51 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 	
 	        <!-- Main content -->
 			<section class="content">
+				<h2 class="page-header">ページ管理</h2>
+				
 				<div class="row">
+					<div class="col-md-3">
+						<%if (!errors.isEmpty()){ %>
+					<!-- alert -->
+					<div class="alert alert-warning alert-dismissable">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+					<h4><i class="icon fa fa-warning"></i> Alert!</h4>
+					<%=errors.get(0) %>
+					</div>
+					<!-- /alert -->
+					<%} %>
+					
+						<div class="box box-primary box-solid">
+							<div class="box-header with-border">
+								<h3 class="box-title">ページの追加</h3>
+							</div>
+							<form action="/mulcms/page/addEntry" method="post">
+								<div class="box-body">
+									<div class="form-group">
+										<label for="exampleInputEmail1">Path(URL)</label>
+										<input ${f:text("url")} class="form-control" id="exampleInputEmail1" placeholder="/aaaa/xxx.html">
+									</div>
+									<div class="form-group">
+										<label for="exampleInputEmail1">Template</label>
+										<select name="template" class="form-control">
+											<option value="">-- Select Template --</option>
+											<%for(Template temp: templateList) { %>
+											<option value="<%=temp.getKey().getName() %>"><%=temp.getName() %></option>
+											<%} %>
+										</select>
+									</div>
+								</div><!-- /.box-body -->
+								<div class="box-footer text-right">
+									<button type="submit" class="btn btn-primary">追加</button>
+								</div>
+							</form>
+						</div>
+					</div>
             
-            		<div class="col-md-8 col-md-offset-2">
+            		<div class="col-md-8">
 						<div class="box box-primary">
 							<div class="box-header with-border">
-								<h3 class="box-title">Page List</h3>
-								<div class="box-tools pull-right">
-									<a href="/mulcms/page/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-								</div><!-- /.box-tools -->
+								<h3 class="box-title">ページ一覧</h3>
 							</div><!-- /.box-header -->
 	
 							<div class=".box-body">
@@ -53,22 +93,21 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 											<tr>
 												<th>Path</th>
 												<th>Template</th>
+												<th>Language</th>
 												<th>Create Date</th>
 												<th>Update Date</th>
-												<th>View</th>
 											</tr>
-											<%for(Page pageObj: pageList) { %>
+											<%for(Page pageObj: pageList) { 
+												Template template = pageObj.getTemplateRef().getModel();
+											%>
 											<tr>
-												<td class="mailbox-name"><a href="/mulcms/page/view?keyString=<%=pageObj.getKey().getName() %>"><%=pageObj.getKey().getName() %></a></td>
+												<td class="mailbox-name"><a href="/mulcms/page/setting?keyString=<%=pageObj.getKey().getName() %>&lang=<%=template.getLang().toString() %>"><%=pageObj.getKey().getName() %></a></td>
 												<td>
-													<%Template template = pageObj.getTemplateRef().getModel();%>
 													<a href="/mulcms/template/page/edit?keyString=<%=template.getKey().getName() %>"><%=template.getName()%></a>
 												</td>
+												<td><%=pageObj.getLangList().size() %></td>
 												<td class="mailbox-date"><%=dateSdf.format(pageObj.getCreateDate()) %></td>
 												<td class="mailbox-date"><%=dateSdf.format(pageObj.getUpdateDate()) %></td>
-												<td>
-													<a class="btn btn-default btn-xs" target="view" href="/ja<%=pageObj.getKey().getName() %>"><i class="fa fa-external-link"></i></a>
-												</td>
 											</tr>
 											<%} %>
 

@@ -8,6 +8,7 @@ import org.slim3.datastore.Datastore;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.plucial.gae.global.exception.ObjectNotExistException;
+import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.TemplateDao;
 import com.plucial.mulcms.meta.TemplateMeta;
 import com.plucial.mulcms.model.Template;
@@ -21,13 +22,15 @@ public class TemplateService {
     /**
      * 新しいモデルの設定
      * @param model
+     * @param lang
      * @param name
      * @param html
      */
-    protected static void settingNewModel(Template model, String name, String html) {
+    protected static void settingNewModel(Template model, Lang lang, String name, String html) {
         model.setKey(createKey());
         model.setName(name);
         model.setHtml(new Text(html));
+        model.setLang(lang);
     }
     
     /**

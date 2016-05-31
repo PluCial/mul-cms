@@ -9,9 +9,13 @@ package com.plucial.mulcms.enums;
  *
  */
 public enum MulAttrType {
-    mulAppTextId("data-mul-app-text-id"),
-    mulPageText("data-mul-page-text"),
-    mulPageTextId("data-mul-page-text-id"),
+    mulTextScope("data-mul-text-scope"),
+    mulTextId("data-mul-text-id"),
+//    mulTextId("data-mul-text-id"),
+//    mulAppText("data-mul-app-text"),
+//    mulAppTextId("data-mul-app-text-id"),
+//    mulPageText("data-mul-page-text"),
+//    mulPageTextId("data-mul-page-text-id"),
     mulLongText("data-mul-long-text"),
     data_lang("data-lang"),
     datq_public_uri("data-public-uri"),

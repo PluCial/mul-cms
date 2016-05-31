@@ -2,6 +2,7 @@ package com.plucial.mulcms.service.template;
 
 import java.util.List;
 
+import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.WidgetTemplateDao;
 import com.plucial.mulcms.model.WidgetTemplate;
 
@@ -14,13 +15,13 @@ public class WidgetTemplateService extends TemplateService {
     /**
      * 追加
      * @param name
-     * @param content
-     * @param cssQuery
+     * @param html
+     * @param lang
      * @return
      */
-    public static WidgetTemplate put(String name, String html) {
+    public static WidgetTemplate put(String name, String html, Lang lang) {
         WidgetTemplate model = new WidgetTemplate();
-        settingNewModel(model, name, html);
+        settingNewModel(model, lang, name, html);
         
         dao.put(model);
         

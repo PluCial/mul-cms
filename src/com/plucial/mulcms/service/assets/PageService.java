@@ -2,12 +2,10 @@ package com.plucial.mulcms.service.assets;
 
 import java.util.List;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slim3.datastore.Datastore;
 
-import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.gae.global.exception.TransException;
@@ -18,10 +16,12 @@ import com.plucial.mulcms.exception.TooManyException;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.PageTemplate;
 import com.plucial.mulcms.model.Template;
-import com.plucial.mulcms.model.TextRes;
+import com.plucial.mulcms.model.res.AssetsLangRes;
+import com.plucial.mulcms.model.res.Res;
 import com.plucial.mulcms.service.GoogleTransService;
 import com.plucial.mulcms.service.JsoupService;
-import com.plucial.mulcms.service.res.TextResService;
+import com.plucial.mulcms.service.res.AssetsLangResService;
+import com.plucial.mulcms.service.res.ResService;
 
 
 public class PageService extends AssetsService {
@@ -37,7 +37,7 @@ public class PageService extends AssetsService {
      * @return
      * @throws TooManyException
      */
-    public static Page put(String keyString, Lang lang, PageTemplate template) throws TooManyException {
+    public static Page put(String keyString, PageTemplate template) throws TooManyException {
         
         // 重複チェック
         try {
@@ -50,26 +50,35 @@ public class PageService extends AssetsService {
         Page model = new Page();
         model.setKey(createKey(keyString));
         model.getTemplateRef().setModel(template);
-        model.getLangList().add(lang);
+        
+        dao.put(model);
+        
+        return model;
+    }
+    
+    /**
+     * リソースの読み込み
+     * @param page
+     * @param lang
+     */
+    public static void extractionRes(Page page) {
+        
+        Template template = page.getTemplateRef().getModel();
+        JsoupService JsoupService = new JsoupService(template.getHtmlString());
         
         Transaction tx = Datastore.beginTransaction();
         try {
-            Document doc = Jsoup.parse(template.getHtmlString());
-            TextResService.addTextResByPage(tx, model, lang, doc);
+            page.getLangList().add(template.getLang());
+            ResService.addResByDoc(tx, page, template.getLang(), JsoupService.getDoc());
             
-            model.setHtml(new Text(doc.outerHtml()));
-
-            Datastore.put(tx, model);
+            Datastore.put(tx, page);
 
             tx.commit();
-
         }finally {
             if(tx.isActive()) {
                 tx.rollback();
             }
         }
-        
-        return model;
     }
     
     /**
@@ -110,7 +119,8 @@ public class PageService extends AssetsService {
      */
     public static Document getHtmlDocument(Page page, String packetName) throws ObjectNotExistException {
         // Pageテンプレートの取得
-        JsoupService jsoupService = new JsoupService(page.getHtmlString());
+        Template template = page.getTemplateRef().getModel();
+        JsoupService jsoupService = new JsoupService(template.getHtmlString());
 //        
 //        // Widget List の取得
 //        List<Widget> widgetList = WidgetService.getList(page);
@@ -155,55 +165,11 @@ public class PageService extends AssetsService {
     }
     
     /**
-     * HTML 取得
-     * @param keyString
-     * @param lang
-     * @return
-     * @throws ObjectNotExistException
-     */
-    public static String getHtml(String keyString, Lang lang, String packetName) throws ObjectNotExistException {
-        
-        // ページの取得
-        Page model = get(keyString);
-        
-        return getHtmlDocument(model, packetName).outerHtml();
-    }
-    
-    /**
      * 更新
      * @param model
      */
     public static void update(Page model) {
         dao.put(model);
-    }
-    
-    /**
-     * テンプレート再読み込み
-     * @param page
-     * @param lang
-     */
-    public static void templateReread(Page model, Lang lang) {
-        Transaction tx = Datastore.beginTransaction();
-        try {
-            
-            // テンプレートの取得
-            Template template = model.getTemplateRef().getModel();
-            Document doc = Jsoup.parse(template.getHtmlString());
-            
-            // リソースの初期化
-            TextResService.initialize(tx, model, lang, doc);
-            
-            // Page Html の更新
-            model.setHtml(new Text(doc.outerHtml()));
-            Datastore.put(tx, model);
-            
-            tx.commit();
-
-        }finally {
-            if(tx.isActive()) {
-                tx.rollback();
-            }
-        }
     }
     
     /**
@@ -215,10 +181,10 @@ public class PageService extends AssetsService {
      * @throws ObjectNotExistException 
      */
     public static void trans(Page model, Lang transSrcLang, Lang transTargetLang) throws TransException, ObjectNotExistException {
-     // ---------------------------------------------------
+        // ---------------------------------------------------
         // 翻訳元のコンテンツリスト
         // ---------------------------------------------------
-        List<TextRes> transSrcList = TextResService.getPageAllResList(model, transSrcLang);
+        List<Res> transSrcList = ResService.getAssetsTransResList(model, transSrcLang);
         if(transSrcList.size() <= 0) throw new ObjectNotExistException();
 
         Transaction tx = Datastore.beginTransaction();
@@ -228,8 +194,10 @@ public class PageService extends AssetsService {
                     new GoogleTransService(App.GOOGLE_API_PUBLIC_SERVER_KEY, App.GOOGLE_API_APPLICATION_NAME);
             googleTransService.machineTrans(tx, model, transSrcLang, transTargetLang, transSrcList);
 
-            model.getLangList().add(transTargetLang);
-            Datastore.put(tx, model);
+            if(model.getLangList().indexOf(transTargetLang) < 0) {
+                model.getLangList().add(transTargetLang);
+                Datastore.put(tx, model);
+            }
 
             tx.commit();
         }finally {
@@ -238,21 +206,46 @@ public class PageService extends AssetsService {
             }
         }
     }
-
+    
     /**
      * 削除
      * @param model
      */
-    public static void delete(Page model, Lang lang) {
+    public static void delete(Page model) {
         
-        List<TextRes> resList = TextResService.getPageResList(model, lang);
+        List<Res> resList = ResService.getPageResList(model);
         
         Transaction tx = Datastore.beginTransaction();
         try {
-            for(TextRes res: resList) {
-                TextResService.delete(tx, res);
+            for(Res res: resList) {
+                AssetsLangResService.delete(tx, res);
             }
             Datastore.delete(tx, model.getKey());
+
+            tx.commit();
+
+        }finally {
+            if(tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    /**
+     * 言語削除
+     * @param model
+     */
+    public static void delete(Page model, Lang lang) {
+        
+        List<AssetsLangRes> resList = AssetsLangResService.getList(model, lang);
+        
+        Transaction tx = Datastore.beginTransaction();
+        try {
+            for(Res res: resList) {
+                AssetsLangResService.delete(tx, res);
+            }
+            model.getLangList().remove(lang);
+            Datastore.put(tx, model);
 
             tx.commit();
 

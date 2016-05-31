@@ -9,5 +9,5 @@ package com.plucial.mulcms.enums;
  *
  */
 public enum ResScope {
-    APP,PAGE,WIDGET;
+    app, app_lang, assets, assets_lang;
 }

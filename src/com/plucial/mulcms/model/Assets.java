@@ -12,6 +12,7 @@ import org.slim3.datastore.ModificationDate;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.plucial.mulcms.model.res.Res;
 
 @Model(schemaVersion = 1)
 public class Assets implements Serializable {

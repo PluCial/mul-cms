@@ -7,6 +7,7 @@ import org.slim3.datastore.Model;
 import org.slim3.util.StringUtil;
 
 import com.google.appengine.api.datastore.Text;
+import com.plucial.mulcms.model.res.Res;
 
 @Model(schemaVersion = 1)
 public class TextRes extends Res implements Serializable {

@@ -6,6 +6,7 @@ import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
+import com.plucial.global.Lang;
 import com.plucial.mulcms.service.template.WidgetTemplateService;
 
 public class AddEntryController extends Controller {
@@ -22,7 +23,7 @@ public class AddEntryController extends Controller {
         String html = asString("html");
 
         Document doc = Jsoup.parseBodyFragment(html);
-        WidgetTemplateService.put(name, doc.body().html());
+        WidgetTemplateService.put(name, doc.body().html(), Lang.ja);
         
         return redirect("/mulcms/template/widget/");
     }

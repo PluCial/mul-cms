@@ -53,7 +53,7 @@ public class JsoupService {
         
         if(action == RenderingType.addClass) targetElems.addClass(arg);
         if(action == RenderingType.removeClass) targetElems.removeClass(arg);
-        if(action == RenderingType.removeClass) targetElems.removeAttr(arg);
+        if(action == RenderingType.removeAttr) targetElems.removeAttr(arg);
         
         if(action == RenderingType.text) {
             for(Element elem: targetElems) {

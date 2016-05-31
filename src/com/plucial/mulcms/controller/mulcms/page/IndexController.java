@@ -6,7 +6,9 @@ import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 
 import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.Template;
 import com.plucial.mulcms.service.assets.PageService;
+import com.plucial.mulcms.service.template.PageTemplateService;
 
 public class IndexController extends Controller {
 
@@ -15,6 +17,9 @@ public class IndexController extends Controller {
         
         List<Page> pageList = PageService.getList();
         requestScope("pageList", pageList);
+        
+        List<? extends Template> templateList = PageTemplateService.getList();
+        requestScope("templateList", templateList);
         
         return forward("index.jsp");
     }

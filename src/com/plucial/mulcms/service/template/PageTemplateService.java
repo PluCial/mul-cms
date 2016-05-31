@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jsoup.nodes.Document;
 
+import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.PageTemplateDao;
 import com.plucial.mulcms.model.PageTemplate;
 
@@ -20,9 +21,9 @@ public class PageTemplateService extends TemplateService {
      * @param content
      * @return
      */
-    public static PageTemplate put(String name, Document doc) {
+    public static PageTemplate put(String name, Document doc, Lang lang) {
         PageTemplate model = new PageTemplate();
-        settingNewModel(model, name, doc.outerHtml());
+        settingNewModel(model, lang, name, doc.outerHtml());
         
         dao.put(model);
         

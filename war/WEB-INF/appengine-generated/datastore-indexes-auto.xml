@@ -1,9 +1,15 @@
-<!-- Indices written at Sat, 28 May 2016 14:40:51 JST -->
+<!-- Indices written at Thu, 2 Jun 2016 02:39:08 JST -->
 
 <datastore-indexes>
 
-    <!-- Used 5 times in query history -->
+    <!-- Used 7 times in query history -->
     <datastore-index kind="Assets" ancestor="false" source="auto">
+        <property name="slim3.classHierarchyList" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 9 times in query history -->
+    <datastore-index kind="Template" ancestor="false" source="auto">
         <property name="slim3.classHierarchyList" direction="asc"/>
         <property name="createDate" direction="asc"/>
     </datastore-index>

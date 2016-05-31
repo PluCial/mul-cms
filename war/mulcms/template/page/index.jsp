@@ -53,6 +53,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 										<tbody>
 											<tr>
 												<th>Name</th>
+												<th>Template Lang</th>
 												<th>Create Date</th>
 												<th>Update Date</th>
 												<th>Action</th>
@@ -60,6 +61,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 											<%for(Template temp: templateList) { %>
 											<tr>
 												<td class="mailbox-name"><a href="/mulcms/template/page/edit?keyString=<%=temp.getKey().getName() %>"><%=temp.getName() %></a></td>
+												<td><%=temp.getLang().getName() %></td>
 												<td class="mailbox-date"><%=dateSdf.format(temp.getCreateDate()) %></td>
 												<td class="mailbox-date"><%=dateSdf.format(temp.getUpdateDate()) %></td>
 												<td>

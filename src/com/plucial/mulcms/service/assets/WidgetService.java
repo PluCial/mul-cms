@@ -2,18 +2,14 @@ package com.plucial.mulcms.service.assets;
 
 import java.util.List;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.slim3.datastore.Datastore;
 
-import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.datastore.Transaction;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.WidgetDao;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.Widget;
 import com.plucial.mulcms.model.WidgetTemplate;
-import com.plucial.mulcms.service.res.TextResService;
 
 
 public class WidgetService extends AssetsService {
@@ -38,13 +34,10 @@ public class WidgetService extends AssetsService {
         model.getParentRef().setModel(page);
         model.setSortOrder(page.getChildSortOrderMax() + 1);
         model.setCssQuery(cssQuery);
+        model.getTemplateRef().setModel(template);
         
         Transaction tx = Datastore.beginTransaction();
         try {
-            Document doc = Jsoup.parseBodyFragment(template.getHtmlString());
-            TextResService.addTextResByPage(tx, page, lang, doc);
-            
-            model.setHtml(new Text(doc.html()));
             
             page.setChildSortOrderMax(page.getChildSortOrderMax() + 1);
             Datastore.put(tx, page, model);

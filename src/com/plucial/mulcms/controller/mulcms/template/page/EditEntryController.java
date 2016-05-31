@@ -5,6 +5,7 @@ import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
 import com.google.appengine.api.datastore.Text;
+import com.plucial.global.Lang;
 import com.plucial.mulcms.model.PageTemplate;
 import com.plucial.mulcms.service.template.TemplateService;
 
@@ -20,10 +21,12 @@ public class EditEntryController extends Controller {
         String keyString = asString("keyString");
         String name = asString("name");
         String html = asString("html");
+        Lang lang = Lang.valueOf(asString("lang"));
         
         PageTemplate modal = (PageTemplate)TemplateService.get(keyString);
         modal.setName(name);
         modal.setHtml(new Text(html));
+        modal.setLang(lang);
         
         TemplateService.update(modal);
         
@@ -40,6 +43,7 @@ public class EditEntryController extends Controller {
         v.add("keyString", v.required());
         v.add("name", v.required());
         v.add("html", v.required());
+        v.add("lang", v.required());
         
         return v.validate();
     }
