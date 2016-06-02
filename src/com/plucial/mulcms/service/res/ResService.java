@@ -84,7 +84,7 @@ public class ResService {
         
         textResList.addAll(AssetsResService.getList(page));
         for(Lang lang: page.getLangList()) {
-        textResList.addAll(AssetsLangResService.getList(page, lang));
+            textResList.addAll(AssetsLangResService.getList(page, lang));
         }
         
         return textResList;

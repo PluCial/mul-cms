@@ -14,14 +14,14 @@ String contentsType = request.getParameter("contentsType");
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
+            <li class="<%=contentsType.equals("pageTemplate") ? "active" : "" %>">
+              <a href="/mulcms/template/page/">
+                <i class="fa fa-object-group" aria-hidden="true"></i> <span>Template</span>
+              </a>
+            </li>
             <li class="<%=contentsType.equals("page") ? "active" : "" %>">
               <a href="/mulcms/page/">
                 <i class="fa fa-files-o"></i> <span>Page</span>
-              </a>
-            </li>
-            <li class="<%=contentsType.equals("pageTemplate") ? "active" : "" %>">
-              <a href="/mulcms/template/page/">
-                <i class="fa fa-file-text"></i> <span>Template</span>
               </a>
             </li>
             <%-- <li class="treeview <%=contentsType.equals("pageTemplate") || contentsType.equals("widgetTemplate") ? "active" : "" %>">

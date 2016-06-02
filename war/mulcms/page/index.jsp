@@ -44,14 +44,14 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 				<div class="row">
 					<div class="col-md-3">
 						<%if (!errors.isEmpty()){ %>
-					<!-- alert -->
-					<div class="alert alert-warning alert-dismissable">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-					<h4><i class="icon fa fa-warning"></i> Alert!</h4>
-					<%=errors.get(0) %>
-					</div>
-					<!-- /alert -->
-					<%} %>
+						<!-- alert -->
+						<div class="alert alert-warning alert-dismissable">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<h4><i class="icon fa fa-warning"></i> Alert!</h4>
+							<%=errors.get(0) %>
+						</div>
+						<!-- /alert -->
+						<%} %>
 					
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
@@ -96,6 +96,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 												<th>Language</th>
 												<th>Create Date</th>
 												<th>Update Date</th>
+												<th>Delete</th>
 											</tr>
 											<%for(Page pageObj: pageList) { 
 												Template template = pageObj.getTemplateRef().getModel();
@@ -108,6 +109,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 												<td><%=pageObj.getLangList().size() %></td>
 												<td class="mailbox-date"><%=dateSdf.format(pageObj.getCreateDate()) %></td>
 												<td class="mailbox-date"><%=dateSdf.format(pageObj.getUpdateDate()) %></td>
+												<td style="width:60px"><a class="btn btn-danger btn-sm" href="/mulcms/page/delete?keyString=<%=pageObj.getKey().getName() %>"><i class="fa fa-trash"></i></a></td>
 											</tr>
 											<%} %>
 

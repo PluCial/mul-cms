@@ -78,11 +78,15 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 						</div>
 						<%} %>
 						
+						<%if(supportLangList.indexOf(targetLang) >= 0) { %>
+						<a class="btn btn-default btn-block margin-bottom" target="view" href="/<%=targetLang.toString() %><%=targetPage.getKey().getName() %>"><i class="fa fa-external-link"></i> ページの確認</a>
+						<%} %>
+						
 						<%if(template.getLang() == targetLang) { %>
-						<a href="/mulcms/page/extractionResEntry?keyString=<%=targetPage.getKey().getName() %>" class="btn btn-primary btn-block margin-bottom">リソースを抽出</a>
+						<a href="/mulcms/page/extractionResEntry?keyString=<%=targetPage.getKey().getName() %>" class="btn btn-primary btn-block margin-bottom"><i class="fa fa-database"></i> リソースを抽出</a>
 						<%} %>
 						<%if(supportLangList.indexOf(targetLang) >= 0) { %>
-						<a class="btn btn-danger btn-block margin-bottom" href="/mulcms/page/delete?keyString=<%=targetPage.getKey().getName() %>"><%=targetLang.getName() %>ページを削除</a>
+						<a class="btn btn-danger btn-block margin-bottom" href="/mulcms/page/deleteLang?keyString=<%=targetPage.getKey().getName() %>&lang=<%=targetLang.toString() %>"><i class="fa fa-trash"></i> <%=targetLang.getName() %>ページを削除</a>
 						<%} %>
 					</div>
 					
