@@ -6,7 +6,6 @@ import org.slim3.datastore.DaoBase;
 import org.slim3.datastore.Datastore;
 
 import com.plucial.global.Lang;
-import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.meta.res.AppLangResMeta;
 import com.plucial.mulcms.model.res.AppLangRes;
 
@@ -46,7 +45,7 @@ public class AppLangResDao extends DaoBase<AppLangRes>{
     public List<AppLangRes> getTransSrcList(Lang lang) {
         return Datastore.query(meta).filter(
             meta.lang.equal(lang),
-            meta.renderingType.equal(RenderingType.text)
+            meta.transTarget.equal(true)
             ).asList();
     }
 

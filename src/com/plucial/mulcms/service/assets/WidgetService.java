@@ -27,8 +27,8 @@ public class WidgetService extends AssetsService {
      */
     public static Widget put(Page page, Lang lang, WidgetTemplate template, String cssQuery) {
         Widget model = new Widget();
-        String html = template.getHtmlString();
-        settingNewModel(model, template, html);
+//        String html = template.getHtmlString();
+//        settingNewModel(model, template, html);
         
         model.setKey(createKey());
         model.getParentRef().setModel(page);

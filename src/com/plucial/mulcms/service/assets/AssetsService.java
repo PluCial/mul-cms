@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Text;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.AssetsDao;
 import com.plucial.mulcms.meta.AssetsMeta;
@@ -23,10 +22,10 @@ public class AssetsService {
      * @param model
      * @param template
      */
-    protected static void settingNewModel(Assets model, Template template, String html) {
-        model.getTemplateRef().setModel(template);
-        model.setHtml(new Text(html));
-    }
+//    protected static void settingNewModel(Assets model, Template template, String html) {
+//        model.getTemplateRef().setModel(template);
+//        model.setHtml(new Text(html));
+//    }
     
     /**
      * 取得

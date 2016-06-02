@@ -9,17 +9,12 @@ package com.plucial.mulcms.enums;
  *
  */
 public enum MulAttrType {
-    mulTextScope("data-mul-text-scope"),
-    mulTextId("data-mul-text-id"),
-//    mulTextId("data-mul-text-id"),
-//    mulAppText("data-mul-app-text"),
-//    mulAppTextId("data-mul-app-text-id"),
-//    mulPageText("data-mul-page-text"),
-//    mulPageTextId("data-mul-page-text-id"),
-    mulLongText("data-mul-long-text"),
-    data_lang("data-lang"),
-    datq_public_uri("data-public-uri"),
-    data_res_edit_type("data-res-edit-type");
+    mulScope("data-mul-scope"),
+    mulId("data-mul-id"),
+    mulDataType("data-mul-data-type");
+//    mulTextScope("data-mul-text-scope"),
+//    mulTextId("data-mul-text"),
+//    mulLongText("data-mul-long-text");
     
     /** 属性 */
     private String attr;

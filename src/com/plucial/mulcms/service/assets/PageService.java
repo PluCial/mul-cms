@@ -68,10 +68,12 @@ public class PageService extends AssetsService {
         
         Transaction tx = Datastore.beginTransaction();
         try {
-            page.getLangList().add(template.getLang());
             ResService.addResByDoc(tx, page, template.getLang(), JsoupService.getDoc());
             
-            Datastore.put(tx, page);
+            if(page.getLangList().indexOf(template.getLang()) < 0) {
+                page.getLangList().add(template.getLang());
+                Datastore.put(tx, page);
+            }
 
             tx.commit();
         }finally {

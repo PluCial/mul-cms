@@ -106,6 +106,7 @@ public class ResService {
         model.setResDataType(resDataType);
         model.setRenderingType(renderingType);
         model.setStringToValue(value);
+        model.setTransTarget(resDataType.isTransTarget());
     }
     
     /**
@@ -136,52 +137,61 @@ public class ResService {
      */
     public static void addResByDoc(Transaction tx, Assets assets, Lang lang, Document doc) {
 
-        Elements appTexts = doc.select("[" + MulAttrType.mulTextId.getAttr() + "]");
-        for(Element elem: appTexts) {
+        Elements elems = doc.select("[" + MulAttrType.mulId.getAttr() + "]");
+        for(Element elem: elems) {
             // Res Id
-            String resId = elem.attr(MulAttrType.mulTextId.getAttr());
+            String resId = elem.attr(MulAttrType.mulId.getAttr());
+            
             // Res Data TYpe
-            ResDataType resDataType = elem.hasAttr(MulAttrType.mulLongText.getAttr()) ? ResDataType.LONG_TEXT :ResDataType.SHORT_TEXT;
+            ResDataType resDataType = ResDataType.SHORT_TEXT;
+            try {
+                if(elem.hasAttr(MulAttrType.mulDataType.getAttr())) resDataType = ResDataType.valueOf(elem.attr(MulAttrType.mulDataType.getAttr()).toUpperCase());
+            }catch(Exception e){}
             
             // Res スコープ
-            ResScope resScope = ResScope.assets;
+            ResScope resScope = ResScope.ASSETS_LANG;
             try {
-                if(elem.hasAttr(MulAttrType.mulTextScope.getAttr())) resScope = ResScope.valueOf(elem.attr(MulAttrType.mulTextScope.getAttr()));
+                if(elem.hasAttr(MulAttrType.mulScope.getAttr())) resScope = ResScope.valueOf(elem.attr(MulAttrType.mulScope.getAttr()).toUpperCase());
             }catch(Exception e){}
+            
+            // Rendering Type
+            RenderingType renderingType = resDataType.getRenderingType();
+            
+            // value
+            String value = resDataType == ResDataType.HTML ? elem.html() : elem.text();
             
             // ------------------------------------------------------
             // Add
             // ------------------------------------------------------
-            if(resScope == ResScope.app) {
+            if(resScope == ResScope.APP) {
                 try {
                     AppResService.get(resId);
                 } catch (ObjectNotExistException e) {
-                    AppResService.add(tx, resId, "[" + MulAttrType.mulTextId.getAttr() + "=" + resId + "]", resDataType, RenderingType.text, elem.text());
+                    AppResService.add(tx, resId, "[" + MulAttrType.mulId.getAttr() + "=" + resId + "]", resDataType, renderingType, value);
                 }
 
-            }else if(resScope == ResScope.app_lang) {
+            }else if(resScope == ResScope.APP_LANG) {
                 try {
                     AppLangResService.get(resId, lang);
                 } catch (ObjectNotExistException e) {
-                    AppLangResService.add(tx, resId, "[" + MulAttrType.mulTextId.getAttr() + "=" + resId + "]", resDataType, RenderingType.text, elem.text(), lang); 
+                    AppLangResService.add(tx, resId, "[" + MulAttrType.mulId.getAttr() + "=" + resId + "]", resDataType, renderingType, value, lang); 
                 }
 
-            }else if(resScope == ResScope.assets) {
+            }else if(resScope == ResScope.ASSETS) {
                 try {
                     AssetsResService.get(resId, assets);
                 } catch (ObjectNotExistException e) {
-                    AssetsResService.add(tx, resId, "[" + MulAttrType.mulTextId.getAttr() + "=" + resId + "]", resDataType, RenderingType.text, elem.text(), assets);
+                    AssetsResService.add(tx, resId, "[" + MulAttrType.mulId.getAttr() + "=" + resId + "]", resDataType, renderingType, value, assets);
                 }
 
-            }else if(resScope == ResScope.assets_lang) {
+            }else if(resScope == ResScope.ASSETS_LANG) {
                 try {
                     AssetsLangResService.get(resId, assets, lang);
                 } catch (ObjectNotExistException e) {
-                    AssetsLangResService.add(tx, resId, "[" + MulAttrType.mulTextId.getAttr() + "=" + resId + "]", resDataType, RenderingType.text, elem.text(), assets, lang);
+                    AssetsLangResService.add(tx, resId, "[" + MulAttrType.mulId.getAttr() + "=" + resId + "]", resDataType, renderingType, value, assets, lang);
                 }
 
             }
-            
         }
     }
     

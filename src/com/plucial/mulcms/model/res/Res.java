@@ -37,6 +37,9 @@ public class Res implements Serializable {
     /** Rendering Type */
     private RenderingType renderingType;
     
+    /** 翻訳対象 */
+    private boolean transTarget;
+    
     /**
      * コンテンツ
      */
@@ -199,5 +202,13 @@ public class Res implements Serializable {
 
     public void setResDataType(ResDataType resDataType) {
         this.resDataType = resDataType;
+    }
+
+    public boolean isTransTarget() {
+        return transTarget;
+    }
+
+    public void setTransTarget(boolean transTarget) {
+        this.transTarget = transTarget;
     }
 }
