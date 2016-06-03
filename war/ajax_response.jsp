@@ -2,11 +2,17 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
+<%@page import="com.guidebooq.model.*" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.plucial.mulcms.App" %>
-<%@ page import="com.plucial.mulcms.model.res.*" %>
+<%@ page import="org.slim3.controller.validator.Errors" %>
 <%
-String html =(String) request.getAttribute("pageHtml");
-List<Res> textResList = (List<Res>) request.getAttribute("textResList");
+Errors errors = (Errors)request.getAttribute("errors");
 %>
-<%=html %>
+{
+	<%if(errors != null && !errors.isEmpty()) { %>
+	"status" : "error"
+	,"errorMessage" : "<%=errors.get(0) %>"
+	<%}else { %>
+	"status" : "success"
+	<%} %>
+}

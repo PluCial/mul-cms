@@ -38,5 +38,18 @@ public class HtmlUtils {
         }
         return result.toString();
     }
+    
+    /**
+     * 文字列を適切なHTMLに変換
+     * @param data
+     * @return
+     */
+    public static String changeIndentionToHtml(String content) {
+        if(content == null || content.trim().length() <= 0) return null;
+        
+        String newContent = content.replaceAll("\\r\\n|\\n\\r|\\r|\\n", "<br />");
+        
+        return newContent;
+    }
 
 }

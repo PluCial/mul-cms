@@ -40,6 +40,9 @@ public class Res implements Serializable {
     /** 翻訳対象 */
     private boolean transTarget;
     
+    /** 変更可能 */
+    private boolean modifiable = false;
+    
     /**
      * コンテンツ
      */
@@ -210,5 +213,13 @@ public class Res implements Serializable {
 
     public void setTransTarget(boolean transTarget) {
         this.transTarget = transTarget;
+    }
+
+    public boolean isModifiable() {
+        return modifiable;
+    }
+
+    public void setModifiable(boolean modifiable) {
+        this.modifiable = modifiable;
     }
 }

@@ -40,22 +40,22 @@ public class JsoupService {
      * @param action
      * @return
      */
-    public Document renderingHTML(String cssQuery, String arg, RenderingType action) {
+    public Document renderingHTML(String cssQuery, RenderingType renderingType, String arg) {
         
         Elements targetElems = doc.select(cssQuery);
         
         // html,text,prepend,append,wrap,addClass,removeClass
-        if(action == RenderingType.html) targetElems.html(arg);
+        if(renderingType == RenderingType.html) targetElems.html(arg);
         
-        if(action == RenderingType.prepend) targetElems.prepend(arg);
-        if(action == RenderingType.append) targetElems.append(arg);
-        if(action == RenderingType.wrap) targetElems.append(arg);
+        if(renderingType == RenderingType.prepend) targetElems.prepend(arg);
+        if(renderingType == RenderingType.append) targetElems.append(arg);
+        if(renderingType == RenderingType.wrap) targetElems.append(arg);
         
-        if(action == RenderingType.addClass) targetElems.addClass(arg);
-        if(action == RenderingType.removeClass) targetElems.removeClass(arg);
-        if(action == RenderingType.removeAttr) targetElems.removeAttr(arg);
+        if(renderingType == RenderingType.addClass) targetElems.addClass(arg);
+        if(renderingType == RenderingType.removeClass) targetElems.removeClass(arg);
+        if(renderingType == RenderingType.removeAttr) targetElems.removeAttr(arg);
         
-        if(action == RenderingType.text) {
+        if(renderingType == RenderingType.text) {
             for(Element elem: targetElems) {
                 elem.text(arg);
             }
