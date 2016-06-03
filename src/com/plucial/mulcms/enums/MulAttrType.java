@@ -9,12 +9,10 @@ package com.plucial.mulcms.enums;
  *
  */
 public enum MulAttrType {
-    mulScope("data-mul-scope"),
-    mulId("data-mul-id"),
-    mulDataType("data-mul-data-type");
-//    mulTextScope("data-mul-text-scope"),
-//    mulTextId("data-mul-text"),
-//    mulLongText("data-mul-long-text");
+    scope("data-scope"),
+    resId("data-res-id"),
+    rendering("data-rendering"),
+    edit("data-edit");
     
     /** 属性 */
     private String attr;

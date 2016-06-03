@@ -8,7 +8,6 @@ import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.res.AppResDao;
 import com.plucial.mulcms.enums.RenderingType;
-import com.plucial.mulcms.enums.ResDataType;
 import com.plucial.mulcms.model.res.AppRes;
 
 
@@ -47,7 +46,7 @@ public class AppResService extends ResService {
      * @param value
      * @return
      */
-    public static AppRes add(String resId, String cssQuery, ResDataType resDataType, RenderingType renderingType, String value) {
+    public static AppRes add(String resId, String cssQuery, String rendering, RenderingType renderingType, String value, String renderingAttr, boolean editMode) {
 
         AppRes model = null;
         Transaction tx = Datastore.beginTransaction();
@@ -56,9 +55,10 @@ public class AppResService extends ResService {
                 tx, 
                 resId, 
                 cssQuery, 
-                resDataType, 
                 renderingType, 
-                value);
+                value,
+                renderingAttr,
+                editMode);
             
             tx.commit();
         }finally {
@@ -75,20 +75,21 @@ public class AppResService extends ResService {
      * @param tx
      * @param resId
      * @param cssQuery
-     * @param resDataType
      * @param renderingType
      * @param value
+     * @param renderingAttr
      * @return
      */
-    public static AppRes add(Transaction tx, String resId, String cssQuery, ResDataType resDataType, RenderingType renderingType, String value) {
+    public static AppRes add(Transaction tx, String resId, String cssQuery, RenderingType renderingType, String value, String renderingAttr, boolean editMode) {
         AppRes model = new AppRes();
         initNewResModel(
             model, 
             resId, 
             cssQuery, 
-            resDataType, 
             renderingType, 
-            value);
+            value,
+            renderingAttr,
+            editMode);
         
         // 保存
         Datastore.put(tx, model);

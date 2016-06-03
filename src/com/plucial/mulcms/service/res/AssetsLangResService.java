@@ -9,7 +9,6 @@ import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.res.AssetsLangResDao;
 import com.plucial.mulcms.enums.RenderingType;
-import com.plucial.mulcms.enums.ResDataType;
 import com.plucial.mulcms.model.Assets;
 import com.plucial.mulcms.model.res.AssetsLangRes;
 
@@ -20,14 +19,14 @@ public class AssetsLangResService extends ResService {
     private static final AssetsLangResDao dao = new AssetsLangResDao();
     
     /**
-     * リソースの取得
+     * リソースの取得(チェック用)
      * @param resId
      * @param lang
      * @return
      * @throws ObjectNotExistException
      */
-    public static AssetsLangRes get(String resId, Assets assets, Lang lang) throws ObjectNotExistException {
-        AssetsLangRes model =  dao.get(resId, assets, lang);
+    public static AssetsLangRes get(String resId, Assets assets, RenderingType renderingType, String renderingAttr, Lang lang) throws ObjectNotExistException {
+        AssetsLangRes model =  dao.get(resId, assets, renderingType, renderingAttr, lang);
         if(model == null) throw new ObjectNotExistException();
         return model;
     }
@@ -63,7 +62,7 @@ public class AssetsLangResService extends ResService {
      * @param lang
      * @return
      */
-    public static AssetsLangRes add(String resId, String cssQuery, ResDataType resDataType, RenderingType renderingType, String value, Assets assets, Lang lang) {
+    public static AssetsLangRes add(String resId, String cssQuery, RenderingType renderingType, String value, String renderingAttr, Assets assets, boolean editMode, Lang lang) {
 
         AssetsLangRes model = null;
         Transaction tx = Datastore.beginTransaction();
@@ -72,10 +71,11 @@ public class AssetsLangResService extends ResService {
                 tx, 
                 resId, 
                 cssQuery, 
-                resDataType, 
                 renderingType, 
                 value,
+                renderingAttr,
                 assets,
+                editMode,
                 lang);
             
             tx.commit();
@@ -100,15 +100,16 @@ public class AssetsLangResService extends ResService {
      * @param lang
      * @return
      */
-    public static AssetsLangRes add(Transaction tx, String resId, String cssQuery, ResDataType resDataType, RenderingType renderingType, String value, Assets assets, Lang lang) {
+    public static AssetsLangRes add(Transaction tx, String resId, String cssQuery, RenderingType renderingType, String value, String renderingAttr, Assets assets, boolean editMode, Lang lang) {
         AssetsLangRes model = new AssetsLangRes();
         initNewResModel(
             model, 
             resId, 
             cssQuery, 
-            resDataType, 
             renderingType, 
-            value);
+            value,
+            renderingAttr,
+            editMode);
         
         model.getAssetsRef().setModel(assets);
         model.setLang(lang);

@@ -3,14 +3,14 @@ package com.plucial.mulcms.controller;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slim3.controller.Navigation;
 
-import com.google.apphosting.api.ApiProxy;
 import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
+import com.plucial.mulcms.enums.RenderingAction;
 import com.plucial.mulcms.enums.RenderingType;
-import com.plucial.mulcms.enums.ResDataType;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.Template;
 import com.plucial.mulcms.model.res.Res;
@@ -24,11 +24,8 @@ public class FrontController extends AppController {
     @Override
     public Navigation execute(Lang localeLang) throws Exception {
         
-        String domainUrl = "http://localhost:8888";
         boolean isSigned = true;
-        
-        ApiProxy.Environment env = ApiProxy.getCurrentEnvironment();
-        String packetName = env.getAttributes().get("com.google.appengine.runtime.default_version_hostname").toString();
+        String domainUrl = getDomainUrl();
         
         try {
             // ----------------------------------------------------
@@ -42,7 +39,26 @@ public class FrontController extends AppController {
             // base URL を追加
             // ----------------------------------------------------
             Element head = jsoupService.getDoc().head();
-            head.prepend("<base href='" + "https://storage.googleapis.com/" + packetName + "/'>");
+            head.prepend("<base href='" + "https://storage.googleapis.com/" + getAppDefaultHostName() + "/'>");
+            
+            // ----------------------------------------------------
+            // リンクの書き換え
+            // ----------------------------------------------------
+            Elements links = jsoupService.getDoc().select("a");
+            for(Element link: links) {
+                if(!link.hasAttr("href")) continue;
+                String linkHref = link.attr("href");
+                if(linkHref.startsWith("http")) continue;
+
+                linkHref = linkHref.replace("../", "");
+                if(linkHref.startsWith("/")) {
+                    linkHref = domainUrl + "/" + localeLang.toString() + linkHref;
+                }else {
+                    linkHref = domainUrl + "/" + localeLang.toString() + "/" + linkHref;
+                }
+                
+                link.attr("href", linkHref);
+            }
             
             // ----------------------------------------------------
             // テキストリソースを取得
@@ -54,29 +70,39 @@ public class FrontController extends AppController {
             // リソースの挿入
             // ----------------------------------------------------            
             for(Res res: textResList) {
-                
-                if(isSigned && res.getRenderingType() == RenderingType.text) {
+
+                RenderingType renderingType = res.getRenderingType();
+
+                if(renderingType == RenderingType.text || renderingType == RenderingType.long_text) {
+
+                    // ----------------------------------------------------
+                    // テキストリソース
+                    // ----------------------------------------------------
+                    if(isSigned && res.isEditMode()) {
+
+                        // Modal Open Tag
+                        jsoupService.rendering(
+                            res.getCssQuery(), 
+                            RenderingAction.html, 
+                            getTextResEditModalOpenTagHtml(res));
+
+                        // Modal Html
+                        jsoupService.rendering(
+                            "body", 
+                            RenderingAction.append, 
+                            getTextResEditModalHtml(res.getKey().getName(), res.getValueString(), renderingType == RenderingType.long_text));
+
+                        // JS
+                        jsoupService.rendering(
+                            "body", 
+                            RenderingAction.append, 
+                            getTextResEditJsHtml(domainUrl, res.getKey().getName(), res.getValueString(), renderingType == RenderingType.long_text));
+                    }else {
+                        jsoupService.rendering(res.getCssQuery(), RenderingAction.text, res.getValueString());
+                    }
                     
-                    // Modal Open Tag
-                    jsoupService.renderingHTML(
-                        res.getCssQuery(), 
-                        RenderingType.html, 
-                        getTextResEditModalOpenTagHtml(res));
-                    
-                    // Modal Html
-                    jsoupService.renderingHTML(
-                        "body", 
-                        RenderingType.append, 
-                        getTextResEditModalHtml(res.getKey().getName(), res.getValueString(), res.getResDataType() == ResDataType.LONG_TEXT));
-                    
-                    // JS
-                    jsoupService.renderingHTML(
-                        "body", 
-                        RenderingType.append, 
-                        getTextResEditJsHtml(domainUrl, res.getKey().getName(), res.getValueString(), res.getResDataType() == ResDataType.LONG_TEXT));
-                    
-                }else {
-                    jsoupService.renderingHTML(res.getCssQuery(), res.getRenderingType(), res.getValueString());
+                }else if(renderingType == RenderingType.attr) {
+                    jsoupService.addAttr(res.getCssQuery(), res.getRenderingAttr(), res.getValueString());
                 }
             }
             
@@ -169,7 +195,7 @@ public class FrontController extends AppController {
         sb.append("     var newContent = submitform.find('[name=content]').val();");
                 
         sb.append("     $.ajax({");
-        sb.append("            url: '" + domainUrl + "/mulcms/page/updateResEntry',");
+        sb.append("            url: '" + domainUrl + "/mulcms/page/ajax/updateResEntry',");
         sb.append("            type: 'POST',");
         sb.append("            data: submitData,");
         sb.append("            dataType: 'json',");

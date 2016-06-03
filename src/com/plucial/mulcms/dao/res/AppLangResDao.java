@@ -6,6 +6,7 @@ import org.slim3.datastore.DaoBase;
 import org.slim3.datastore.Datastore;
 
 import com.plucial.global.Lang;
+import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.meta.res.AppLangResMeta;
 import com.plucial.mulcms.model.res.AppLangRes;
 
@@ -19,9 +20,11 @@ public class AppLangResDao extends DaoBase<AppLangRes>{
      * @param langUnit
      * @return
      */
-    public AppLangRes get(String resId, Lang lang) {
+    public AppLangRes get(String resId, RenderingType renderingType, String renderingAttr, Lang lang) {
         return Datastore.query(meta).filter(
             meta.resId.equal(resId),
+            meta.renderingType.equal(renderingType),
+            meta.renderingAttr.equal(renderingAttr),
             meta.lang.equal(lang)
             ).asSingle();
     }

@@ -8,7 +8,6 @@ import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.res.AssetsResDao;
 import com.plucial.mulcms.enums.RenderingType;
-import com.plucial.mulcms.enums.ResDataType;
 import com.plucial.mulcms.model.Assets;
 import com.plucial.mulcms.model.res.AssetsRes;
 
@@ -50,7 +49,7 @@ public class AssetsResService extends ResService {
      * @param page
      * @return
      */
-    public static AssetsRes add(String resId, String cssQuery, ResDataType resDataType, RenderingType renderingType, String value, Assets assets) {
+    public static AssetsRes add(String resId, String cssQuery, RenderingType renderingType, String value, String renderingAttr, boolean editMode, Assets assets) {
 
         AssetsRes model = null;
         Transaction tx = Datastore.beginTransaction();
@@ -59,9 +58,10 @@ public class AssetsResService extends ResService {
                 tx, 
                 resId, 
                 cssQuery, 
-                resDataType, 
                 renderingType, 
                 value,
+                renderingAttr,
+                editMode,
                 assets);
             
             tx.commit();
@@ -85,15 +85,16 @@ public class AssetsResService extends ResService {
      * @param page
      * @return
      */
-    public static AssetsRes add(Transaction tx, String resId, String cssQuery, ResDataType resDataType, RenderingType renderingType, String value, Assets assets) {
+    public static AssetsRes add(Transaction tx, String resId, String cssQuery, RenderingType renderingType, String value, String renderingAttr, boolean editMode, Assets assets) {
         AssetsRes model = new AssetsRes();
         initNewResModel(
             model, 
             resId, 
             cssQuery, 
-            resDataType, 
             renderingType, 
-            value);
+            value,
+            renderingAttr,
+            editMode);
         
         model.getAssetsRef().setModel(assets);
         

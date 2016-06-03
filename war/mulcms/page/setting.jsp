@@ -3,6 +3,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.model.*" %>
+<%@ page import="com.plucial.mulcms.enums.*" %>
 <%@ page import="com.plucial.mulcms.model.res.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.slim3.controller.validator.Errors" %>
@@ -92,6 +93,7 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 					
 					<div class="col-md-9">
 						
+						<%if(appLangResList.size() > 0) { %>
 						<div class="box box-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title">共通リソース<small><%=targetLang.getName() %>の全てのページに適用される</small></h3>
@@ -101,6 +103,11 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 								<div class="table-responsive mailbox-messages">
 									<table class="table table-hover table-striped">
 										<tbody>
+											<tr>
+												<th>ID</th>
+												<th>Value</th>
+												<th>Delete</th>
+											</tr>
 											<%for(Res res: appLangResList) { %>
 											<tr>
 												<td style="width:20%"><b><%=res.getResId() %></b></td>
@@ -120,7 +127,9 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 								</div><!-- /.mail-box-messages -->
 		                	</div><!-- /.box-body -->
 						</div><!-- /. box -->
+						<%} %>
 						
+						<%if(assetsLangResList.size() > 0) { %>
 						<div class="box box-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title">言語リソース<small>このページの<%=targetLang.getName() %>バージョンにのみ適用される</small></h3>
@@ -132,15 +141,21 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 										<tbody>
 											<tr>
 												<th>ID</th>
+												<th>Rendering</th>
 												<th>Value</th>
+												<th>Edit Mode</th>
+												<th>Edit</th>
 												<th>Delete</th>
 											</tr>
 											<%for(Res res: assetsLangResList) { %>
 											<tr>
 												<td style="width:20%"><b><%=res.getResId() %></b></td>
 												<td>
-													<%=res.getValueString() %>
+													<%=res.getRenderingType().toString() %><%=res.getRenderingType() == RenderingType.attr ? " : " + res.getRenderingAttr() : "" %>
 												</td>
+												<td><%=res.getValueString() %></td>
+												<td><%=res.isEditMode() %></td>
+												<td style="width:60px"><a class="btn btn-default btn-sm" href="/mulcms/page/updateRes?keyString=<%=res.getKey().getName() %>&pageKey=<%=targetPage.getKey().getName() %>&lang=<%=targetLang %>"><i class="fa fa fa-edit"></i></a></td>
 												<td style="width:60px"><a class="btn btn-danger btn-sm" href="/mulcms/page/deleteRes?keyString=<%=res.getKey().getName() %>&pageKey=<%=targetPage.getKey().getName() %>&lang=<%=targetLang %>"><i class="fa fa-trash"></i></a></td>
 											</tr>
 											<%} %>
@@ -150,8 +165,8 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 								</div><!-- /.mail-box-messages -->
 		                	</div><!-- /.box-body -->
 						</div><!-- /. box -->
+						<%} %>
 					</div>
-					
 				</div>
 			</section>
 
@@ -163,7 +178,7 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 			<div class="tab-content">
 				<h3 class="control-sidebar-heading">サポート言語<span class="label label-primary pull-right"><%=supportLangList.size() %> / <%=Lang.values().length %></span></h3>
 				<div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+                    <div class="progress-bar progress-bar-primary" style="width: <%=((float)supportLangList.size() / Lang.values().length) * 100 %>%"></div>
                   </div>
 				<hr />
 				<ul class="control-sidebar-menu">

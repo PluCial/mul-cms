@@ -10,6 +10,7 @@ import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.util.ServletContextLocator;
 
+import com.google.apphosting.api.ApiProxy;
 import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.NoLangParameterException;
 import com.plucial.global.Lang;
@@ -109,9 +110,21 @@ public abstract class AppController extends Controller {
      * </pre>
      * @return 
      */
-    public String getDomeinUrl() {
+    public String getDomainUrl() {
         String scheme = request.getScheme() != null ? request.getScheme() + "://" : "";
         return scheme + getDomein();
+    }
+    
+    /**
+     * デフォルト GAE アプリドメイン(GCS デフォルトバゲット)
+     * <app_id>.appspot.com
+     * @return
+     */
+    public String getAppDefaultHostName() {
+        if(isLocal()) return "localhost:8888";
+        
+        ApiProxy.Environment env = ApiProxy.getCurrentEnvironment();
+        return env.getAttributes().get("com.google.appengine.runtime.default_version_hostname").toString();
     }
     
     /**

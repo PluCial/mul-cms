@@ -3,6 +3,7 @@ package com.plucial.mulcms.controller.mulcms.page;
 import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
+import org.slim3.util.StringUtil;
 
 import com.google.appengine.api.datastore.Text;
 import com.plucial.mulcms.model.res.Res;
@@ -15,21 +16,22 @@ public class UpdateResEntryController extends Controller {
         
      // 入力チェック
         if (!isPost() || !validate()) {
-            return forward("/ajax_response.jsp");
+            return forward("/mulcms/page/updateRes");
         }
         
         String keyString = asString("keyString");
         String content = asString("content");
+        boolean editMode = !StringUtil.isEmpty(asString("editMode"));
+        String pageKey = asString("pageKey");
+        String lang = asString("lang");
         
         
         Res model = ResService.get(keyString);
-
+        model.setEditMode(editMode);
         model.setValue(new Text(content));        
         ResService.update(model);
         
-        
-        requestScope("status", "OK");
-        return forward("/ajax_response.jsp");
+        return redirect("/mulcms/page/setting?keyString=" + pageKey + "&lang=" + lang);
     }
     
     /**

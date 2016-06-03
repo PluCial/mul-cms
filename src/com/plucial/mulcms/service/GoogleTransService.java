@@ -66,13 +66,14 @@ public class GoogleTransService {
                 if(srcRes instanceof AppLangRes) {
                     // App Lang Res
                     try {
-                        Res targetRes = AppLangResService.get(srcRes.getResId(), transTargetLang);
+                        Res targetRes = AppLangResService.get(srcRes.getResId(), srcRes.getRenderingType(), srcRes.getRenderingAttr(), transTargetLang);
                         
                         // 更新
                         targetRes.setCssQuery(srcRes.getCssQuery());
-                        targetRes.setResDataType(srcRes.getResDataType());
+                        targetRes.setRenderingAttr(srcRes.getRenderingAttr());
                         targetRes.setRenderingType(srcRes.getRenderingType());
                         targetRes.setStringToValue(content);
+                        targetRes.setEditMode(srcRes.isEditMode());
                         
                         ResService.update(tx, targetRes);
                         
@@ -82,22 +83,24 @@ public class GoogleTransService {
                             tx, 
                             srcRes.getResId(), 
                             srcRes.getCssQuery(), 
-                            srcRes.getResDataType(), 
                             srcRes.getRenderingType(), 
                             content, 
+                            srcRes.getRenderingAttr(),
+                            srcRes.isEditMode(),
                             transTargetLang);
                     }
                     
                 }else if(srcRes instanceof AssetsLangRes) {
                     // App Lang Res
                     try {
-                        Res targetRes = AppLangResService.get(srcRes.getResId(), transTargetLang);
+                        Res targetRes = AppLangResService.get(srcRes.getResId(), srcRes.getRenderingType(), srcRes.getRenderingAttr(),transTargetLang);
                         
                         // 更新
                         targetRes.setCssQuery(srcRes.getCssQuery());
-                        targetRes.setResDataType(srcRes.getResDataType());
+                        targetRes.setRenderingAttr(srcRes.getRenderingAttr());
                         targetRes.setRenderingType(srcRes.getRenderingType());
                         targetRes.setStringToValue(content);
+                        targetRes.setEditMode(srcRes.isEditMode());
                         
                         ResService.update(tx, targetRes);
                         
@@ -107,10 +110,11 @@ public class GoogleTransService {
                             tx, 
                             srcRes.getResId(), 
                             srcRes.getCssQuery(), 
-                            srcRes.getResDataType(), 
                             srcRes.getRenderingType(), 
                             content, 
+                            srcRes.getRenderingAttr(),
                             page, 
+                            srcRes.isEditMode(),
                             transTargetLang);
                     }
                 }

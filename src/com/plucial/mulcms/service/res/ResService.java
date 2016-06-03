@@ -1,6 +1,8 @@
 package com.plucial.mulcms.service.res;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slim3.datastore.Datastore;
+import org.slim3.util.StringUtil;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Transaction;
@@ -16,7 +19,6 @@ import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.res.ResDao;
 import com.plucial.mulcms.enums.MulAttrType;
 import com.plucial.mulcms.enums.RenderingType;
-import com.plucial.mulcms.enums.ResDataType;
 import com.plucial.mulcms.enums.ResScope;
 import com.plucial.mulcms.meta.res.ResMeta;
 import com.plucial.mulcms.model.Assets;
@@ -25,10 +27,10 @@ import com.plucial.mulcms.model.res.Res;
 
 
 public class ResService {
-    
+
     /** DAO */
     private static final ResDao dao = new ResDao();
-    
+
     /**
      * リソースの取得
      * @param resId
@@ -41,7 +43,7 @@ public class ResService {
         if(model == null) throw new ObjectNotExistException();
         return model;
     }
-    
+
     /**
      * Assets の全リソースリストを取得
      * @param assets
@@ -50,15 +52,15 @@ public class ResService {
      */
     public static List<Res> getAssetsAllResList(Assets assets, Lang lang) {
         List<Res> textResList = new ArrayList<Res>();
-        
+
         textResList.addAll(AppResService.getList());
         textResList.addAll(AssetsResService.getList(assets));
         textResList.addAll(AppLangResService.getList(lang));
         textResList.addAll(AssetsLangResService.getList(assets, lang));
-        
+
         return textResList;
     }
-    
+
     /**
      * 翻訳対象リストの取得
      * @param assets
@@ -67,13 +69,13 @@ public class ResService {
      */
     public static List<Res> getAssetsTransResList(Assets assets, Lang lang) {
         List<Res> textResList = new ArrayList<Res>();
-        
+
         textResList.addAll(AppLangResService.getTransSrcList(lang));
         textResList.addAll(AssetsLangResService.getTransSrcList(assets, lang));
-        
+
         return textResList;
     }
-    
+
     /**
      * Page リソースの取得
      * @param page
@@ -81,34 +83,36 @@ public class ResService {
      */
     public static List<Res> getPageResList(Page page) {
         List<Res> textResList = new ArrayList<Res>();
-        
+
         textResList.addAll(AssetsResService.getList(page));
         for(Lang lang: page.getLangList()) {
             textResList.addAll(AssetsLangResService.getList(page, lang));
         }
-        
+
         return textResList;
     }
-    
+
     /**
      * 新しいリソースの初期化
      * @param model
      * @param resId
      * @param cssQuery
-     * @param resDataType
      * @param renderingType
      * @param value
+     * @param renderingAttr
+     * @param editMode
      */
-    public static void initNewResModel(Res model, String resId, String cssQuery, ResDataType resDataType, RenderingType renderingType, String value) {
+    public static void initNewResModel(Res model, String resId, String cssQuery, RenderingType renderingType, String value, String renderingAttr, boolean editMode) {
         model.setKey(createKey());
         model.setResId(resId);
         model.setCssQuery(cssQuery);
-        model.setResDataType(resDataType);
         model.setRenderingType(renderingType);
+        model.setRenderingAttr(renderingAttr);
         model.setStringToValue(value);
-        model.setTransTarget(resDataType.isTransTarget());
+        model.setTransTarget(renderingType.isTransTarget());
+        model.setEditMode(editMode);
     }
-    
+
     /**
      * テキストリソースの追加
      * @param assets
@@ -119,7 +123,7 @@ public class ResService {
         Transaction tx = Datastore.beginTransaction();
         try {
             addResByDoc(tx, assets, lang, doc);
-            
+
             tx.commit();
         }finally {
             if(tx.isActive()) {
@@ -127,7 +131,7 @@ public class ResService {
             }
         }
     }
-    
+
     /**
      * テキストリソースの追加
      * @param tx
@@ -137,64 +141,100 @@ public class ResService {
      */
     public static void addResByDoc(Transaction tx, Assets assets, Lang lang, Document doc) {
 
-        Elements elems = doc.select("[" + MulAttrType.mulId.getAttr() + "]");
+        Elements elems = doc.select("[" + MulAttrType.resId.getAttr() + "]");
         for(Element elem: elems) {
             // Res Id
-            String resId = elem.attr(MulAttrType.mulId.getAttr());
-            
-            // Res Data TYpe
-            ResDataType resDataType = ResDataType.SHORT_TEXT;
-            try {
-                if(elem.hasAttr(MulAttrType.mulDataType.getAttr())) resDataType = ResDataType.valueOf(elem.attr(MulAttrType.mulDataType.getAttr()).toUpperCase());
-            }catch(Exception e){}
-            
+            String resId = elem.attr(MulAttrType.resId.getAttr());
+
+            // ------------------------------------------------------
             // Res スコープ
+            // ------------------------------------------------------
             ResScope resScope = ResScope.ASSETS_LANG;
             try {
-                if(elem.hasAttr(MulAttrType.mulScope.getAttr())) resScope = ResScope.valueOf(elem.attr(MulAttrType.mulScope.getAttr()).toUpperCase());
+                if(elem.hasAttr(MulAttrType.scope.getAttr())) resScope = ResScope.valueOf(elem.attr(MulAttrType.scope.getAttr()).toUpperCase());
             }catch(Exception e){}
-            
-            // Rendering Type
-            RenderingType renderingType = resDataType.getRenderingType();
-            
-            // value
-            String value = resDataType == ResDataType.HTML ? elem.html() : elem.text();
-            
+
             // ------------------------------------------------------
-            // Add
+            // rendering 属性がなければ以後実行しない。
             // ------------------------------------------------------
-            if(resScope == ResScope.APP) {
+            if(!elem.hasAttr(MulAttrType.rendering.getAttr())) continue;
+
+            // ------------------------------------------------------
+            // rendering List の取得
+            // ------------------------------------------------------
+            String renderings = elem.attr(MulAttrType.rendering.getAttr()).toLowerCase();
+            List<String> renderingList = Arrays.asList(renderings.split("[\\s]+"));
+
+            // ------------------------------------------------------
+            // 重複を削除
+            // ------------------------------------------------------
+            HashSet<String> renderingHashSet = new HashSet<String>();
+            renderingHashSet.addAll(renderingList);
+
+            for(String rendering: renderingHashSet) {
+
+                // ------------------------------------------------------
+                // Rendering Typeの取得
+                // ------------------------------------------------------
+                RenderingType renderingType = null;
                 try {
-                    AppResService.get(resId);
-                } catch (ObjectNotExistException e) {
-                    AppResService.add(tx, resId, "[" + MulAttrType.mulId.getAttr() + "=" + resId + "]", resDataType, renderingType, value);
+                    renderingType = RenderingType.valueOf(rendering);
+                }catch(Exception e){
+                    renderingType = RenderingType.attr;
                 }
 
-            }else if(resScope == ResScope.APP_LANG) {
-                try {
-                    AppLangResService.get(resId, lang);
-                } catch (ObjectNotExistException e) {
-                    AppLangResService.add(tx, resId, "[" + MulAttrType.mulId.getAttr() + "=" + resId + "]", resDataType, renderingType, value, lang); 
+                // ------------------------------------------------------
+                // データーの値を取得
+                // ------------------------------------------------------
+                String value;
+                String renderingAttr = null;
+                boolean editMode = false;
+                
+                if(renderingType == RenderingType.text || renderingType == RenderingType.long_text) {
+                    value = elem.text();
+                    
+                    if(elem.hasAttr(MulAttrType.edit.getAttr())) editMode = true;
+
+
+                }else {
+                    // 指定した属性が存在しない場合は次の処理へ
+                    if(!elem.hasAttr(rendering)) continue;
+                    // 指定した属性の値が存在しない場合は次の処理へ
+                    if(StringUtil.isEmpty(elem.attr(rendering))) continue;
+
+                    value = elem.attr(rendering).toLowerCase();
+                    renderingAttr = rendering;
                 }
 
-            }else if(resScope == ResScope.ASSETS) {
-                try {
-                    AssetsResService.get(resId, assets);
-                } catch (ObjectNotExistException e) {
-                    AssetsResService.add(tx, resId, "[" + MulAttrType.mulId.getAttr() + "=" + resId + "]", resDataType, renderingType, value, assets);
-                }
 
-            }else if(resScope == ResScope.ASSETS_LANG) {
-                try {
-                    AssetsLangResService.get(resId, assets, lang);
-                } catch (ObjectNotExistException e) {
-                    AssetsLangResService.add(tx, resId, "[" + MulAttrType.mulId.getAttr() + "=" + resId + "]", resDataType, renderingType, value, assets, lang);
-                }
+                // ------------------------------------------------------
+                // Res の追加 or 更新
+                // ------------------------------------------------------
+                if(resScope == ResScope.APP_LANG) {
+                    try {
+                        Res model = AppLangResService.get(resId, renderingType, renderingAttr, lang);
+                        model.setEditMode(editMode); 
+                        ResService.update(tx, model);
+                        
+                    } catch (ObjectNotExistException e) {
+                        AppLangResService.add(tx, resId, elem.tagName() + "[" + MulAttrType.resId.getAttr() + "=" + resId + "]", renderingType, value, renderingAttr, editMode, lang); 
+                    }
 
+                }else if(resScope == ResScope.ASSETS_LANG) {
+                    try {
+                        Res model = AssetsLangResService.get(resId, assets, renderingType, renderingAttr, lang);
+                        model.setEditMode(editMode); 
+                        ResService.update(tx, model);
+                        
+                    } catch (ObjectNotExistException e) {
+                        AssetsLangResService.add(tx, resId, "[" + MulAttrType.resId.getAttr() + "=" + resId + "]", renderingType, value, renderingAttr, assets, editMode, lang);
+                    }
+
+                }
             }
         }
     }
-    
+
     /**
      * 更新
      * @param model
@@ -202,7 +242,7 @@ public class ResService {
     public static void update(Res model) {
         dao.put(model);
     }
-    
+
     /**
      * 更新
      * @param model
@@ -210,7 +250,7 @@ public class ResService {
     public static void update(Transaction tx, Res model) {
         Datastore.put(tx, model);
     }
-    
+
     /**
      * 削除
      * @param tx
@@ -219,7 +259,7 @@ public class ResService {
     public static void delete(Transaction tx, Res model) {
         Datastore.delete(tx, model.getKey());
     }
-    
+
     /**
      * 削除
      * @param model
@@ -227,7 +267,7 @@ public class ResService {
     public static void delete(Res model) {
         dao.delete(model.getKey());
     }
-    
+
     // ----------------------------------------------------------------------
     // キーの作成
     // ----------------------------------------------------------------------
@@ -239,7 +279,7 @@ public class ResService {
     protected static Key createKey(String keyString) {
         return Datastore.createKey(ResMeta.get(), keyString);
     }
-    
+
     /**
      * キーの作成
      * @return

@@ -12,7 +12,6 @@ import org.slim3.util.StringUtil;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.plucial.mulcms.enums.RenderingType;
-import com.plucial.mulcms.enums.ResDataType;
 
 @Model(schemaVersion = 1)
 public class Res implements Serializable {
@@ -32,16 +31,19 @@ public class Res implements Serializable {
     private String cssQuery;
     
     /** Res Type */
-    private ResDataType resDataType;
+//    private ResDataType resDataType;
     
     /** Rendering Type */
     private RenderingType renderingType;
     
+    /** Rendering Attr */
+    private String renderingAttr;
+    
     /** 翻訳対象 */
     private boolean transTarget;
     
-    /** 変更可能 */
-    private boolean modifiable = false;
+    /** 変更モード */
+    private boolean editMode = false;
     
     /**
      * コンテンツ
@@ -183,28 +185,12 @@ public class Res implements Serializable {
         this.cssQuery = cssQuery;
     }
 
-    public RenderingType getRenderingType() {
-        return renderingType;
-    }
-
-    public void setRenderingType(RenderingType renderingType) {
-        this.renderingType = renderingType;
-    }
-
     public Text getValue() {
         return value;
     }
 
     public void setValue(Text value) {
         this.value = value;
-    }
-
-    public ResDataType getResDataType() {
-        return resDataType;
-    }
-
-    public void setResDataType(ResDataType resDataType) {
-        this.resDataType = resDataType;
     }
 
     public boolean isTransTarget() {
@@ -215,11 +201,27 @@ public class Res implements Serializable {
         this.transTarget = transTarget;
     }
 
-    public boolean isModifiable() {
-        return modifiable;
+    public RenderingType getRenderingType() {
+        return renderingType;
     }
 
-    public void setModifiable(boolean modifiable) {
-        this.modifiable = modifiable;
+    public void setRenderingType(RenderingType renderingType) {
+        this.renderingType = renderingType;
+    }
+
+    public String getRenderingAttr() {
+        return renderingAttr;
+    }
+
+    public void setRenderingAttr(String renderingAttr) {
+        this.renderingAttr = renderingAttr;
+    }
+
+    public boolean isEditMode() {
+        return editMode;
+    }
+
+    public void setEditMode(boolean editMode) {
+        this.editMode = editMode;
     }
 }

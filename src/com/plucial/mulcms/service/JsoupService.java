@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.plucial.mulcms.enums.RenderingType;
+import com.plucial.mulcms.enums.RenderingAction;
 
 
 public class JsoupService {
@@ -40,22 +40,22 @@ public class JsoupService {
      * @param action
      * @return
      */
-    public Document renderingHTML(String cssQuery, RenderingType renderingType, String arg) {
+    public Document rendering(String cssQuery, RenderingAction action, String arg) {
         
         Elements targetElems = doc.select(cssQuery);
         
         // html,text,prepend,append,wrap,addClass,removeClass
-        if(renderingType == RenderingType.html) targetElems.html(arg);
+        if(action == RenderingAction.html) targetElems.html(arg);
         
-        if(renderingType == RenderingType.prepend) targetElems.prepend(arg);
-        if(renderingType == RenderingType.append) targetElems.append(arg);
-        if(renderingType == RenderingType.wrap) targetElems.append(arg);
+        if(action == RenderingAction.prepend) targetElems.prepend(arg);
+        if(action == RenderingAction.append) targetElems.append(arg);
+        if(action == RenderingAction.wrap) targetElems.append(arg);
         
-        if(renderingType == RenderingType.addClass) targetElems.addClass(arg);
-        if(renderingType == RenderingType.removeClass) targetElems.removeClass(arg);
-        if(renderingType == RenderingType.removeAttr) targetElems.removeAttr(arg);
+        if(action == RenderingAction.addClass) targetElems.addClass(arg);
+        if(action == RenderingAction.removeClass) targetElems.removeClass(arg);
+        if(action == RenderingAction.removeAttr) targetElems.removeAttr(arg);
         
-        if(renderingType == RenderingType.text) {
+        if(action == RenderingAction.text) {
             for(Element elem: targetElems) {
                 elem.text(arg);
             }

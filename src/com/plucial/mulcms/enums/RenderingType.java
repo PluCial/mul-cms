@@ -9,5 +9,22 @@ package com.plucial.mulcms.enums;
  *
  */
 public enum RenderingType {
-    html,text,prepend,append,wrap,addClass,removeClass, removeAttr;
+    text(true),
+    long_text(true), 
+//    html(false), TODO: いつか
+    attr(false);
+    
+    private boolean transTarget;
+    
+    private RenderingType(boolean transTarget) {
+        this.setTransTarget(transTarget);
+    }
+
+    public boolean isTransTarget() {
+        return transTarget;
+    }
+
+    public void setTransTarget(boolean transTarget) {
+        this.transTarget = transTarget;
+    }
 }

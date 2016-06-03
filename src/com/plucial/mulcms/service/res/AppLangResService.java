@@ -9,7 +9,6 @@ import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.res.AppLangResDao;
 import com.plucial.mulcms.enums.RenderingType;
-import com.plucial.mulcms.enums.ResDataType;
 import com.plucial.mulcms.model.res.AppLangRes;
 
 
@@ -25,8 +24,8 @@ public class AppLangResService extends ResService {
      * @return
      * @throws ObjectNotExistException
      */
-    public static AppLangRes get(String resId, Lang lang) throws ObjectNotExistException {
-        AppLangRes model =  dao.get(resId, lang);
+    public static AppLangRes get(String resId, RenderingType renderingType, String renderingAttr, Lang lang) throws ObjectNotExistException {
+        AppLangRes model =  dao.get(resId, renderingType, renderingAttr, lang);
         if(model == null) throw new ObjectNotExistException();
         return model;
     }
@@ -50,17 +49,15 @@ public class AppLangResService extends ResService {
     }
     
     /**
-     * 追加
+     * 
      * @param resId
      * @param cssQuery
-     * @param resDataType
      * @param renderingType
      * @param value
-     * @param page
      * @param lang
      * @return
      */
-    public static AppLangRes add(String resId, String cssQuery, ResDataType resDataType, RenderingType renderingType, String value, Lang lang) {
+    public static AppLangRes add(String resId, String cssQuery, RenderingType renderingType, String value, String renderingAttr, boolean editMode, Lang lang) {
 
         AppLangRes model = null;
         Transaction tx = Datastore.beginTransaction();
@@ -69,9 +66,10 @@ public class AppLangResService extends ResService {
                 tx, 
                 resId, 
                 cssQuery, 
-                resDataType, 
                 renderingType, 
                 value,
+                renderingAttr,
+                editMode,
                 lang);
             
             tx.commit();
@@ -89,22 +87,22 @@ public class AppLangResService extends ResService {
      * @param tx
      * @param resId
      * @param cssQuery
-     * @param resDataType
      * @param renderingType
      * @param value
-     * @param page
+     * @param renderingAttr
      * @param lang
      * @return
      */
-    public static AppLangRes add(Transaction tx, String resId, String cssQuery, ResDataType resDataType, RenderingType renderingType, String value, Lang lang) {
+    public static AppLangRes add(Transaction tx, String resId, String cssQuery, RenderingType renderingType, String value, String renderingAttr, boolean editMode, Lang lang) {
         AppLangRes model = new AppLangRes();
         initNewResModel(
             model, 
             resId, 
             cssQuery, 
-            resDataType, 
-            renderingType, 
-            value);
+            renderingType,
+            value,
+            renderingAttr,
+            editMode);
         
         model.setLang(lang);
         

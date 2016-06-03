@@ -6,6 +6,7 @@ import org.slim3.controller.Navigation;
 
 import com.plucial.global.Lang;
 import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.Template;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.res.AppLangResService;
 import com.plucial.mulcms.service.res.AppResService;
@@ -22,7 +23,13 @@ public class SettingController extends Controller {
         Page targetPage = PageService.get(asString("keyString"));
         requestScope("targetPage", targetPage);
 
-        Lang lang = Lang.valueOf(asString("lang"));
+        Lang lang = null;
+        try {
+            lang = Lang.valueOf(asString("lang"));
+        }catch(Exception e) {
+            Template template = targetPage.getTemplateRef().getModel();
+            lang = template.getLang();
+        }
 
         Document pageDoc = PageService.getHtmlDocument(targetPage, "");
         requestScope("pageHtml", HtmlUtils.htmlEscape(pageDoc.outerHtml()));
