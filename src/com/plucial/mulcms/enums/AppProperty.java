@@ -8,13 +8,11 @@ package com.plucial.mulcms.enums;
  */
 public enum AppProperty {
     
-    APP_ID("Google Application Id", true),
-    APP_DEFAULT_HOST_NAME("Google Default Host Name", true),
-    APP_GCS_BUCKET_NAME("Google Cloud Storage Bucket Name", false),
-    GOOGLE_API_PUBLIC_SERVER_KEY("Google API Public Service Key", false);
-    
-    /** 表示名 */
-    private String name;
+    APP_ID(true),
+    APP_DEFAULT_HOST_NAME(true),
+    APP_BASE_LANG(false),
+    APP_GCS_BUCKET_NAME(false),
+    GOOGLE_API_PUBLIC_SERVER_KEY(false);
     
     /** デフォルト値 */
     private String defaultValue;
@@ -25,18 +23,9 @@ public enum AppProperty {
     /**
      * コンストラクター
      */
-    private AppProperty(String name, boolean unalterable) {
-        this.setName(name);
+    private AppProperty(boolean unalterable) {
         this.setDefaultValue(defaultValue);
         this.setUnalterable(unalterable);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDefaultValue() {

@@ -21,6 +21,6 @@ public class App {
     /**
      * サービスのベース言語
      */
-    public static final Lang APP_BASE_LANG = Lang.en;
+    public static final Lang APP_BASE_LANG = Lang.ja;
 
 }

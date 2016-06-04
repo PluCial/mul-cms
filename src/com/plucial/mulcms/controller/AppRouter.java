@@ -12,6 +12,12 @@ import org.slim3.util.RequestUtil;
 public class AppRouter extends RouterImpl {
 
 	public AppRouter() {
+	    addRouting(
+            "/mulcms/",
+            "/mulcms/index");
+	    addRouting(
+            "/{lang}/",
+            "/front?path=/index.html&lang={lang}");
         addRouting(
             "/{lang}/{p1}.html",
             "/front?path=/{p1}.html&lang={lang}");

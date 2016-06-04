@@ -12,9 +12,10 @@ import java.util.List;
 public enum Provider {
     App(
         AppProperty.APP_ID, 
-        AppProperty.APP_DEFAULT_HOST_NAME, 
-        AppProperty.APP_GCS_BUCKET_NAME), 
+        AppProperty.APP_BASE_LANG,
+        AppProperty.APP_DEFAULT_HOST_NAME),
     Google(
+        AppProperty.APP_GCS_BUCKET_NAME,
         AppProperty.GOOGLE_API_PUBLIC_SERVER_KEY);
     
     private List<AppProperty> propatyList = new ArrayList<AppProperty>();

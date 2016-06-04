@@ -67,6 +67,11 @@ public class AppService {
             put(AppProperty.APP_ID, Provider.App, value);
             map.put(AppProperty.APP_ID.toString(), value);
         }
+        
+        if(!map.containsValue(AppProperty.APP_BASE_LANG)) {
+            put(AppProperty.APP_BASE_LANG, Provider.App, com.plucial.mulcms.App.APP_BASE_LANG.toString());
+            map.put(AppProperty.APP_BASE_LANG.toString(), com.plucial.mulcms.App.APP_BASE_LANG.toString());
+        }
 
         if(!map.containsValue(AppProperty.APP_DEFAULT_HOST_NAME)) {
             String value = getAppDefaultHostName(isLocal);
@@ -76,10 +81,9 @@ public class AppService {
 
         if(!map.containsValue(AppProperty.APP_GCS_BUCKET_NAME)) {
             String value = getAppDefaultHostName(isLocal);
-            put(AppProperty.APP_GCS_BUCKET_NAME, Provider.App, value);
+            put(AppProperty.APP_GCS_BUCKET_NAME, Provider.Google, value);
             map.put(AppProperty.APP_GCS_BUCKET_NAME.toString(), value);
         }
-        
         
         return map;
     }
