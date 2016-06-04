@@ -7,7 +7,6 @@ import org.slim3.datastore.Model;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
-import com.plucial.mulcms.enums.Provider;
 
 @Model(schemaVersion = 1)
 public class App implements Serializable {
@@ -19,8 +18,6 @@ public class App implements Serializable {
 
     @Attribute(version = true)
     private Long version;
-    
-    private Provider provider;
     
     @Attribute(unindexed = true)
     private Text value;
@@ -107,13 +104,5 @@ public class App implements Serializable {
 
     public void setValue(Text value) {
         this.value = value;
-    }
-
-    public Provider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
     }
 }

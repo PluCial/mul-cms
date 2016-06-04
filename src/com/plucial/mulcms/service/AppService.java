@@ -12,7 +12,6 @@ import com.google.apphosting.api.ApiProxy;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.AppDao;
 import com.plucial.mulcms.enums.AppProperty;
-import com.plucial.mulcms.enums.Provider;
 import com.plucial.mulcms.meta.AppMeta;
 import com.plucial.mulcms.model.App;
 
@@ -43,14 +42,6 @@ public class AppService {
     }
     
     /**
-     * 
-     * @return
-     */
-    public static List<App> getList(Provider provider) {
-        return dao.getList(provider);
-    }
-    
-    /**
      * App Map を取得
      * @return
      */
@@ -64,24 +55,24 @@ public class AppService {
         
         if(!map.containsKey(AppProperty.APP_ID.toString())) {
             String value = getAppId(isLocal);
-            put(AppProperty.APP_ID, Provider.App, value);
+            put(AppProperty.APP_ID, value);
             map.put(AppProperty.APP_ID.toString(), value);
         }
         
         if(!map.containsKey(AppProperty.APP_BASE_LANG.toString())) {
-            put(AppProperty.APP_BASE_LANG, Provider.App, com.plucial.mulcms.App.APP_BASE_LANG.toString());
+            put(AppProperty.APP_BASE_LANG, com.plucial.mulcms.App.APP_BASE_LANG.toString());
             map.put(AppProperty.APP_BASE_LANG.toString(), com.plucial.mulcms.App.APP_BASE_LANG.toString());
         }
 
         if(!map.containsKey(AppProperty.APP_DEFAULT_HOST_NAME.toString())) {
             String value = getAppDefaultHostName(isLocal);
-            put(AppProperty.APP_DEFAULT_HOST_NAME, Provider.App, value);
+            put(AppProperty.APP_DEFAULT_HOST_NAME, value);
             map.put(AppProperty.APP_DEFAULT_HOST_NAME.toString(), value);
         }
 
         if(!map.containsKey(AppProperty.APP_GCS_BUCKET_NAME.toString())) {
             String value = getAppDefaultHostName(isLocal);
-            put(AppProperty.APP_GCS_BUCKET_NAME, Provider.Google, value);
+            put(AppProperty.APP_GCS_BUCKET_NAME, value);
             map.put(AppProperty.APP_GCS_BUCKET_NAME.toString(), value);
         }
         
@@ -120,10 +111,9 @@ public class AppService {
      * @param value
      * @return
      */
-    public static App put(AppProperty appProperty, Provider provider, String value) {
+    public static App put(AppProperty appProperty, String value) {
         App model = new App();
         model.setKey(createKey(appProperty.toString()));
-        model.setProvider(provider);
         model.setValue(new Text(value));
         
         dao.put(model);
