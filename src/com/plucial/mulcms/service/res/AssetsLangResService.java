@@ -47,8 +47,8 @@ public class AssetsLangResService extends ResService {
      * @param lang
      * @return
      */
-    public static List<AssetsLangRes> getTransSrcList(Assets assets, Lang lang) {
-        return dao.getTransSrcList(assets, lang);
+    public static List<AssetsLangRes> getList(Assets assets, Lang lang, boolean isTransTraget) {
+        return dao.getList(assets, lang, isTransTraget);
     }
     
     /**

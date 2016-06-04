@@ -16,10 +16,12 @@ import com.plucial.mulcms.exception.TooManyException;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.PageTemplate;
 import com.plucial.mulcms.model.Template;
+import com.plucial.mulcms.model.res.AppLangRes;
 import com.plucial.mulcms.model.res.AssetsLangRes;
 import com.plucial.mulcms.model.res.Res;
 import com.plucial.mulcms.service.GoogleTransService;
 import com.plucial.mulcms.service.JsoupService;
+import com.plucial.mulcms.service.res.AppLangResService;
 import com.plucial.mulcms.service.res.AssetsLangResService;
 import com.plucial.mulcms.service.res.ResService;
 
@@ -186,8 +188,8 @@ public class PageService extends AssetsService {
         // ---------------------------------------------------
         // 翻訳元のコンテンツリスト
         // ---------------------------------------------------
-        List<Res> transSrcList = ResService.getAssetsTransResList(model, transSrcLang);
-        if(transSrcList.size() <= 0) throw new ObjectNotExistException();
+        List<Res> transSrcList = ResService.getAssetsResList(model, transSrcLang, true);
+        if(transSrcList.size() <= 0) return;
 
         Transaction tx = Datastore.beginTransaction();
         try {
@@ -207,6 +209,58 @@ public class PageService extends AssetsService {
                 tx.rollback();
             }
         }
+        
+        
+    }
+    
+    /**
+     * 
+     * @param model
+     * @param srcLang
+     * @param targetLang
+     */
+    public static void copyNotTransRes(Page model, Lang srcLang, Lang targetLang) {
+        // ---------------------------------------------------
+        // 翻訳しないコンテンツをコピー
+        // ---------------------------------------------------
+        List<Res> srcResList = ResService.getAssetsResList(model, srcLang, false);
+        
+        Transaction tx = Datastore.beginTransaction();
+        try {
+            for(Res srcRes: srcResList) {
+                if(srcRes instanceof AppLangRes) {
+                    AppLangResService.add(
+                        tx, 
+                        srcRes.getResId(), 
+                        srcRes.getCssQuery(), 
+                        srcRes.getRenderingType(), 
+                        srcRes.getValueString(), 
+                        srcRes.getRenderingAttr(), 
+                        srcRes.isEditMode(), 
+                        targetLang);
+                    
+                }else if(srcRes instanceof AssetsLangRes) {
+                    AssetsLangResService.add(
+                        tx, 
+                        srcRes.getResId(), 
+                        srcRes.getCssQuery(), 
+                        srcRes.getRenderingType(), 
+                        srcRes.getValueString(), 
+                        srcRes.getRenderingAttr(), 
+                        model, 
+                        srcRes.isEditMode(), 
+                        targetLang);
+                }
+            }
+            
+            tx.commit();
+            
+        }finally {
+            if(tx.isActive()) {
+                tx.rollback();
+            }
+        }
+        
     }
     
     /**

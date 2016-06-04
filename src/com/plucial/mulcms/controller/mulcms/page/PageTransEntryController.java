@@ -19,6 +19,8 @@ public class PageTransEntryController extends Controller {
         
         PageService.trans(page, srcLang, targetLang);
         
+        PageService.copyNotTransRes(page, srcLang, targetLang);
+        
         return redirect("/mulcms/page/setting?keyString=" + page.getKey().getName() + "&lang=" + targetLang.toString());
     }
 }

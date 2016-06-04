@@ -45,10 +45,10 @@ public class AppLangResDao extends DaoBase<AppLangRes>{
      * @param lang
      * @return
      */
-    public List<AppLangRes> getTransSrcList(Lang lang) {
+    public List<AppLangRes> getList(Lang lang, boolean isTransTraget) {
         return Datastore.query(meta).filter(
             meta.lang.equal(lang),
-            meta.transTarget.equal(true)
+            meta.transTarget.equal(isTransTraget)
             ).asList();
     }
 

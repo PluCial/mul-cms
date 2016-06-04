@@ -65,13 +65,14 @@ public class ResService {
      * 翻訳対象リストの取得
      * @param assets
      * @param lang
+     * @param isTransTraget
      * @return
      */
-    public static List<Res> getAssetsTransResList(Assets assets, Lang lang) {
+    public static List<Res> getAssetsResList(Assets assets, Lang lang, boolean isTransTraget) {
         List<Res> textResList = new ArrayList<Res>();
 
-        textResList.addAll(AppLangResService.getTransSrcList(lang));
-        textResList.addAll(AssetsLangResService.getTransSrcList(assets, lang));
+        textResList.addAll(AppLangResService.getList(lang, isTransTraget));
+        textResList.addAll(AssetsLangResService.getList(assets, lang, isTransTraget));
 
         return textResList;
     }

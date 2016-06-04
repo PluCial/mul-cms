@@ -52,11 +52,11 @@ public class AssetsLangResDao extends DaoBase<AssetsLangRes>{
      * @param lang
      * @return
      */
-    public List<AssetsLangRes> getTransSrcList(Assets assets, Lang lang) {
+    public List<AssetsLangRes> getList(Assets assets, Lang lang, boolean isTransTraget) {
         return Datastore.query(meta).filter(
             meta.assetsRef.equal(assets.getKey()),
             meta.lang.equal(lang),
-            meta.transTarget.equal(true)
+            meta.transTarget.equal(isTransTraget)
             ).asList();
     }
 

@@ -44,8 +44,8 @@ public class AppLangResService extends ResService {
      * @param lang
      * @return
      */
-    public static List<AppLangRes> getTransSrcList(Lang lang) {
-        return dao.getTransSrcList(lang);
+    public static List<AppLangRes> getList(Lang lang, boolean isTransTraget) {
+        return dao.getList(lang, isTransTraget);
     }
     
     /**
