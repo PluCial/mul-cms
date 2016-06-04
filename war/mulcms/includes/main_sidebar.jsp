@@ -16,12 +16,12 @@ String contentsType = request.getParameter("contentsType");
             <li class="header">MAIN NAVIGATION</li>
             <li class="<%=contentsType.equals("pageTemplate") ? "active" : "" %>">
               <a href="/mulcms/template/page/">
-                <i class="fa fa-object-group" aria-hidden="true"></i> <span>Template</span>
+                <i class="fa fa-object-group" aria-hidden="true"></i> <span>テンプレート</span>
               </a>
             </li>
             <li class="<%=contentsType.equals("page") ? "active" : "" %>">
               <a href="/mulcms/page/">
-                <i class="fa fa-files-o"></i> <span>Page</span>
+                <i class="fa fa-files-o"></i> <span>ページ</span>
               </a>
             </li>
             <%-- <li class="treeview <%=contentsType.equals("pageTemplate") || contentsType.equals("widgetTemplate") ? "active" : "" %>">
@@ -37,14 +37,13 @@ String contentsType = request.getParameter("contentsType");
             </li> --%>
             
             
-            <li>
-              <a href="#">
-                <i class="fa fa-envelope"></i> <span>Mailbox</span>
-                <small class="label pull-right bg-yellow">12</small>
+            <li><a href="#"><i class="fa fa-users"></i> <span>フォーム</span></a></li>
+            
+            <li class="<%=contentsType.equals("page") ? "setting" : "" %>">
+              <a href="/mulcms/setting/">
+                <i class="fa fa-gears"></i> <span>設定</span>
               </a>
             </li>
-            
-            <li><a href="#"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
             
           </ul>
         </section>

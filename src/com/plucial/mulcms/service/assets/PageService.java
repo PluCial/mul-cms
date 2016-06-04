@@ -196,7 +196,7 @@ public class PageService extends AssetsService {
         try {
             
             GoogleTransService googleTransService = 
-                    new GoogleTransService(googleApiApplicationName, googleApiApplicationName);
+                    new GoogleTransService(googleApiPublicServerKey, googleApiApplicationName);
             googleTransService.machineTrans(tx, model, transSrcLang, transTargetLang, transSrcList);
 
             if(model.getLangList().indexOf(transTargetLang) < 0) {

@@ -121,12 +121,12 @@ public abstract class AppController extends Controller {
      * @return
      */
     public Map<String, String> getAppPropertyMap() {
-        Map<String, String> appPropertyMap = sessionScope("appPropertyMap");
-
-        if(appPropertyMap != null) return appPropertyMap;
+//        Map<String, String> appPropertyMap = sessionScope("appPropertyMap");
+//
+//        if(appPropertyMap != null) return appPropertyMap;
         
-        appPropertyMap = AppService.getPropertyMap(isLocal());
-        sessionScope("appPropertyMap", appPropertyMap);
+        Map<String, String> appPropertyMap = AppService.getPropertyMap(isLocal());
+//        sessionScope("appPropertyMap", appPropertyMap);
         
         return appPropertyMap;
     }
