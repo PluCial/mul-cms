@@ -1,15 +1,15 @@
 package com.plucial.mulcms.controller.mulcms.template.page;
 
-import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
 import com.google.appengine.api.datastore.Text;
 import com.plucial.global.Lang;
+import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.model.PageTemplate;
 import com.plucial.mulcms.service.template.TemplateService;
 
-public class EditEntryController extends Controller {
+public class EditEntryController extends BaseController {
 
     @Override
     public Navigation run() throws Exception {

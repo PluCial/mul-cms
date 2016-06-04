@@ -1,12 +1,12 @@
 package com.plucial.mulcms.controller.mulcms.page;
 
-import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 
+import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.model.res.Res;
 import com.plucial.mulcms.service.res.ResService;
 
-public class UpdateResController extends Controller {
+public class UpdateResController extends BaseController {
 
     @Override
     public Navigation run() throws Exception {

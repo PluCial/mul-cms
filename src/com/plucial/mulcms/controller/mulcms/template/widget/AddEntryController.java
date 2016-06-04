@@ -2,14 +2,14 @@ package com.plucial.mulcms.controller.mulcms.template.widget;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
 import com.plucial.global.Lang;
+import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.service.template.WidgetTemplateService;
 
-public class AddEntryController extends Controller {
+public class AddEntryController extends BaseController {
 
     @Override
     public Navigation run() throws Exception {

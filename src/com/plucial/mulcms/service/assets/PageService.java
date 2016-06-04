@@ -10,7 +10,6 @@ import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.gae.global.exception.TransException;
 import com.plucial.global.Lang;
-import com.plucial.mulcms.App;
 import com.plucial.mulcms.dao.PageDao;
 import com.plucial.mulcms.exception.TooManyException;
 import com.plucial.mulcms.model.Page;
@@ -178,13 +177,15 @@ public class PageService extends AssetsService {
     
     /**
      * 翻訳
-     * @param page
+     * @param googleApiPublicServerKey
+     * @param googleApiApplicationName
+     * @param model
      * @param transSrcLang
      * @param transTargetLang
-     * @throws TransException 
-     * @throws ObjectNotExistException 
+     * @throws TransException
+     * @throws ObjectNotExistException
      */
-    public static void trans(Page model, Lang transSrcLang, Lang transTargetLang) throws TransException, ObjectNotExistException {
+    public static void trans(String googleApiPublicServerKey, String googleApiApplicationName, Page model, Lang transSrcLang, Lang transTargetLang) throws TransException, ObjectNotExistException {
         // ---------------------------------------------------
         // 翻訳元のコンテンツリスト
         // ---------------------------------------------------
@@ -195,7 +196,7 @@ public class PageService extends AssetsService {
         try {
             
             GoogleTransService googleTransService = 
-                    new GoogleTransService(App.GOOGLE_API_PUBLIC_SERVER_KEY, App.GOOGLE_API_APPLICATION_NAME);
+                    new GoogleTransService(googleApiApplicationName, googleApiApplicationName);
             googleTransService.machineTrans(tx, model, transSrcLang, transTargetLang, transSrcList);
 
             if(model.getLangList().indexOf(transTargetLang) < 0) {

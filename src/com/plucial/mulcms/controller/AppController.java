@@ -2,6 +2,7 @@ package com.plucial.mulcms.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,10 +11,10 @@ import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.util.ServletContextLocator;
 
-import com.google.apphosting.api.ApiProxy;
 import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.NoLangParameterException;
 import com.plucial.global.Lang;
+import com.plucial.mulcms.service.AppService;
 
 /**
  * Base Controller
@@ -75,7 +76,7 @@ public abstract class AppController extends Controller {
      * @return
      * @throws NoLangParameterException 
      */
-    private Lang getLocaleLang() throws NoContentsException {
+    public Lang getLocaleLang() throws NoContentsException {
         
     	Lang lang = null;
         try {
@@ -116,15 +117,18 @@ public abstract class AppController extends Controller {
     }
     
     /**
-     * デフォルト GAE アプリドメイン(GCS デフォルトバゲット)
-     * <app_id>.appspot.com
+     * App Property Map
      * @return
      */
-    public String getAppDefaultHostName() {
-        if(isLocal()) return "localhost:8888";
+    public Map<String, String> getAppPropertyMap() {
+        Map<String, String> appPropertyMap = sessionScope("appPropertyMap");
+
+        if(appPropertyMap != null) return appPropertyMap;
         
-        ApiProxy.Environment env = ApiProxy.getCurrentEnvironment();
-        return env.getAttributes().get("com.google.appengine.runtime.default_version_hostname").toString();
+        appPropertyMap = AppService.getPropertyMap(isLocal());
+        sessionScope("appPropertyMap", appPropertyMap);
+        
+        return appPropertyMap;
     }
     
     /**
@@ -156,24 +160,5 @@ public abstract class AppController extends Controller {
         
         return prop;
     }
-    
-    @Override
-    protected Navigation run() throws Exception {
-
-    	Lang localeLang = getLocaleLang();
-    	requestScope("localeLang", localeLang);
-    	
-    	return execute(localeLang);
-    }
-    
-    /**
-     * リクエスト処理
-     * @param spot
-     * @param client
-     * @param isClientLogged
-     * @return
-     * @throws Exception
-     */
-    public abstract Navigation execute(Lang localeLang) throws Exception;
 
 }

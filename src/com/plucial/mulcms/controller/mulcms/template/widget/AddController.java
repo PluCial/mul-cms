@@ -1,9 +1,10 @@
 package com.plucial.mulcms.controller.mulcms.template.widget;
 
-import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 
-public class AddController extends Controller {
+import com.plucial.mulcms.controller.mulcms.BaseController;
+
+public class AddController extends BaseController {
 
     @Override
     public Navigation run() throws Exception {

@@ -1,6 +1,7 @@
 package com.plucial.mulcms.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -8,7 +9,7 @@ import org.slim3.controller.Navigation;
 
 import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.ObjectNotExistException;
-import com.plucial.global.Lang;
+import com.plucial.mulcms.enums.AppProperty;
 import com.plucial.mulcms.enums.RenderingAction;
 import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.model.Page;
@@ -22,10 +23,13 @@ import com.plucial.mulcms.utils.HtmlUtils;
 public class FrontController extends AppController {
 
     @Override
-    public Navigation execute(Lang localeLang) throws Exception {
+    protected Navigation run() throws Exception {
         
         boolean isSigned = true;
         String domainUrl = getDomainUrl();
+        
+        Map<String, String> appPropertyMap = super.getAppPropertyMap();
+        String gcsBucketName = appPropertyMap.get(AppProperty.APP_GCS_BUCKET_NAME.toString());
         
         try {
             // ----------------------------------------------------
@@ -39,7 +43,7 @@ public class FrontController extends AppController {
             // base URL を追加
             // ----------------------------------------------------
             Element head = jsoupService.getDoc().head();
-            head.prepend("<base href='" + "https://storage.googleapis.com/" + getAppDefaultHostName() + "/'>");
+            head.prepend("<base href='" + "https://storage.googleapis.com/" + gcsBucketName + "/'>");
             
             // ----------------------------------------------------
             // リンクの書き換え
@@ -52,9 +56,9 @@ public class FrontController extends AppController {
 
                 linkHref = linkHref.replace("../", "");
                 if(linkHref.startsWith("/")) {
-                    linkHref = domainUrl + "/" + localeLang.toString() + linkHref;
+                    linkHref = domainUrl + "/" + super.getLocaleLang().toString() + linkHref;
                 }else {
-                    linkHref = domainUrl + "/" + localeLang.toString() + "/" + linkHref;
+                    linkHref = domainUrl + "/" + super.getLocaleLang().toString() + "/" + linkHref;
                 }
                 
                 link.attr("href", linkHref);
@@ -63,7 +67,7 @@ public class FrontController extends AppController {
             // ----------------------------------------------------
             // テキストリソースを取得
             // ----------------------------------------------------
-            List<Res> textResList = ResService.getAssetsAllResList(page, localeLang);
+            List<Res> textResList = ResService.getAssetsAllResList(page, super.getLocaleLang());
             requestScope("textResList", textResList);
             
             // ----------------------------------------------------
