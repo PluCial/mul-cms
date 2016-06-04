@@ -33,9 +33,14 @@ public class FrontController extends AppController {
         
         try {
             // ----------------------------------------------------
-            // base URL を追加
+            // Page 情報
             // ----------------------------------------------------
             Page page = PageService.get(asString("path"));
+            if(page.getLangList().indexOf(super.getLocaleLang()) < 0) {
+                throw new NoContentsException();
+            }
+            
+            
             Template template = page.getTemplateRef().getModel();
             JsoupService jsoupService = new JsoupService(template.getHtmlString());
             

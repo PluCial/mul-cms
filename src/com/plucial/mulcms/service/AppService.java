@@ -62,24 +62,24 @@ public class AppService {
             map.put(app.getKey().getName(),app.getValueString());
         }
         
-        if(!map.containsValue(AppProperty.APP_ID)) {
+        if(!map.containsKey(AppProperty.APP_ID.toString())) {
             String value = getAppId(isLocal);
             put(AppProperty.APP_ID, Provider.App, value);
             map.put(AppProperty.APP_ID.toString(), value);
         }
         
-        if(!map.containsValue(AppProperty.APP_BASE_LANG)) {
+        if(!map.containsKey(AppProperty.APP_BASE_LANG.toString())) {
             put(AppProperty.APP_BASE_LANG, Provider.App, com.plucial.mulcms.App.APP_BASE_LANG.toString());
             map.put(AppProperty.APP_BASE_LANG.toString(), com.plucial.mulcms.App.APP_BASE_LANG.toString());
         }
 
-        if(!map.containsValue(AppProperty.APP_DEFAULT_HOST_NAME)) {
+        if(!map.containsKey(AppProperty.APP_DEFAULT_HOST_NAME.toString())) {
             String value = getAppDefaultHostName(isLocal);
             put(AppProperty.APP_DEFAULT_HOST_NAME, Provider.App, value);
             map.put(AppProperty.APP_DEFAULT_HOST_NAME.toString(), value);
         }
 
-        if(!map.containsValue(AppProperty.APP_GCS_BUCKET_NAME)) {
+        if(!map.containsKey(AppProperty.APP_GCS_BUCKET_NAME.toString())) {
             String value = getAppDefaultHostName(isLocal);
             put(AppProperty.APP_GCS_BUCKET_NAME, Provider.Google, value);
             map.put(AppProperty.APP_GCS_BUCKET_NAME.toString(), value);
