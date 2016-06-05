@@ -26,6 +26,8 @@ public class FrontController extends AppController {
     protected Navigation run() throws Exception {
         
         boolean isSigned = true;
+        
+        
         String domainUrl = getDomainUrl();
         
         Map<String, String> appPropertyMap = super.getAppPropertyMap();
