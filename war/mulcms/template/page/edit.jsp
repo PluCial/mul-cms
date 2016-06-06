@@ -6,6 +6,7 @@
 <%@ page import="org.slim3.controller.validator.Errors" %>
 <%@ page import="com.plucial.mulcms.model.*" %>
 <%@ page import="com.plucial.global.Lang" %>
+<%@ page import="com.plucial.mulcms.utils.*" %>
 <%
 Errors errors =(Errors) request.getAttribute("errors");
 PageTemplate template = (PageTemplate)request.getAttribute("template");
@@ -73,7 +74,7 @@ String html = (String)request.getAttribute("html");
 									</div>
 									<div class="form-group">
 										<label for="exampleInputPassword1">コンテンツ</label>
-										<textarea class="form-control" name="html" rows="20" placeholder="Enter ..."><%=html %></textarea>
+										<textarea class="form-control" name="html" rows="20" placeholder="Enter ..."><%=HtmlUtils.htmlEscape(html) %></textarea>
 									</div>
 								</div><!-- /.box-body -->
 

@@ -102,7 +102,7 @@ List<Page> pageList = (List<Page>) request.getAttribute("pageList");
 									<span class="info-box-icon bg-yellow disabled color-palette"><i class="fa fa-object-group"></i></span>
 									<div class="info-box-content">
 										<span class="info-box-text"><%=form.getKey().getName() %></span>
-										<span class="info-box-number"><a href="/mulcms/form/edit?keyString=<%=form.getKey().getName() %>"><%=form.getName() %></a></span>
+										<span class="info-box-number"><a href="/mulcms/form/setting?keyString=<%=form.getKey().getName() %>"><%=form.getName() %></a></span>
 									</div><!-- /.info-box-content -->
 								</div>
 							</div>

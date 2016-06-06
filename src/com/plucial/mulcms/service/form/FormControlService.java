@@ -41,6 +41,7 @@ public class FormControlService {
     public static FormControl put(Form form, String controlName, boolean required, boolean transFlg) {
         FormControl model = new FormControl();
         model.setKey(createKey());
+        model.setControlName(controlName);
         model.getFormRef().setModel(form);
         model.setRequired(required);
         model.setTransFlg(transFlg);

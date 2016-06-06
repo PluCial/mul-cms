@@ -28,9 +28,9 @@ public class HtmlUtils {
             case '\'' :
                 result.append("&#39;");
                 break;
-            case ' ' :
-                result.append("&nbsp;");
-                break;
+//            case ' ' :
+//                result.append("&nbsp;");
+//                break;
             default :
                 result.append(c);
                 break;
@@ -38,6 +38,18 @@ public class HtmlUtils {
         }
         return result.toString();
     }
+    
+    public static String htmlDecode(String str ) {
+        if(str==null) {
+            return str;
+        }
+        str = str.replaceAll("&nbsp;" , " " );
+        str = str.replaceAll("&quot;", "\"");
+        str = str.replaceAll("&gt;"  , ">" );
+        str = str.replaceAll("&lt;"  , "<" );
+        str = str.replaceAll("&amp;" , "&" );
+        return str;
+     }
     
     /**
      * 文字列を適切なHTMLに変換

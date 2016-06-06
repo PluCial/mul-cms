@@ -1,5 +1,7 @@
 package com.plucial.mulcms.controller.mulcms.template.page;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
@@ -8,6 +10,7 @@ import com.plucial.global.Lang;
 import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.model.PageTemplate;
 import com.plucial.mulcms.service.template.TemplateService;
+import com.plucial.mulcms.utils.HtmlUtils;
 
 public class EditEntryController extends BaseController {
 
@@ -23,9 +26,11 @@ public class EditEntryController extends BaseController {
         String html = asString("html");
         Lang lang = Lang.valueOf(asString("lang"));
         
+        Document doc = Jsoup.parse(HtmlUtils.htmlDecode(html));
+        
         PageTemplate modal = (PageTemplate)TemplateService.get(keyString);
         modal.setName(name);
-        modal.setHtml(new Text(html));
+        modal.setHtml(new Text(doc.html()));
         modal.setLang(lang);
         
         TemplateService.update(modal);
