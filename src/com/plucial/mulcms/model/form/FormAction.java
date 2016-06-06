@@ -1,11 +1,15 @@
 package com.plucial.mulcms.model.form;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.google.appengine.api.datastore.Key;
 
 import org.slim3.datastore.Attribute;
+import org.slim3.datastore.CreationDate;
 import org.slim3.datastore.Model;
+import org.slim3.datastore.ModelRef;
+import org.slim3.datastore.ModificationDate;
 
 @Model(schemaVersion = 1)
 public class FormAction implements Serializable {
@@ -17,6 +21,24 @@ public class FormAction implements Serializable {
 
     @Attribute(version = true)
     private Long version;
+    
+    /** Form との関連 */
+    private ModelRef<Form> formRef = new ModelRef<Form>(Form.class);
+    
+    // ----------------------------------------------------------------------
+    // その他
+    // ----------------------------------------------------------------------
+    /**
+     * 作成日時
+     */
+    @Attribute(listener = CreationDate.class)
+    private Date createDate;
+    
+    /**
+     * 更新日時
+     */
+    @Attribute(listener = ModificationDate.class)
+    private Date updateDate;
 
     /**
      * Returns the key.
@@ -84,5 +106,25 @@ public class FormAction implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public ModelRef<Form> getFormRef() {
+        return formRef;
     }
 }

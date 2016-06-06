@@ -37,7 +37,9 @@ String contentsType = request.getParameter("contentsType");
             </li> --%>
             
             
-            <li><a href="#"><i class="fa fa-users"></i> <span>フォーム</span></a></li>
+            <li class="<%=contentsType.equals("form") ? "active" : "" %>">
+            	<a href="/mulcms/form/"><i class="fa fa-users"></i> <span>フォーム</span></a>
+            </li>
             
             <li class="<%=contentsType.equals("page") ? "setting" : "" %>">
               <a href="/mulcms/setting/">

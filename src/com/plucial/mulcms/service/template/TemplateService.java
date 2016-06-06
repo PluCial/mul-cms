@@ -40,7 +40,7 @@ public class TemplateService {
      * @throws ObjectNotExistException 
      */
     public static Template get(String keyString) throws ObjectNotExistException {
-        Template model = dao.get(createKey(keyString));
+        Template model = dao.getOrNull(createKey(keyString));
         if(model == null) throw new ObjectNotExistException();
         return model;
     }

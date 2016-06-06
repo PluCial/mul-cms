@@ -1,11 +1,15 @@
 package com.plucial.mulcms.model.form;
 
 import java.io.Serializable;
-
-import com.google.appengine.api.datastore.Key;
+import java.util.Date;
 
 import org.slim3.datastore.Attribute;
+import org.slim3.datastore.CreationDate;
 import org.slim3.datastore.Model;
+import org.slim3.datastore.ModelRef;
+import org.slim3.datastore.ModificationDate;
+
+import com.google.appengine.api.datastore.Key;
 
 @Model(schemaVersion = 1)
 public class FormControl implements Serializable {
@@ -17,6 +21,33 @@ public class FormControl implements Serializable {
 
     @Attribute(version = true)
     private Long version;
+    
+    /** name属性で定義した名前 */
+    private String controlName;
+    
+    /** 翻訳フラグ */
+    private boolean transFlg;
+    
+    /** 必須項目 */
+    private boolean required;
+    
+    /** Form との関連 */
+    private ModelRef<Form> formRef = new ModelRef<Form>(Form.class);
+    
+    // ----------------------------------------------------------------------
+    // その他
+    // ----------------------------------------------------------------------
+    /**
+     * 作成日時
+     */
+    @Attribute(listener = CreationDate.class)
+    private Date createDate;
+    
+    /**
+     * 更新日時
+     */
+    @Attribute(listener = ModificationDate.class)
+    private Date updateDate;
 
     /**
      * Returns the key.
@@ -84,5 +115,49 @@ public class FormControl implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public ModelRef<Form> getFormRef() {
+        return formRef;
+    }
+
+    public String getControlName() {
+        return controlName;
+    }
+
+    public void setControlName(String controlName) {
+        this.controlName = controlName;
+    }
+
+    public boolean isTransFlg() {
+        return transFlg;
+    }
+
+    public void setTransFlg(boolean transFlg) {
+        this.transFlg = transFlg;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 }
