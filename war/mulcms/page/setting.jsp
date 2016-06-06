@@ -50,10 +50,10 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 				<div class="row">
 					<div class="col-md-3">
 						
-						<%if(supportLangList.size() > 0 && supportLangList.indexOf(targetLang) < 0) { %>
+						<%if(template.getLang() != targetLang) { %>
 						<div class="box box-solid">
 							<div class="box-header with-border">
-								<h3 class="box-title">翻訳</h3>
+								<h3 class="box-title"><%=supportLangList.indexOf(targetLang) < 0 ? "翻訳" : "再翻訳" %></h3>
 								<div class="box-tools">
 									<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 								</div>
@@ -83,7 +83,9 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 						<a class="btn btn-default btn-block margin-bottom" target="view" href="/<%=targetLang.toString() %><%=targetPage.getKey().getName() %>"><i class="fa fa-external-link"></i> ページの確認</a>
 						<%} %>
 						
-						<a href="/mulcms/page/extractionResEntry?keyString=<%=targetPage.getKey().getName() %>&lang=<%=targetLang.toString() %>" class="btn btn-primary btn-block margin-bottom"><i class="fa fa-database"></i> テンプレートの読み込み</a>
+						<%if(template.getLang() == targetLang || supportLangList.indexOf(targetLang) >= 0) { %>
+						<a href="/mulcms/page/extractionResEntry?keyString=<%=targetPage.getKey().getName() %>&lang=<%=targetLang.toString() %>" class="btn btn-primary btn-block margin-bottom"><i class="fa fa-refresh"></i> リソースの更新</a>
+						<%} %>
 						
 						<%if(supportLangList.indexOf(targetLang) >= 0) { %>
 						<a class="btn btn-danger btn-block margin-bottom" href="/mulcms/page/deleteLang?keyString=<%=targetPage.getKey().getName() %>&lang=<%=targetLang.toString() %>"><i class="fa fa-trash"></i> <%=targetLang.getName() %>ページの削除</a>

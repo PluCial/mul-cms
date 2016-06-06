@@ -45,7 +45,7 @@ Page pageObj = (Page) request.getAttribute("page");
 			                <div class="box-footer">
 			                  <form action="/mulcms/page/deleteEntry" method="post">
 			                  	<input type="hidden" name="keyString" value="<%=pageObj.getKey().getName() %>">
-			                  	<a href="/mulcms/page/view?keyString=<%=pageObj.getKey().getName() %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  	<a href="/mulcms/page/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
 			                  </form>
 			                </div>

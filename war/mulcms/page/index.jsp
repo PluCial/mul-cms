@@ -5,6 +5,7 @@
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="com.plucial.mulcms.model.*" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.plucial.global.Lang" %>
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.slim3.controller.validator.Errors" %>
@@ -21,6 +22,14 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 <html>
 <head>
 	<jsp:include page="/mulcms/includes/html_head.jsp" />
+	<style type="text/css"><!--
+	.info-box a {
+		color: #fff;
+	}
+	.info-box a .progress {
+		display: block;
+	}
+	--></style>
 </head>
 <body class="skin-blue sidebar-mini">
 	<div class="wrapper">
@@ -39,7 +48,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 	
 	        <!-- Main content -->
 			<section class="content">
-				<h2 class="page-header">ページ管理</h2>
+				<h2 class="page-header"><i class="fa fa-files-o"></i> ページ管理</h2>
 				
 				<div class="row">
 					<div class="col-md-3">
@@ -53,7 +62,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 						<!-- /alert -->
 						<%} %>
 					
-						<div class="box box-primary box-solid">
+						<div class="box box-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title">ページの追加</h3>
 							</div>
@@ -80,45 +89,31 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 						</div>
 					</div>
             
-            		<div class="col-md-8">
-						<div class="box box-primary">
-							<div class="box-header with-border">
-								<h3 class="box-title">ページ一覧</h3>
-							</div><!-- /.box-header -->
-	
-							<div class=".box-body">
-								<div class="table-responsive mailbox-messages">
-									<table class="table table-hover table-striped">
-										<tbody>
-											<tr>
-												<th>Path</th>
-												<th>Template</th>
-												<th>Language</th>
-												<th>Create Date</th>
-												<th>Update Date</th>
-												<th>Delete</th>
-											</tr>
-											<%for(Page pageObj: pageList) { 
-												Template template = pageObj.getTemplateRef().getModel();
-											%>
-											<tr>
-												<td class="mailbox-name"><a href="/mulcms/page/setting?keyString=<%=pageObj.getKey().getName() %>&lang=<%=template.getLang().toString() %>"><%=pageObj.getKey().getName() %></a></td>
-												<td>
-													<a href="/mulcms/template/page/edit?keyString=<%=template.getKey().getName() %>"><%=template.getName()%></a>
-												</td>
-												<td><%=pageObj.getLangList().size() %></td>
-												<td class="mailbox-date"><%=dateSdf.format(pageObj.getCreateDate()) %></td>
-												<td class="mailbox-date"><%=dateSdf.format(pageObj.getUpdateDate()) %></td>
-												<td style="width:60px"><a class="btn btn-danger btn-sm" href="/mulcms/page/delete?keyString=<%=pageObj.getKey().getName() %>"><i class="fa fa-trash"></i></a></td>
-											</tr>
-											<%} %>
-
-										</tbody>
-									</table><!-- /.table -->
-								</div><!-- /.mail-box-messages -->
-		                	</div><!-- /.box-body -->
-	
-						</div><!-- /. box -->
+            		<div class="col-md-9">
+            			<div class="row">
+	            			<%for(Page pageObj: pageList) { 
+	            				Template template = pageObj.getTemplateRef().getModel();
+	            			%>
+	            			<div class="col-md-4">
+		            			<div class="info-box bg-aqua disabled color-palette color-palette">
+		            				<div class="box-tools pull-right">
+										<a class="btn btn-box-tool" href="/mulcms/page/delete?keyString=<%=pageObj.getKey().getName() %>"><i class="fa fa-times"></i></a>
+									</div>
+									<span class="info-box-icon"><i class="fa fa-file-o"></i></span>
+									<div class="info-box-content">
+										<a href="/mulcms/page/setting?keyString=<%=pageObj.getKey().getName() %>&lang=<%=template.getLang().toString() %>">
+											<span class="info-box-text"><%=dateSdf.format(pageObj.getUpdateDate()) %></span>
+											<span class="info-box-number"><%=pageObj.getKey().getName() %></span>
+											<span class="progress">
+												<span class="progress-bar" style="width: <%=((float)pageObj.getLangList().size() / Lang.values().length) * 100 %>%"></span>
+											</span>
+											<span class="progress-description">Language (<%=pageObj.getLangList().size() %> / <%=Lang.values().length %>)</span>
+										</a>
+									</div><!-- /.info-box-content -->
+								</div>
+							</div>
+							<%} %>
+						</div>
 					</div><!-- /.col -->
 					
 				</div><!-- /.row -->

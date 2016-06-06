@@ -31,7 +31,7 @@ List<PageTemplate> templateList = (List<PageTemplate>) request.getAttribute("tem
 	
 	        <!-- Main content -->
 			<section class="content">
-				<h2 class="page-header">Dashboard</h2>
+				<h2 class="page-header"><i class="fa fa-dashboard"></i> Dashboard</h2>
 				
 				<div class="row">
 					<div class="col-lg-4 col-xs-6">

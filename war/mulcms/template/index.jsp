@@ -35,7 +35,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 
 	        <!-- Main content -->
 			<section class="content">
-				<h2 class="page-header">テンプレート管理</h2>
+				<h2 class="page-header"><i class="fa fa-object-group"></i> テンプレート管理</h2>
 				
 				<div class="row">
 					<div>

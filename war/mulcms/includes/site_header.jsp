@@ -21,13 +21,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <div class="navbar-custom-menu">
+          <!-- <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-              <!-- Control Sidebar Toggle Button -->
+              Control Sidebar Toggle Button
               <li>
                 <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
               </li>
             </ul>
-          </div>
+          </div> -->
         </nav>
       </header>
