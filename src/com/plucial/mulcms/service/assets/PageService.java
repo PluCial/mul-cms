@@ -230,27 +230,36 @@ public class PageService extends AssetsService {
         try {
             for(Res srcRes: srcResList) {
                 if(srcRes instanceof AppLangRes) {
-                    AppLangResService.add(
-                        tx, 
-                        srcRes.getResId(), 
-                        srcRes.getCssQuery(), 
-                        srcRes.getRenderingType(), 
-                        srcRes.getValueString(), 
-                        srcRes.getRenderingAttr(), 
-                        srcRes.isEditMode(), 
-                        targetLang);
+                    try {
+                        AppLangResService.get(srcRes.getResId(), srcRes.getRenderingType(), srcRes.getRenderingAttr(), targetLang);
+                        
+                    }catch(ObjectNotExistException e) {
+                        AppLangResService.add(
+                            tx, 
+                            srcRes.getResId(), 
+                            srcRes.getCssQuery(), 
+                            srcRes.getRenderingType(), 
+                            srcRes.getValueString(), 
+                            srcRes.getRenderingAttr(), 
+                            srcRes.isEditMode(), 
+                            targetLang);
+                    }
                     
                 }else if(srcRes instanceof AssetsLangRes) {
-                    AssetsLangResService.add(
-                        tx, 
-                        srcRes.getResId(), 
-                        srcRes.getCssQuery(), 
-                        srcRes.getRenderingType(), 
-                        srcRes.getValueString(), 
-                        srcRes.getRenderingAttr(), 
-                        model, 
-                        srcRes.isEditMode(), 
-                        targetLang);
+                    try {
+                        AssetsLangResService.get(srcRes.getResId(), model, srcRes.getRenderingType(), srcRes.getRenderingAttr(),targetLang);
+                    }catch(ObjectNotExistException e) {
+                        AssetsLangResService.add(
+                            tx, 
+                            srcRes.getResId(), 
+                            srcRes.getCssQuery(), 
+                            srcRes.getRenderingType(), 
+                            srcRes.getValueString(), 
+                            srcRes.getRenderingAttr(), 
+                            model, 
+                            srcRes.isEditMode(), 
+                            targetLang);
+                    }
                 }
             }
             

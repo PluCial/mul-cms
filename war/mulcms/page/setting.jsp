@@ -74,6 +74,10 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 										<input type="hidden" name="targetLang" value="<%=targetLang.toString() %>" />
 										<button name="keyString" value="<%=targetPage.getKey().getName() %>" type="submit" class="btn btn-primary">翻訳</button>
 									</div>
+									<%if(supportLangList.indexOf(targetLang) >= 0) { %>
+									<p>すでに翻訳されている項目は再翻訳されません。<p>
+									<p>全てを再翻訳したい場合は、このページを一度削除してから再度翻訳を行ってください。</p>
+									<%} %>
 								</div><!-- /.box-body -->
 							</form>
 						</div>
@@ -83,7 +87,7 @@ List<Res> assetsLangResList = (List<Res>) request.getAttribute("assetsLangResLis
 						<a class="btn btn-default btn-block margin-bottom" target="view" href="/<%=targetLang.toString() %><%=targetPage.getKey().getName() %>"><i class="fa fa-external-link"></i> ページの確認</a>
 						<%} %>
 						
-						<%if(template.getLang() == targetLang || supportLangList.indexOf(targetLang) >= 0) { %>
+						<%if(template.getLang() == targetLang) { %>
 						<a href="/mulcms/page/extractionResEntry?keyString=<%=targetPage.getKey().getName() %>&lang=<%=targetLang.toString() %>" class="btn btn-primary btn-block margin-bottom"><i class="fa fa-refresh"></i> リソースの更新</a>
 						<%} %>
 						

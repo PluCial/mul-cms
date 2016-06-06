@@ -45,9 +45,11 @@ public class GoogleTransService {
 	/**
 	 * 機械翻訳
 	 * @param tx
-	 * @param transSrcLangUnit
-	 * @param transTargetLangUnit
+	 * @param page
+	 * @param transSrcLang
+	 * @param transTargetLang
 	 * @param transSrcList
+	 * @param updateAll
 	 * @throws TransException
 	 */
 	public void machineTrans(Transaction tx, Page page, Lang transSrcLang, Lang transTargetLang, List<Res> transSrcList) throws TransException {
@@ -74,7 +76,7 @@ public class GoogleTransService {
                         targetRes.setRenderingType(srcRes.getRenderingType());
                         targetRes.setStringToValue(content);
                         targetRes.setEditMode(srcRes.isEditMode());
-                        
+
                         ResService.update(tx, targetRes);
                         
                     }catch(ObjectNotExistException e) {
@@ -93,7 +95,7 @@ public class GoogleTransService {
                 }else if(srcRes instanceof AssetsLangRes) {
                     // App Lang Res
                     try {
-                        Res targetRes = AppLangResService.get(srcRes.getResId(), srcRes.getRenderingType(), srcRes.getRenderingAttr(),transTargetLang);
+                        Res targetRes = AssetsLangResService.get(srcRes.getResId(), page, srcRes.getRenderingType(), srcRes.getRenderingAttr(),transTargetLang);
                         
                         // 更新
                         targetRes.setCssQuery(srcRes.getCssQuery());
@@ -101,7 +103,7 @@ public class GoogleTransService {
                         targetRes.setRenderingType(srcRes.getRenderingType());
                         targetRes.setStringToValue(content);
                         targetRes.setEditMode(srcRes.isEditMode());
-                        
+
                         ResService.update(tx, targetRes);
                         
                     }catch(ObjectNotExistException e) {
