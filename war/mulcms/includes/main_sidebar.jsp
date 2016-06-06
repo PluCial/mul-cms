@@ -15,7 +15,7 @@ String contentsType = request.getParameter("contentsType");
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li class="<%=contentsType.equals("pageTemplate") ? "active" : "" %>">
-              <a href="/mulcms/template/page/">
+              <a href="/mulcms/template/">
                 <i class="fa fa-object-group" aria-hidden="true"></i> <span>テンプレート</span>
               </a>
             </li>

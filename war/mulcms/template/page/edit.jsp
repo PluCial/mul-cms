@@ -58,11 +58,11 @@ String html = (String)request.getAttribute("html");
 								<div class="box-body">
 									<div class="row">
 										<div class="form-group col-md-6">
-											<label for="inputName">Name</label>
+											<label for="inputName">テンプレート名</label>
 											<input ${f:text("name")} class="form-control" id="inputName" placeholder="Name">
 										</div>
 										<div class="form-group col-md-6">
-											<label for="inputName">Template Lang</label>
+											<label for="inputName">テンプレートの言語</label>
 											<select name="lang" class="form-control">
 												<option value="">-- Select Lang --</option>
 												<%for(Lang lang: Lang.values()) { %>
@@ -72,14 +72,15 @@ String html = (String)request.getAttribute("html");
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="exampleInputPassword1">HTML</label>
+										<label for="exampleInputPassword1">コンテンツ</label>
 										<textarea class="form-control" name="html" rows="20" placeholder="Enter ..."><%=html %></textarea>
 									</div>
 								</div><!-- /.box-body -->
 
 								<input type="hidden" name="keyString" value="<%=template.getKey().getName() %>">
-								<div class="box-footer text-right">
-									<button type="submit" class="btn btn-primary">Submit</button>
+								<div class="box-footer">
+									<a class="btn btn-default pull-left" href="/mulcms/template/"><i class="fa fa-reply"></i></a>
+									<button type="submit" class="btn btn-primary pull-right">更新</button>
 								</div>
 							</form>
 						</div><!-- /.box -->

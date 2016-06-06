@@ -33,49 +33,36 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 
-
 	        <!-- Main content -->
 			<section class="content">
+				<h2 class="page-header">テンプレート管理</h2>
+				
 				<div class="row">
+					<div>
+						<div class="col-md-2">
+							<a href="/mulcms/template/page/add" class="btn btn-primary btn-block margin-bottom"><i class="fa fa-plus"></i> 追加</a>
+						</div>
+					</div>
 	            
-					<div class="col-md-8 col-md-offset-2">
-						<div class="box box-primary">
-							<div class="box-header with-border">
-								<h3 class="box-title">Template List</h3>
-								<div class="box-tools pull-right">
-									<a href="/mulcms/template/page/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-								</div><!-- /.box-tools -->
-							</div><!-- /.box-header -->
-	
-							<div class=".box-body">
-								<div class="table-responsive mailbox-messages">
-									<table class="table table-hover table-striped">
-										<tbody>
-											<tr>
-												<th>Name</th>
-												<th>Template Lang</th>
-												<th>Create Date</th>
-												<th>Update Date</th>
-												<th>Action</th>
-											</tr>
-											<%for(Template temp: templateList) { %>
-											<tr>
-												<td class="mailbox-name"><a href="/mulcms/template/page/edit?keyString=<%=temp.getKey().getName() %>"><%=temp.getName() %></a></td>
-												<td><%=temp.getLang().getName() %></td>
-												<td class="mailbox-date"><%=dateSdf.format(temp.getCreateDate()) %></td>
-												<td class="mailbox-date"><%=dateSdf.format(temp.getUpdateDate()) %></td>
-												<td>
-													<a class="btn btn-danger btn-xs" href="/mulcms/template/page/delete?keyString=<%=temp.getKey().getName() %>">Delete</a>
-												</td>
-											</tr>
-											<%} %>
-
-										</tbody>
-									</table><!-- /.table -->
-								</div><!-- /.mail-box-messages -->
-		                	</div><!-- /.box-body -->
-	
-						</div><!-- /. box -->
+					<div class="col-md-10">
+						<div class="row">
+							
+							<%for(Template temp: templateList) { %>
+							<div class="col-md-4">
+								<div class="info-box">
+									<div class="box-tools pull-right">
+										<a class="btn btn-box-tool" href="/mulcms/template/delete?keyString=<%=temp.getKey().getName() %>"><i class="fa fa-times"></i></a>
+									</div>
+									<span class="info-box-icon bg-teal disabled color-palette"><i class="fa fa-object-group"></i></span>
+									<div class="info-box-content">
+										<span class="info-box-text"><%=temp.getLang().getName() %></span>
+										<span class="info-box-number"><a href="/mulcms/template/page/edit?keyString=<%=temp.getKey().getName() %>"><%=temp.getName() %></a></span>
+									</div><!-- /.info-box-content -->
+								</div>
+							</div>
+							<%} %>
+						</div>
+						
 					</div><!-- /.col -->
 				</div><!-- /.row -->
 			</section><!-- /.content -->

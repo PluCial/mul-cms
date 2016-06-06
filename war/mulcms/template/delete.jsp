@@ -43,9 +43,9 @@ Template template = (Template) request.getAttribute("template");
 			                  Do you really want to delete the <b>[<%=template.getName() %>]</b>?
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
-			                  <form action="/mulcms/template/page/deleteEntry" method="post">
+			                  <form action="/mulcms/template/deleteEntry" method="post">
 			                  	<input type="hidden" name="keyString" value="<%=template.getKey().getName() %>">
-			                  	<a href="/mulcms/template/page/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  	<a href="/mulcms/template/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
 			                  </form>
 			                </div>

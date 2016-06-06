@@ -74,8 +74,9 @@ Errors errors =(Errors) request.getAttribute("errors");
 									</div>
 								</div><!-- /.box-body -->
 
-								<div class="box-footer text-right">
-									<button type="submit" class="btn btn-primary">Submit</button>
+								<div class="box-footer">
+									<a class="btn btn-default pull-left" href="/mulcms/template/"><i class="fa fa-reply"></i></a>
+									<button type="submit" class="btn btn-primary pull-right">追加</button>
 								</div>
 							</form>
 						</div><!-- /.box -->

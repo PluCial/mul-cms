@@ -1,4 +1,4 @@
-package com.plucial.mulcms.controller.mulcms.template.page;
+package com.plucial.mulcms.controller.mulcms.template;
 
 import java.util.List;
 
@@ -28,6 +28,6 @@ public class DeleteEntryController extends BaseController {
         TemplateService.delete(keyString);
         
         
-        return redirect("/mulcms/template/page/");
+        return redirect("/mulcms/template/");
     }
 }

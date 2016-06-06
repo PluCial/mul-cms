@@ -40,7 +40,7 @@
 			                  This template has been used.
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
-			                  <a href="/mulcms/template/page/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  <a href="/mulcms/template/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                </div>
 			              </div>
 					</div><!-- /.col -->

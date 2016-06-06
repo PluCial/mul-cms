@@ -30,7 +30,7 @@ public class EditEntryController extends BaseController {
         
         TemplateService.update(modal);
         
-        return redirect("/mulcms/template/page/");
+        return redirect("/mulcms/template/");
     }
     
     /**

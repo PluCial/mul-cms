@@ -1,4 +1,4 @@
-package com.plucial.mulcms.controller.mulcms.template.page;
+package com.plucial.mulcms.controller.mulcms.template;
 
 import org.slim3.controller.Navigation;
 
