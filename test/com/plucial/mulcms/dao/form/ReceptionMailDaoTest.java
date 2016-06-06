@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class ReceptionMailDaoTest extends AppEngineTestCase {
 
-    private ReceptionMailDao dao = new ReceptionMailDao();
+    private ReceptionMailActionDao dao = new ReceptionMailActionDao();
 
     @Test
     public void test() throws Exception {

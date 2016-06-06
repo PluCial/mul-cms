@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class ReceptionMailTest extends AppEngineTestCase {
 
-    private ReceptionMail model = new ReceptionMail();
+    private ReceptionMailAction model = new ReceptionMailAction();
 
     @Test
     public void test() throws Exception {
