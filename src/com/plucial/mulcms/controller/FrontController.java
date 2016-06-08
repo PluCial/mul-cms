@@ -11,13 +11,16 @@ import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.enums.AppProperty;
+import com.plucial.mulcms.enums.MulAttrType;
 import com.plucial.mulcms.enums.RenderingAction;
 import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.model.Page;
 import com.plucial.mulcms.model.Template;
+import com.plucial.mulcms.model.form.Form;
 import com.plucial.mulcms.model.res.Res;
 import com.plucial.mulcms.service.JsoupService;
 import com.plucial.mulcms.service.assets.PageService;
+import com.plucial.mulcms.service.form.FormService;
 import com.plucial.mulcms.service.res.ResService;
 import com.plucial.mulcms.utils.HtmlUtils;
 
@@ -26,7 +29,7 @@ public class FrontController extends AppController {
     @Override
     protected Navigation run() throws Exception {
         
-        boolean isSigned = true;
+        boolean isSigned = false;
         
         
         String domainUrl = getDomainUrl();
@@ -66,6 +69,21 @@ public class FrontController extends AppController {
             // BodyのLang属性を追加
             // ----------------------------------------------------
             jsoupService.getDoc().body().attr("lang", super.getLocaleLang().toString());
+            
+            // ----------------------------------------------------
+            // BodyのLang属性を追加
+            // ----------------------------------------------------
+            List<Form> formList = FormService.getList(page);
+            for(Form form: formList) {
+                Element formElem = jsoupService.getDoc().select("[" + MulAttrType.formId.getAttr() + "=" + form.getKey().getName() + "]").first();
+                if(formElem != null) {
+                    formElem.attr("action", domainUrl + "/mulcms/form/action");
+                    formElem.attr("method", "post");
+                    formElem.append("<input type='hidden' name='lang' value='" + super.getLocaleLang().toString() + "'>");
+                    formElem.append("<input type='hidden' name='formId' value='" + form.getKey().getName() + "'>");
+                }
+                formElem.removeAttr(MulAttrType.formId.getAttr());
+            }
             
             // ----------------------------------------------------
             // リンクの書き換え

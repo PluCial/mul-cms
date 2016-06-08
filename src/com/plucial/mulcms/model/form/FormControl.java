@@ -31,6 +31,9 @@ public class FormControl implements Serializable {
     /** 必須項目 */
     private boolean required;
     
+    /** メールチェック */
+    private boolean isEmail;
+    
     /** Form との関連 */
     private ModelRef<Form> formRef = new ModelRef<Form>(Form.class);
     
@@ -159,5 +162,13 @@ public class FormControl implements Serializable {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public boolean isEmail() {
+        return isEmail;
+    }
+
+    public void setEmail(boolean isEmail) {
+        this.isEmail = isEmail;
     }
 }

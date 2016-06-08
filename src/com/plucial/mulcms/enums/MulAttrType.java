@@ -12,7 +12,8 @@ public enum MulAttrType {
     scope("data-scope"),
     resId("data-res-id"),
     rendering("data-rendering"),
-    edit("data-edit");
+    edit("data-edit"),
+    formId("data-form-id");
     
     /** 属性 */
     private String attr;

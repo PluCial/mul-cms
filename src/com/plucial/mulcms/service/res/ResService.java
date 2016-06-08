@@ -218,7 +218,7 @@ public class ResService {
                         ResService.update(tx, model);
                         
                     } catch (ObjectNotExistException e) {
-                        AppLangResService.add(tx, resId, elem.tagName() + "[" + MulAttrType.resId.getAttr() + "=" + resId + "]", renderingType, value, renderingAttr, editMode, lang); 
+                        AppLangResService.add(tx, resId, "[" + MulAttrType.resId.getAttr() + "=" + resId + "]", renderingType, value, renderingAttr, editMode, lang); 
                     }
 
                 }else if(resScope == ResScope.ASSETS_LANG) {
