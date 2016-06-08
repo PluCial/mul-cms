@@ -11,6 +11,8 @@ import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.util.ServletContextLocator;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.NoLangParameterException;
 import com.plucial.global.Lang;
@@ -159,6 +161,26 @@ public abstract class AppController extends Controller {
         }
         
         return prop;
+    }
+    
+    /**
+     * ログインチェック
+     * @return
+     */
+    public boolean isSigned() {
+        
+        UserService userService = UserServiceFactory.getUserService();
+
+        // 一般ユーザーとしてログインしているか調べる
+        boolean isLoggedIn = userService.isUserLoggedIn();
+        
+        // サインしていない場合
+        if(!isLoggedIn) return false;
+        
+        // 管理者の場合
+        if(userService.isUserAdmin()) return true;
+        
+        return false;
     }
 
 }
