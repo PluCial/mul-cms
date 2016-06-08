@@ -420,9 +420,9 @@ public class PageService extends AssetsService {
                     jsoupService.rendering(
                         "body", 
                         RenderingAction.append, 
-                        getTextResEditJsHtml(domainUrl, res.getKey().getName(), res.getValueString(), renderingType == RenderingType.long_text));
+                        getTextResEditJsHtml(domainUrl, res.getKey().getName(), renderingType == RenderingType.long_text));
                 }else {
-                    jsoupService.rendering(res.getCssQuery(), RenderingAction.text, res.getValueString());
+                    jsoupService.rendering(res.getCssQuery(), RenderingAction.html, HtmlUtils.getJspDisplayString(res.getValueString()));
                 }
                 
             }else if(renderingType == RenderingType.attr) {
@@ -440,7 +440,7 @@ public class PageService extends AssetsService {
      * @return
      */
     private static String getTextResEditModalOpenTagHtml(Res res) {
-        String resValue = HtmlUtils.htmlEscape(res.getValueString());
+        String resValue = HtmlUtils.getJspDisplayString(res.getValueString());
         
         StringBuilder sb = new StringBuilder();
         sb.append("<span style='cursor: pointer;'");
@@ -498,7 +498,7 @@ public class PageService extends AssetsService {
         return sb.toString();
     }
     
-    private static String getTextResEditJsHtml(String domainUrl, String resourcesKey,String resValue, boolean isLongText) {
+    private static String getTextResEditJsHtml(String domainUrl, String resourcesKey, boolean isLongText) {
         StringBuilder sb = new StringBuilder();
         
         sb.append("<script>");

@@ -3,6 +3,20 @@ package com.plucial.mulcms.utils;
 public class HtmlUtils {
     
     /**
+     * 
+     * @param content
+     * @return
+     */
+    public static String getJspDisplayString(String content) {
+        if(content == null || content.trim().length() <= 0) return "";
+        
+        // HTMLエスケープ処理
+        String newdata = htmlEscape(content);
+        
+        return changeIndentionToHtml(newdata);
+    }
+    
+    /**
      * <p>[概 要] HTMLエスケープ処理</p>
      * <p>[詳 細] </p>
      * <p>[備 考] </p>
