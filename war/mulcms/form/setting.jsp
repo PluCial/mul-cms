@@ -125,7 +125,7 @@ List<FormControl> controlList = (List<FormControl>) request.getAttribute("contro
 		                		<form action="/mulcms/form/control/addEntry" method="post">
 			                		<div class="row">
 			                			<div class="form-group col-md-6">
-											<input ${f:text("controlName")} class="form-control" placeholder="email, name...">
+											<input ${f:text("controlName")} class="form-control" placeholder="コントローラーの Name属性">
 			                			</div>
 			                			<div class="form-group col-md-2">
 			                				<div class="checkbox">

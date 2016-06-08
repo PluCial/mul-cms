@@ -9,6 +9,7 @@ import org.slim3.controller.Navigation;
 
 import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.ObjectNotExistException;
+import com.plucial.global.Lang;
 import com.plucial.mulcms.enums.AppProperty;
 import com.plucial.mulcms.enums.RenderingAction;
 import com.plucial.mulcms.enums.RenderingType;
@@ -53,6 +54,20 @@ public class FrontController extends AppController {
             head.prepend("<base href='" + "https://storage.googleapis.com/" + gcsBucketName + "/'>");
             
             // ----------------------------------------------------
+            // 言語Alternate の追加
+            // ----------------------------------------------------
+            for(Lang lang: page.getLangList()) {
+                if(super.getLocaleLang() != lang) {
+                    head.append("<link rel='alternate' hreflang='" + lang.toString() + "' href='" + domainUrl + "/" + lang.toString() + page.getKey().getName() + "' />");
+                }
+            }
+            
+            // ----------------------------------------------------
+            // BodyのLang属性を追加
+            // ----------------------------------------------------
+            jsoupService.getDoc().body().attr("lang", super.getLocaleLang().toString());
+            
+            // ----------------------------------------------------
             // リンクの書き換え
             // ----------------------------------------------------
             Elements links = jsoupService.getDoc().select("a");
@@ -72,14 +87,10 @@ public class FrontController extends AppController {
             }
             
             // ----------------------------------------------------
-            // テキストリソースを取得
-            // ----------------------------------------------------
+            // テキストリソースの挿入
+            // ----------------------------------------------------     
             List<Res> textResList = ResService.getAssetsAllResList(page, super.getLocaleLang());
             requestScope("textResList", textResList);
-            
-            // ----------------------------------------------------
-            // リソースの挿入
-            // ----------------------------------------------------            
             for(Res res: textResList) {
 
                 RenderingType renderingType = res.getRenderingType();
