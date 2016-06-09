@@ -5,9 +5,13 @@
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="com.plucial.mulcms.model.*" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.TimeZone" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%
-List<Page> pageList = (List<Page>) request.getAttribute("pageList");
 List<PageTemplate> templateList = (List<PageTemplate>) request.getAttribute("templateList");
+
+SimpleDateFormat dateSdf = new SimpleDateFormat("yyyy/MM/dd/ HH:mm");
+dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 %>
 <!DOCTYPE html>
 <html>
@@ -22,66 +26,44 @@ List<PageTemplate> templateList = (List<PageTemplate>) request.getAttribute("tem
       
 		<!-- Left side column. contains the logo and sidebar -->
 		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
-			<jsp:param name="contentsType" value="" />
+			<jsp:param name="contentsType" value="pageTemplate" />
 		</jsp:include>
       
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
-	
+
 	        <!-- Main content -->
 			<section class="content">
-				<h2 class="page-header"><i class="fa fa-dashboard"></i> Dashboard</h2>
+				<h2 class="page-header"><i class="fa fa-object-group"></i> テンプレート管理</h2>
 				
 				<div class="row">
-					<div class="col-lg-4 col-xs-6">
-						<!-- small box -->
-						<div class="small-box bg-teal disabled color-palette">
-								<div class="inner">
-								<h3><%=templateList.size() %></h3>
-								<p>Template</p>
-							</div>
-							<div class="icon">
-								<i class="fa fa-object-group"></i>
-							</div>
-							<a href="/mulcms/template/page/" class="small-box-footer">
-								More info <i class="fa fa-arrow-circle-right"></i>
-							</a>
+					<div>
+						<div class="col-md-2">
+							<a href="/mulcms/template/page/add" class="btn btn-primary btn-block margin-bottom"><i class="fa fa-plus"></i> 追加</a>
 						</div>
 					</div>
-					
-					<div class="col-lg-4 col-xs-6">
-						<!-- small box -->
-						<div class="small-box bg-aqua-active color-palette">
-								<div class="inner">
-								<h3><%=pageList.size() %></h3>
-								<p>Page</p>
+	            
+					<div class="col-md-10">
+						<div class="row">
+							
+							<%for(Template temp: templateList) { %>
+							<div class="col-md-4">
+								<div class="info-box">
+									<div class="box-tools pull-right">
+										<a class="btn btn-box-tool" href="/mulcms/template/delete?keyString=<%=temp.getKey().getName() %>"><i class="fa fa-times"></i></a>
+									</div>
+									<span class="info-box-icon bg-teal disabled color-palette"><i class="fa fa-object-group"></i></span>
+									<div class="info-box-content">
+										<span class="info-box-text"><%=temp.getLang().getName() %></span>
+										<span class="info-box-number"><a href="/mulcms/template/page/edit?keyString=<%=temp.getKey().getName() %>"><%=temp.getName() %></a></span>
+									</div><!-- /.info-box-content -->
+								</div>
 							</div>
-							<div class="icon">
-								<i class="fa fa-files-o"></i>
-							</div>
-							<a href="/mulcms/page/" class="small-box-footer">
-								More info <i class="fa fa-arrow-circle-right"></i>
-							</a>
+							<%} %>
 						</div>
-					</div>
-					
-					<div class="col-lg-4 col-xs-6">
-						<!-- small box -->
-						<div class="small-box bg-yellow">
-								<div class="inner">
-								<h3>0</h3>
-								<p>Form</p>
-							</div>
-							<div class="icon">
-								<i class="fa fa-users"></i>
-							</div>
-							<a href="/mulcms/form/" class="small-box-footer">
-								More info <i class="fa fa-arrow-circle-right"></i>
-							</a>
-						</div>
-					</div>
-					
+						
+					</div><!-- /.col -->
 				</div><!-- /.row -->
 			</section><!-- /.content -->
 			<!-- /.content -->
@@ -98,12 +80,12 @@ List<PageTemplate> templateList = (List<PageTemplate>) request.getAttribute("tem
 		<!-- Add the sidebar's background. This div must be placed
 	           immediately after the control sidebar -->
 		<div class='control-sidebar-bg'></div>
-	    </div><!-- ./wrapper -->
-	
-	    
-	    <!-- page script -->
-	    <jsp:include page="/mulcms/includes/html_script.jsp" />
-	    <!-- page script -->
+    </div><!-- ./wrapper -->
+
+    
+    <!-- page script -->
+    <jsp:include page="/mulcms/includes/html_script.jsp" />
+    <!-- page script -->
 
   </body>
 </html>

@@ -14,10 +14,15 @@ String contentsType = request.getParameter("contentsType");
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="<%=contentsType.equals("pageTemplate") ? "active" : "" %>">
-              <a href="/mulcms/template/">
+            <li class="<%=contentsType.equals("pageTemplate") || contentsType.equals("mailTemplate") ? "active" : "" %> treeview">
+              <a href="#">
                 <i class="fa fa-object-group" aria-hidden="true"></i> <span>テンプレート</span>
+                <i class="fa fa-angle-left pull-right"></i>
               </a>
+              <ul class="treeview-menu menu-open">
+                <li class="<%=contentsType.equals("pageTemplate") ? "active" : "" %>"><a href="/mulcms/template/page/"><i class="fa fa-file-o"></i> ページ</a></li>
+                <li class="<%=contentsType.equals("mailTemplate") ? "active" : "" %>"><a href="/mulcms/template/mail/"><i class="fa fa-envelope"></i> メール</a></li>
+              </ul>
             </li>
             <li class="<%=contentsType.equals("page") ? "active" : "" %>">
               <a href="/mulcms/page/">

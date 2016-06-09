@@ -390,6 +390,21 @@ public class PageService extends AssetsService {
         }
         
         // ----------------------------------------------------
+        // 言語切り替え
+        // ----------------------------------------------------
+        Element langSelectElm = jsoupService.getDoc().getElementById("lang-select");
+        if(langSelectElm != null) {
+            for(Lang lang: page.getLangList()) {
+                if(lang == localeLang) {
+                    langSelectElm.append("<option value='" + lang.toString() + "' selected>" + lang.getName() + "</option>");
+                }else {
+                    langSelectElm.append("<option value='" + lang.toString() + "'>" + lang.getName() + "</option>");
+                }
+            }
+        }
+        jsoupService.getDoc().body().append("<script>jQuery(function() {$('select#lang-select').change(function() {var selectedval = $(this).val();location.href = $('link[hreflang=' + selectedval + ']').eq(0).attr('href');});});</script>");
+        
+        // ----------------------------------------------------
         // テキストリソースの挿入
         // ----------------------------------------------------     
         List<Res> textResList = ResService.getAssetsAllResList(page, localeLang);

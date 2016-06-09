@@ -13,7 +13,8 @@ public enum MulAttrType {
     resId("data-res-id"),
     rendering("data-rendering"),
     edit("data-edit"),
-    formId("data-form-id");
+    formId("data-form-id"),
+    langSelect("data-lang-select");
     
     /** 属性 */
     private String attr;
