@@ -6,7 +6,7 @@ import org.slim3.controller.Navigation;
 
 import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.model.assets.Page;
-import com.plucial.mulcms.model.template.Template;
+import com.plucial.mulcms.model.template.PageTemplate;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.template.PageTemplateService;
 import com.plucial.mulcms.service.template.TemplateService;
@@ -18,7 +18,7 @@ public class DeleteEntryController extends BaseController {
         
         String keyString = asString("keyString");
         String type = asString("type");
-        Template template = PageTemplateService.get(keyString);
+        PageTemplate template = (PageTemplate)PageTemplateService.get(keyString);
         
         List<Page> pageList = PageService.getList(template);
         if(pageList != null && pageList.size() > 0) {

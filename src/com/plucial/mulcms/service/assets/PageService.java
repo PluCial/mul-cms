@@ -66,7 +66,7 @@ public class PageService extends AssetsService {
      * @param template
      * @return
      */
-    public static List<Page> getList(Template template) {
+    public static List<Page> getList(PageTemplate template) {
         return dao.getList(template);
     }
     
