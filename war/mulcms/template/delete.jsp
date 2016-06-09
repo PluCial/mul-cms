@@ -3,12 +3,13 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
-<%@ page import="com.plucial.mulcms.model.*" %>
+<%@ page import="com.plucial.mulcms.model.template.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
 Template template = (Template) request.getAttribute("template");
+String type = (String) request.getAttribute("type");
 %>
 <!DOCTYPE html>
 <html>
@@ -40,12 +41,13 @@ Template template = (Template) request.getAttribute("template");
 			                  <h3 class="box-title">Delete</h3>
 			                </div><!-- /.box-header -->
 			                <div class="box-body">
-			                  Do you really want to delete the <b>[<%=template.getName() %>]</b>?
+			                  テンプレート <b>[<%=template.getName() %>]</b> を本当に削除しますか?
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
 			                  <form action="/mulcms/template/deleteEntry" method="post">
 			                  	<input type="hidden" name="keyString" value="<%=template.getKey().getName() %>">
-			                  	<a href="/mulcms/template/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  	<a href="/mulcms/template/<%=type %>/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  	<input type="hidden" name="type" value="<%=type %>"/>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
 			                  </form>
 			                </div>

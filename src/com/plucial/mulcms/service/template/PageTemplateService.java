@@ -5,8 +5,8 @@ import java.util.List;
 import org.jsoup.nodes.Document;
 
 import com.plucial.global.Lang;
-import com.plucial.mulcms.dao.PageTemplateDao;
-import com.plucial.mulcms.model.PageTemplate;
+import com.plucial.mulcms.dao.template.PageTemplateDao;
+import com.plucial.mulcms.model.template.PageTemplate;
 
 
 public class PageTemplateService extends TemplateService {

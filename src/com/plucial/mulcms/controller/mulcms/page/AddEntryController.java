@@ -5,7 +5,7 @@ import org.slim3.controller.validator.Validators;
 
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.controller.mulcms.BaseController;
-import com.plucial.mulcms.model.PageTemplate;
+import com.plucial.mulcms.model.template.PageTemplate;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.template.PageTemplateService;
 import com.plucial.mulcms.validator.NGValidator;

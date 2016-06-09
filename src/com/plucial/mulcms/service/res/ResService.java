@@ -21,8 +21,7 @@ import com.plucial.mulcms.enums.MulAttrType;
 import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.enums.ResScope;
 import com.plucial.mulcms.meta.res.ResMeta;
-import com.plucial.mulcms.model.Assets;
-import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.assets.Assets;
 import com.plucial.mulcms.model.res.Res;
 
 
@@ -78,16 +77,16 @@ public class ResService {
     }
 
     /**
-     * Page リソースの取得
+     * assets リソースの取得
      * @param page
      * @return
      */
-    public static List<Res> getPageResList(Page page) {
+    public static List<Res> getAssetsResList(Assets assets) {
         List<Res> textResList = new ArrayList<Res>();
 
-        textResList.addAll(AssetsResService.getList(page));
-        for(Lang lang: page.getLangList()) {
-            textResList.addAll(AssetsLangResService.getList(page, lang));
+        textResList.addAll(AssetsResService.getList(assets));
+        for(Lang lang: assets.getLangList()) {
+            textResList.addAll(AssetsLangResService.getList(assets, lang));
         }
 
         return textResList;

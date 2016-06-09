@@ -4,7 +4,7 @@ import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
 import com.plucial.mulcms.controller.mulcms.BaseController;
-import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.form.Form;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.form.FormService;
@@ -23,8 +23,8 @@ public class UpdateEntryController extends BaseController {
         }
         
         String name = asString("name");
-        Page page = PageService.get(asString("pageKey"));
-        Page transitionPage = PageService.get(asString("transitionPageKey"));
+        Page page = (Page)PageService.get(asString("pageKey"));
+        Page transitionPage = (Page)PageService.get(asString("transitionPageKey"));
         
         model.setName(name);
         model.getPageRef().setModel(page);

@@ -29,7 +29,7 @@ Errors errors =(Errors) request.getAttribute("errors");
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-				<h1>Add Pages Template<small>designer</small></h1>
+				<h1>ページテンプレート<small>追加</small></h1>
 			</section>
 
         	<!-- Main content -->

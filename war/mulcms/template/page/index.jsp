@@ -3,12 +3,12 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
-<%@ page import="com.plucial.mulcms.model.*" %>
+<%@ page import="com.plucial.mulcms.model.template.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
-List<PageTemplate> templateList = (List<PageTemplate>) request.getAttribute("templateList");
+List<MailTemplate> templateList = (List<MailTemplate>) request.getAttribute("templateList");
 
 SimpleDateFormat dateSdf = new SimpleDateFormat("yyyy/MM/dd/ HH:mm");
 dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
@@ -35,7 +35,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 
 	        <!-- Main content -->
 			<section class="content">
-				<h2 class="page-header"><i class="fa fa-object-group"></i> テンプレート管理</h2>
+				<h2 class="page-header"><i class="fa fa-object-group"></i> ページテンプレート管理</h2>
 				
 				<div class="row">
 					<div>
@@ -51,7 +51,7 @@ dateSdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 							<div class="col-md-4">
 								<div class="info-box">
 									<div class="box-tools pull-right">
-										<a class="btn btn-box-tool" href="/mulcms/template/delete?keyString=<%=temp.getKey().getName() %>"><i class="fa fa-times"></i></a>
+										<a class="btn btn-box-tool" href="/mulcms/template/delete?keyString=<%=temp.getKey().getName() %>&type=page"><i class="fa fa-times"></i></a>
 									</div>
 									<span class="info-box-icon bg-teal disabled color-palette"><i class="fa fa-object-group"></i></span>
 									<div class="info-box-content">

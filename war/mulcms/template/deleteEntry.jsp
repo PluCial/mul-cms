@@ -7,6 +7,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%
+String type = (String) request.getAttribute("type");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,10 +40,10 @@
 			                  <h3 class="box-title">Delete</h3>
 			                </div><!-- /.box-header -->
 			                <div class="box-body">
-			                  This template has been used.
+			                  このテンプレートは使用されているため削除できません。
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
-			                  <a href="/mulcms/template/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  <a href="/mulcms/template/<%=type %>/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                </div>
 			              </div>
 					</div><!-- /.col -->

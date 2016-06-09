@@ -7,7 +7,7 @@ import org.slim3.controller.Navigation;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.enums.AppProperty;
-import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.service.assets.PageService;
 
 public class PageTransEntryController extends BaseController {
@@ -18,7 +18,7 @@ public class PageTransEntryController extends BaseController {
         Lang srcLang = Lang.valueOf(asString("srcLang"));
         Lang targetLang = Lang.valueOf(asString("targetLang"));
         
-        Page page = PageService.get(asString("keyString"));
+        Page page = (Page)PageService.get(asString("keyString"));
         
         // App Property 取得
         Map<String, String> appPropertyMap = super.getAppPropertyMap();

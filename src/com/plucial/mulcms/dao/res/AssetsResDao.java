@@ -6,7 +6,7 @@ import org.slim3.datastore.DaoBase;
 import org.slim3.datastore.Datastore;
 
 import com.plucial.mulcms.meta.res.AssetsResMeta;
-import com.plucial.mulcms.model.Assets;
+import com.plucial.mulcms.model.assets.Assets;
 import com.plucial.mulcms.model.res.AssetsRes;
 
 public class AssetsResDao extends DaoBase<AssetsRes>{

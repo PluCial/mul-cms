@@ -9,9 +9,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
-import com.plucial.mulcms.dao.TemplateDao;
-import com.plucial.mulcms.meta.TemplateMeta;
-import com.plucial.mulcms.model.Template;
+import com.plucial.mulcms.dao.template.TemplateDao;
+import com.plucial.mulcms.meta.template.TemplateMeta;
+import com.plucial.mulcms.model.template.Template;
 
 
 public class TemplateService {

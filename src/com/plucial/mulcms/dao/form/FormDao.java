@@ -7,7 +7,7 @@ import org.slim3.datastore.Datastore;
 import org.slim3.datastore.Sort;
 
 import com.plucial.mulcms.meta.form.FormMeta;
-import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.form.Form;
 
 public class FormDao extends DaoBase<Form>{

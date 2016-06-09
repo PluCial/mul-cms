@@ -10,7 +10,7 @@ import org.slim3.datastore.ModelRef;
 import org.slim3.datastore.ModificationDate;
 
 import com.google.appengine.api.datastore.Key;
-import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.assets.Page;
 
 @Model(schemaVersion = 1)
 public class Form implements Serializable {

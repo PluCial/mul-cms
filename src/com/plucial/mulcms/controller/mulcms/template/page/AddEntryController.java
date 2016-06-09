@@ -28,7 +28,7 @@ public class AddEntryController extends BaseController {
         PageTemplateService.put(name, JsoupService.getDoc(), lang);
         
         
-        return redirect("/mulcms/template/");
+        return redirect("/mulcms/template/page/");
     }
     
     /**

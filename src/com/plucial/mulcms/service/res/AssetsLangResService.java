@@ -9,7 +9,7 @@ import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.res.AssetsLangResDao;
 import com.plucial.mulcms.enums.RenderingType;
-import com.plucial.mulcms.model.Assets;
+import com.plucial.mulcms.model.assets.Assets;
 import com.plucial.mulcms.model.res.AssetsLangRes;
 
 

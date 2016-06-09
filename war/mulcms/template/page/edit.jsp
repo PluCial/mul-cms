@@ -4,7 +4,7 @@
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="org.slim3.controller.validator.Errors" %>
-<%@ page import="com.plucial.mulcms.model.*" %>
+<%@ page import="com.plucial.mulcms.model.template.*" %>
 <%@ page import="com.plucial.global.Lang" %>
 <%@ page import="com.plucial.mulcms.utils.*" %>
 <%
@@ -33,7 +33,7 @@ String html = (String)request.getAttribute("html");
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-				<h1>Add Pages Template<small>designer</small></h1>
+				<h1>ページテンプレート<small>変更</small></h1>
 			</section>
 
         	<!-- Main content -->

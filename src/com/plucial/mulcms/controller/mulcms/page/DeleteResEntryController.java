@@ -4,7 +4,7 @@ import org.slim3.controller.Navigation;
 
 import com.plucial.global.Lang;
 import com.plucial.mulcms.controller.mulcms.BaseController;
-import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.res.Res;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.res.ResService;
@@ -18,7 +18,7 @@ public class DeleteResEntryController extends BaseController {
         
         Res model = ResService.get(keyString);
         
-        Page page = PageService.get(asString("pageKey"));
+        Page page = (Page)PageService.get(asString("pageKey"));
         
         ResService.delete(model);
         

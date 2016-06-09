@@ -8,7 +8,7 @@ import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.res.AssetsResDao;
 import com.plucial.mulcms.enums.RenderingType;
-import com.plucial.mulcms.model.Assets;
+import com.plucial.mulcms.model.assets.Assets;
 import com.plucial.mulcms.model.res.AssetsRes;
 
 

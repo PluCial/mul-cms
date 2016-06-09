@@ -2,7 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
-<%@ page import="com.plucial.mulcms.model.*" %>
+<%@ page import="com.plucial.mulcms.model.assets.*" %>
+<%@ page import="com.plucial.mulcms.model.template.*" %>
 <%@ page import="com.plucial.mulcms.enums.*" %>
 <%@ page import="com.plucial.mulcms.model.res.*" %>
 <%@ page import="java.util.List" %>

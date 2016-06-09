@@ -19,7 +19,7 @@ import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.gae.global.exception.TransException;
 import com.plucial.gae.global.utils.StringUtil;
 import com.plucial.global.Lang;
-import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.assets.Assets;
 import com.plucial.mulcms.model.res.AppLangRes;
 import com.plucial.mulcms.model.res.AssetsLangRes;
 import com.plucial.mulcms.model.res.Res;
@@ -52,7 +52,7 @@ public class GoogleTransService {
 	 * @param updateAll
 	 * @throws TransException
 	 */
-	public void machineTrans(Transaction tx, Page page, Lang transSrcLang, Lang transTargetLang, List<Res> transSrcList) throws TransException {
+	public void machineTrans(Transaction tx, Assets assets, Lang transSrcLang, Lang transTargetLang, List<Res> transSrcList) throws TransException {
 		try {
             Document transResult = machineTrans(transSrcLang, transTargetLang, transSrcList);
             
@@ -95,7 +95,7 @@ public class GoogleTransService {
                 }else if(srcRes instanceof AssetsLangRes) {
                     // App Lang Res
                     try {
-                        Res targetRes = AssetsLangResService.get(srcRes.getResId(), page, srcRes.getRenderingType(), srcRes.getRenderingAttr(),transTargetLang);
+                        Res targetRes = AssetsLangResService.get(srcRes.getResId(), assets, srcRes.getRenderingType(), srcRes.getRenderingAttr(),transTargetLang);
                         
                         // 更新
                         targetRes.setCssQuery(srcRes.getCssQuery());
@@ -115,7 +115,7 @@ public class GoogleTransService {
                             srcRes.getRenderingType(), 
                             content, 
                             srcRes.getRenderingAttr(),
-                            page, 
+                            assets, 
                             srcRes.isEditMode(),
                             transTargetLang);
                     }

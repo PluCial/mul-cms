@@ -8,7 +8,7 @@ import org.slim3.controller.validator.Validators;
 import com.google.appengine.api.datastore.Text;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.controller.mulcms.BaseController;
-import com.plucial.mulcms.model.PageTemplate;
+import com.plucial.mulcms.model.template.PageTemplate;
 import com.plucial.mulcms.service.template.TemplateService;
 import com.plucial.mulcms.utils.HtmlUtils;
 
@@ -35,7 +35,7 @@ public class EditEntryController extends BaseController {
         
         TemplateService.update(modal);
         
-        return redirect("/mulcms/template/");
+        return redirect("/mulcms/template/page/");
     }
     
     /**

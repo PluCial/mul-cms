@@ -3,8 +3,8 @@ package com.plucial.mulcms.service.template;
 import java.util.List;
 
 import com.plucial.global.Lang;
-import com.plucial.mulcms.dao.WidgetTemplateDao;
-import com.plucial.mulcms.model.WidgetTemplate;
+import com.plucial.mulcms.dao.template.WidgetTemplateDao;
+import com.plucial.mulcms.model.template.WidgetTemplate;
 
 
 public class WidgetTemplateService extends TemplateService {

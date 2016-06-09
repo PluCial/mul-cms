@@ -5,8 +5,8 @@ import java.util.List;
 import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 
-import com.plucial.mulcms.model.Page;
-import com.plucial.mulcms.model.Template;
+import com.plucial.mulcms.model.assets.Page;
+import com.plucial.mulcms.model.template.Template;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.template.PageTemplateService;
 

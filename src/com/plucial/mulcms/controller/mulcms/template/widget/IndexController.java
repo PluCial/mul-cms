@@ -5,7 +5,7 @@ import java.util.List;
 import org.slim3.controller.Navigation;
 
 import com.plucial.mulcms.controller.mulcms.BaseController;
-import com.plucial.mulcms.model.Template;
+import com.plucial.mulcms.model.template.Template;
 import com.plucial.mulcms.service.template.WidgetTemplateService;
 
 public class IndexController extends BaseController {

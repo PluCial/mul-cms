@@ -8,7 +8,7 @@ import org.slim3.datastore.Datastore;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.enums.RenderingType;
 import com.plucial.mulcms.meta.res.AssetsLangResMeta;
-import com.plucial.mulcms.model.Assets;
+import com.plucial.mulcms.model.assets.Assets;
 import com.plucial.mulcms.model.res.AssetsLangRes;
 
 public class AssetsLangResDao extends DaoBase<AssetsLangRes>{

@@ -8,7 +8,7 @@ import com.google.appengine.api.datastore.Key;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.form.FormDao;
 import com.plucial.mulcms.meta.form.FormMeta;
-import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.form.Form;
 
 

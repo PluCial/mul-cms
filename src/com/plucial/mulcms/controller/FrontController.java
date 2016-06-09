@@ -8,7 +8,7 @@ import org.slim3.controller.Navigation;
 import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.enums.AppProperty;
-import com.plucial.mulcms.model.Page;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.service.assets.PageService;
 
 public class FrontController extends AppController {
@@ -26,7 +26,7 @@ public class FrontController extends AppController {
             // ----------------------------------------------------
             // Page 情報
             // ----------------------------------------------------
-            Page page = PageService.get(asString("path"));
+            Page page = (Page)PageService.get(asString("path"));
             if(page.getLangList().indexOf(super.getLocaleLang()) < 0) {
                 throw new NoContentsException();
             }
