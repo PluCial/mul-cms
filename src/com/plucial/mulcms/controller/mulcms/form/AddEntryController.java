@@ -5,8 +5,10 @@ import org.slim3.controller.validator.Validators;
 
 import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.model.assets.Page;
+import com.plucial.mulcms.model.template.MailTemplate;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.form.FormService;
+import com.plucial.mulcms.service.template.MailTemplateService;
 
 public class AddEntryController extends BaseController {
 
@@ -23,7 +25,10 @@ public class AddEntryController extends BaseController {
         Page page = (Page)PageService.get(asString("pageKey"));
         Page transitionPage = (Page)PageService.get(asString("transitionPageKey"));
         
-        FormService.put(formId, name, page, transitionPage);
+        // メールテンプレート
+        MailTemplate mailTemplate = (MailTemplate)MailTemplateService.get("mailTemplateKey");
+        
+        FormService.add(formId, name, page, transitionPage, mailTemplate, super.getAdminUser());
         
         
         return redirect("/mulcms/form/");

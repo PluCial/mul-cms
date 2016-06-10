@@ -5,11 +5,14 @@ import java.util.List;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.users.User;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.form.FormDao;
 import com.plucial.mulcms.meta.form.FormMeta;
 import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.form.Form;
+import com.plucial.mulcms.model.template.MailTemplate;
 
 
 public class FormService {
@@ -37,14 +40,28 @@ public class FormService {
      * @param transitionPage
      * @return
      */
-    public static Form put(String formId, String name, Page page, Page transitionPage) {
-        Form model = new Form();
-        model.setKey(createKey(formId));
-        model.setName(name);
-        model.getPageRef().setModel(page);
-        model.getTransitionPageRef().setModel(transitionPage);
+    public static Form add(String formId, String name, Page page, Page transitionPage, MailTemplate mailTemplate, User user) {
         
-        dao.put(model);
+        Transaction tx = Datastore.beginTransaction();
+        Form model = null;
+        try {
+            model = new Form();
+            model.setKey(createKey(formId));
+            model.setName(name);
+            model.getPageRef().setModel(page);
+            model.getTransitionPageRef().setModel(transitionPage);
+            
+            // 保存
+            Datastore.put(tx, model);
+            
+            ReceptionMailActionService.add(tx, model, user.getEmail(), mailTemplate);
+            
+            tx.commit();
+        }finally {
+            if(tx.isActive()) {
+                tx.rollback();
+            }
+        }
         
         return model;
     }
