@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class LangResServiceTest extends AppEngineTestCase {
 
-    private AppLangResService service = new AppLangResService();
+    private AttrResService service = new AttrResService();
 
     @Test
     public void test() throws Exception {

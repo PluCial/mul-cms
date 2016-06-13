@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class AssetsLangTest extends AppEngineTestCase {
 
-    private AssetsLangRes model = new AssetsLangRes();
+    private InnerTextRes model = new InnerTextRes();
 
     @Test
     public void test() throws Exception {

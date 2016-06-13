@@ -12,6 +12,7 @@ import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.controller.AppController;
 import com.plucial.mulcms.enums.AppProperty;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.form.Form;
 import com.plucial.mulcms.model.form.FormControl;
 import com.plucial.mulcms.service.assets.PageService;
@@ -26,12 +27,12 @@ public class ActionController extends AppController {
         // ----------------------------------------------------
         // Formの取得
         // ----------------------------------------------------
-        String formId = asString("formId");
-        if(StringUtil.isEmpty(formId)) throw new NoContentsException();
+        String keyString = asString("keyString");
+        if(StringUtil.isEmpty(keyString)) throw new NoContentsException();
 
         Form form = null;
         try {
-            form = FormService.get(formId);
+            form = (Form)FormService.get(keyString);
         }catch(ObjectNotExistException e) {
             throw new NoContentsException();
         }
@@ -39,7 +40,7 @@ public class ActionController extends AppController {
         // ----------------------------------------------------
         // コントローラーリストを取得
         // ----------------------------------------------------
-        List<FormControl> controlList = FormControlService.getList();
+        List<FormControl> controlList = FormControlService.getList(form);
         
         // ----------------------------------------------------
         // App 設定情報の取得
@@ -55,10 +56,9 @@ public class ActionController extends AppController {
             // ----------------------------------------------------
             // Page 生成
             // ----------------------------------------------------
-            Document pageDoc = PageService.getRenderedDoc(form.getPageRef().getModel(), super.getLocaleLang(), gcsBucketName, super.getDomainUrl(), isSigned());
-            
-            
+            Document pageDoc = PageService.getRenderedDoc((Page)form.getAssetsRef().getModel(), super.getLocaleLang(), gcsBucketName, super.getDomainUrl(), isSigned());
             requestScope("pageHtml", pageDoc.outerHtml());
+            
             return forward("/front.jsp");
         }
         

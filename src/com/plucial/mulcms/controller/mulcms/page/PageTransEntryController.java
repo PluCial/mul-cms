@@ -30,6 +30,6 @@ public class PageTransEntryController extends BaseController {
         // 項目コピー
         PageService.copyNotTransRes(page, srcLang, targetLang);
         
-        return redirect("/mulcms/page/setting?keyString=" + page.getKey().getName() + "&lang=" + targetLang.toString());
+        return redirect("/mulcms/page/resource?keyString=" + page.getKey().getName() + "&lang=" + targetLang.toString());
     }
 }

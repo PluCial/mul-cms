@@ -20,11 +20,9 @@ import com.plucial.gae.global.exception.TransException;
 import com.plucial.gae.global.utils.StringUtil;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.model.assets.Assets;
-import com.plucial.mulcms.model.res.AppLangRes;
-import com.plucial.mulcms.model.res.AssetsLangRes;
-import com.plucial.mulcms.model.res.Res;
-import com.plucial.mulcms.service.res.AppLangResService;
-import com.plucial.mulcms.service.res.AssetsLangResService;
+import com.plucial.mulcms.model.res.InnerRes;
+import com.plucial.mulcms.model.res.InnerTextRes;
+import com.plucial.mulcms.service.res.InnerTextResService;
 import com.plucial.mulcms.service.res.ResService;
 
 public class GoogleTransService {
@@ -52,12 +50,12 @@ public class GoogleTransService {
 	 * @param updateAll
 	 * @throws TransException
 	 */
-	public void machineTrans(Transaction tx, Assets assets, Lang transSrcLang, Lang transTargetLang, List<Res> transSrcList) throws TransException {
+	public void machineTrans(Transaction tx, Assets assets, Lang transSrcLang, Lang transTargetLang, List<? extends InnerRes> transSrcList) throws TransException {
 		try {
             Document transResult = machineTrans(transSrcLang, transTargetLang, transSrcList);
             
             // 翻訳したテキストリソースを追加
-            for(Res srcRes: transSrcList) {
+            for(InnerRes srcRes: transSrcList) {
                 // 改行が含まれるため、text()ではなくhtml()で取得する
                 String tcText = transResult.getElementById(srcRes.getKey().getName()).html();
 
@@ -65,59 +63,30 @@ public class GoogleTransService {
                 String strTmp = StringUtil.clearTextIndention(tcText);
                 String content = StringUtil.changeBrToTextIndention(strTmp);
 
-                if(srcRes instanceof AppLangRes) {
-                    // App Lang Res
-                    try {
-                        Res targetRes = AppLangResService.get(srcRes.getResId(), srcRes.getRenderingType(), srcRes.getRenderingAttr(), transTargetLang);
-                        
-                        // 更新
-                        targetRes.setCssQuery(srcRes.getCssQuery());
-                        targetRes.setRenderingAttr(srcRes.getRenderingAttr());
-                        targetRes.setRenderingType(srcRes.getRenderingType());
-                        targetRes.setStringToValue(content);
-                        targetRes.setEditMode(srcRes.isEditMode());
-
-                        ResService.update(tx, targetRes);
-                        
-                    }catch(ObjectNotExistException e) {
-                        // 追加
-                        AppLangResService.add(
-                            tx, 
-                            srcRes.getResId(), 
-                            srcRes.getCssQuery(), 
-                            srcRes.getRenderingType(), 
-                            content, 
-                            srcRes.getRenderingAttr(),
-                            srcRes.isEditMode(),
-                            transTargetLang);
-                    }
+                if(srcRes instanceof InnerTextRes) {
                     
-                }else if(srcRes instanceof AssetsLangRes) {
                     // App Lang Res
                     try {
-                        Res targetRes = AssetsLangResService.get(srcRes.getResId(), assets, srcRes.getRenderingType(), srcRes.getRenderingAttr(),transTargetLang);
+                        InnerTextRes targetRes = InnerTextResService.get(assets, srcRes.getCssQuery(), transTargetLang);
                         
                         // 更新
                         targetRes.setCssQuery(srcRes.getCssQuery());
-                        targetRes.setRenderingAttr(srcRes.getRenderingAttr());
-                        targetRes.setRenderingType(srcRes.getRenderingType());
                         targetRes.setStringToValue(content);
+                        targetRes.setLongText(((InnerTextRes) srcRes).isLongText());
                         targetRes.setEditMode(srcRes.isEditMode());
 
                         ResService.update(tx, targetRes);
                         
                     }catch(ObjectNotExistException e) {
                         // 追加
-                        AssetsLangResService.add(
+                        InnerTextResService.add(
                             tx, 
-                            srcRes.getResId(), 
-                            srcRes.getCssQuery(), 
-                            srcRes.getRenderingType(), 
-                            content, 
-                            srcRes.getRenderingAttr(),
                             assets, 
-                            srcRes.isEditMode(),
-                            transTargetLang);
+                            srcRes.getCssQuery(), 
+                            transTargetLang, 
+                            content, 
+                            srcRes.isEditMode(), 
+                            ((InnerTextRes) srcRes).isLongText());
                     }
                 }
             }
@@ -139,7 +108,7 @@ public class GoogleTransService {
     private Document machineTrans(
     		Lang srcLang, 
     		Lang targetLang,
-            List<Res> transSrcList) throws TransException, IOException {
+    		List<? extends InnerRes> transSrcList) throws TransException, IOException {
         
         if(transSrcList == null || transSrcList.size() <= 0) {
             throw new TransException("翻訳するコンテンツはありません。");
@@ -148,7 +117,7 @@ public class GoogleTransService {
         // 通常モード
         String transSrc = "";
         
-        for(Res tc: transSrcList) {
+        for(InnerRes tc: transSrcList) {
             String content = tc.getValueString();
             content = StringUtil.changeIndentionToHtml(content); // 改行コードを<br /> に変換して翻訳する
 

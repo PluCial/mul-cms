@@ -4,26 +4,33 @@
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="com.plucial.mulcms.model.*" %>
+<%@ page import="com.plucial.mulcms.model.assets.*" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.plucial.global.Lang" %>
 <%
 List<Page> pageList = (List<Page>) request.getAttribute("pageList");
-List<PageTemplate> templateList = (List<PageTemplate>) request.getAttribute("templateList");
 %>
 <!DOCTYPE html>
 <html>
 <head>
 	<jsp:include page="/mulcms/includes/html_head.jsp" />
+	<style>
+	.box-header {
+		padding-bottom: 0;
+	}
+	.box-body {
+		padding-top: 0;
+	}
+	.page-info {
+		padding-top: 10px;
+	}
+	</style>
 </head>
-<body class="skin-blue sidebar-mini">
+<body class="skin-blue layout-top-nav">
 	<div class="wrapper">
 		<!-- site-header -->
 		<jsp:include page="/mulcms/includes/site_header.jsp" />
 		<!-- /site-header -->
-      
-		<!-- Left side column. contains the logo and sidebar -->
-		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
-			<jsp:param name="contentsType" value="" />
-		</jsp:include>
       
 
 		<!-- Content Wrapper. Contains page content -->
@@ -31,59 +38,49 @@ List<PageTemplate> templateList = (List<PageTemplate>) request.getAttribute("tem
 	
 	        <!-- Main content -->
 			<section class="content">
-				<h2 class="page-header"><i class="fa fa-dashboard"></i> Dashboard</h2>
-				
 				<div class="row">
-					<div class="col-lg-4 col-xs-6">
-						<!-- small box -->
-						<div class="small-box bg-teal disabled color-palette">
-								<div class="inner">
-								<h3><%=templateList.size() %></h3>
-								<p>Template</p>
+					<div class="col-md-offset-1 col-md-10">
+						<h2 class="page-header"><i class="fa fa-sitemap"></i> Pages</h2>
+						
+						<div class="row">
+							<%for(Page pageObj: pageList) { %>
+							<div class="col-md-4">
+								<div class="box">
+									<div class="box-header">
+										<h2 class="box-title"><i class="fa fa-file-o"></i> <%=pageObj.getKey().getName() %></h2>
+										<div class="box-tools pull-right">
+											<a class="btn btn-box-tool" href="/mulcms/page/delete?keyString=<%=pageObj.getKey().getName() %>"><i class="fa fa-times"></i></a>
+										</div>
+										<div class="page-info">
+											<span class="label label-primary">Language (<%=pageObj.getLangList().size() %> / <%=Lang.values().length %>)</span>
+											<a class="btn btn-box-tool" target="view" href="/<%=pageObj.getHtmlLang().toString() %><%=pageObj.getKey().getName() %>"><i class="fa fa-external-link"></i> <%=pageObj.getHtmlLang().getName() %></a>
+											<div class="progress progress-xxs">
+												<div class="progress-bar progress-bar-primary" style="width: <%=((float)pageObj.getLangList().size() / Lang.values().length) * 100 %>%"></div>
+											</div>
+										</div>
+									</div>
+									<div class="box-body text-center">
+										
+										<a class="btn btn-app" href="/mulcms/page/edit?keyString=<%=pageObj.getKey().getName() %>">
+											<i class="fa fa-html5"></i> Html
+										</a>
+			
+										<a class="btn btn-app" href="/mulcms/page/resource?keyString=<%=pageObj.getKey().getName() %>&lang=<%=pageObj.getHtmlLang() %>">
+											<i class="fa fa-language"></i> Resource
+										</a>
+										<a class="btn btn-app" href="/mulcms/form/?keyString=<%=pageObj.getKey().getName() %>">
+											<i class="fa fa-users"></i> Form
+										</a>
+									</div><!-- /.box-body -->
+								</div>
 							</div>
-							<div class="icon">
-								<i class="fa fa-object-group"></i>
-							</div>
-							<a href="/mulcms/template/page/" class="small-box-footer">
-								More info <i class="fa fa-arrow-circle-right"></i>
-							</a>
-						</div>
+							<%} %>
+							
+						</div><!-- /.row -->	
 					</div>
-					
-					<div class="col-lg-4 col-xs-6">
-						<!-- small box -->
-						<div class="small-box bg-aqua-active color-palette">
-								<div class="inner">
-								<h3><%=pageList.size() %></h3>
-								<p>Page</p>
-							</div>
-							<div class="icon">
-								<i class="fa fa-files-o"></i>
-							</div>
-							<a href="/mulcms/page/" class="small-box-footer">
-								More info <i class="fa fa-arrow-circle-right"></i>
-							</a>
-						</div>
-					</div>
-					
-					<div class="col-lg-4 col-xs-6">
-						<!-- small box -->
-						<div class="small-box bg-yellow">
-								<div class="inner">
-								<h3>0</h3>
-								<p>Form</p>
-							</div>
-							<div class="icon">
-								<i class="fa fa-users"></i>
-							</div>
-							<a href="/mulcms/form/" class="small-box-footer">
-								More info <i class="fa fa-arrow-circle-right"></i>
-							</a>
-						</div>
-					</div>
-					
-				</div><!-- /.row -->
+				</div>
 			</section><!-- /.content -->
+
 			<!-- /.content -->
 		</div><!-- /.content-wrapper -->
       

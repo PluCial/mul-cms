@@ -19,6 +19,6 @@ public class DeleteLangEntryController extends BaseController {
         
         PageService.delete(page, lang);
         
-        return redirect("/mulcms/page/");
+        return redirect("/mulcms/");
     }
 }

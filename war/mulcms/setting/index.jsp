@@ -24,16 +24,16 @@ String apiServerKey = appPropertyMap.get(AppProperty.GOOGLE_API_PUBLIC_SERVER_KE
 <head>
 	<jsp:include page="/mulcms/includes/html_head.jsp" />
 </head>
-<body class="skin-blue sidebar-mini">
+<body class="skin-blue layout-top-nav">
 	<div class="wrapper">
 		<!-- site-header -->
 		<jsp:include page="/mulcms/includes/site_header.jsp" />
 		<!-- /site-header -->
       
 		<!-- Left side column. contains the logo and sidebar -->
-		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
+<%-- 		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
 			<jsp:param name="contentsType" value="setting" />
-		</jsp:include>
+		</jsp:include> --%>
       
 
 		<!-- Content Wrapper. Contains page content -->
@@ -41,100 +41,104 @@ String apiServerKey = appPropertyMap.get(AppProperty.GOOGLE_API_PUBLIC_SERVER_KE
 	
 	        <!-- Main content -->
 			<section class="content">
-				<h2 class="page-header">アプリケーションの設定</h2>
-				
 				<div class="row">
-					<div class="col-md-5">
-						<div class="box">
-							<div class="box-header with-border">
-								<h3 class="box-title">基本情報</h3>
+					<div class="col-md-offset-1 col-md-9">
+						<h2 class="page-header">アプリケーションの設定</h2>
+						
+						<div class="row">
+							<div class="col-md-5">
+								<div class="box">
+									<div class="box-header with-border">
+										<h3 class="box-title">基本情報</h3>
+									</div>
+									
+									<div class="box-body">	
+										<table class="table table-bordered text-center">
+											<tr>
+												<th>アプリケーション ID</th>
+												<td><%=appPropertyMap.get(AppProperty.APP_ID.toString()) %></td>
+											</tr>
+											<tr>
+												<th>アプリケーションデフォルトURL</th>
+												<td><%=appPropertyMap.get(AppProperty.APP_DEFAULT_HOST_NAME.toString()) %></td>
+											</tr>
+										</table>
+											
+									</div><!-- /.box-body -->
+								</div>
+							</div>
+		
+							<div class="col-md-7">
+								<%if (!errors.isEmpty()){ %>
+								<!-- alert -->
+								<div class="alert alert-warning alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert">×</button>
+									<h4><i class="icon fa fa-warning"></i> Alert!</h4>
+									<%=errors.get(0) %>
+								</div>
+								<!-- /alert -->
+								<%} %>
+							
+								<div class="box">
+									<div class="box-header with-border">
+										<h3 class="box-title">設定</h3>
+									</div>
+									
+									<div class="box-body">	
+										<div class="form-group">
+											<form action="/mulcms/setting/updateEntry" method="post">
+												<label>アプリケーションのベースとなる言語</label>
+												<div class="row">
+													<div class="col-md-10">
+														<select name="propertyValue" class="form-control">
+															<%for(Lang lang: Lang.values()) { %>
+															<option value="<%=lang.toString() %>" <%=lang == appBaseLang ? "selected" : "" %>><%=lang.getName() %></option>
+															<%} %>
+														</select>
+													</div>
+													<div class="col-md-2">
+														<button type="submit" name="propertyKey" value="<%=AppProperty.APP_BASE_LANG.toString() %>" class="btn btn-primary form-control">変更</button>
+													</div>
+												</div>
+											</form>
+										</div>
+										
+										<div class="form-group">
+											<form action="/mulcms/setting/updateEntry" method="post">
+												<label>Google クラウドストレージのBUCKET名</label>
+												<div class="row">
+													<div class="col-md-10">
+														<input name="propertyValue" class="form-control" value="<%=StringUtil.isEmpty(gcsBucketName) ? "" : gcsBucketName %>">
+													</div>
+													<div class="col-md-2">
+														<button type="submit" name="propertyKey" value="<%=AppProperty.APP_GCS_BUCKET_NAME.toString() %>" class="btn btn-primary form-control">変更</button>
+													</div>
+												</div>
+											</form>
+										</div>
+											
+											
+										<div class="form-group">
+											<form action="/mulcms/setting/updateEntry" method="post">
+												<label>Google API サーバーキー</label>
+												<div class="row">
+													<div class="col-md-10">
+														<input name="propertyValue" class="form-control" value="<%=StringUtil.isEmpty(apiServerKey) ? "" : apiServerKey %>">
+													</div>
+													<div class="col-md-2">
+														<button type="submit" name="propertyKey" value="<%=AppProperty.GOOGLE_API_PUBLIC_SERVER_KEY.toString() %>" class="btn btn-primary form-control">変更</button>
+													</div>
+												</div>
+											</form>
+										</div>
+											
+									</div><!-- /.box-body -->
+								</div>
 							</div>
 							
-							<div class="box-body">	
-								<table class="table table-bordered text-center">
-									<tr>
-										<th>アプリケーション ID</th>
-										<td><%=appPropertyMap.get(AppProperty.APP_ID.toString()) %></td>
-									</tr>
-									<tr>
-										<th>アプリケーションデフォルトURL</th>
-										<td><%=appPropertyMap.get(AppProperty.APP_DEFAULT_HOST_NAME.toString()) %></td>
-									</tr>
-								</table>
-									
-							</div><!-- /.box-body -->
-						</div>
+						</div><!-- /.row -->
 					</div>
-
-					<div class="col-md-7">
-						<%if (!errors.isEmpty()){ %>
-						<!-- alert -->
-						<div class="alert alert-warning alert-dismissable">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<h4><i class="icon fa fa-warning"></i> Alert!</h4>
-							<%=errors.get(0) %>
-						</div>
-						<!-- /alert -->
-						<%} %>
-					
-						<div class="box box-primary box-solid">
-							<div class="box-header with-border">
-								<h3 class="box-title">設定</h3>
-							</div>
-							
-							<div class="box-body">	
-								<div class="form-group">
-									<form action="/mulcms/setting/updateEntry" method="post">
-										<label>アプリケーションのベースとなる言語</label>
-										<div class="row">
-											<div class="col-md-10">
-												<select name="propertyValue" class="form-control">
-													<%for(Lang lang: Lang.values()) { %>
-													<option value="<%=lang.toString() %>" <%=lang == appBaseLang ? "selected" : "" %>><%=lang.getName() %></option>
-													<%} %>
-												</select>
-											</div>
-											<div class="col-md-2">
-												<button type="submit" name="propertyKey" value="<%=AppProperty.APP_BASE_LANG.toString() %>" class="btn btn-primary form-control">変更</button>
-											</div>
-										</div>
-									</form>
-								</div>
-								
-								<div class="form-group">
-									<form action="/mulcms/setting/updateEntry" method="post">
-										<label>Google クラウドストレージのBUCKET名</label>
-										<div class="row">
-											<div class="col-md-10">
-												<input name="propertyValue" class="form-control" value="<%=StringUtil.isEmpty(gcsBucketName) ? "" : gcsBucketName %>">
-											</div>
-											<div class="col-md-2">
-												<button type="submit" name="propertyKey" value="<%=AppProperty.APP_GCS_BUCKET_NAME.toString() %>" class="btn btn-primary form-control">変更</button>
-											</div>
-										</div>
-									</form>
-								</div>
-									
-									
-								<div class="form-group">
-									<form action="/mulcms/setting/updateEntry" method="post">
-										<label>Google API サーバーキー</label>
-										<div class="row">
-											<div class="col-md-10">
-												<input name="propertyValue" class="form-control" value="<%=StringUtil.isEmpty(apiServerKey) ? "" : apiServerKey %>">
-											</div>
-											<div class="col-md-2">
-												<button type="submit" name="propertyKey" value="<%=AppProperty.GOOGLE_API_PUBLIC_SERVER_KEY.toString() %>" class="btn btn-primary form-control">変更</button>
-											</div>
-										</div>
-									</form>
-								</div>
-									
-							</div><!-- /.box-body -->
-						</div>
-					</div>
-					
-				</div><!-- /.row -->
+				</div>
 			</section><!-- /.content -->
 			<!-- /.content -->
 		</div><!-- /.content-wrapper -->

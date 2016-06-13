@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class AssetsLangDaoTest extends AppEngineTestCase {
 
-    private AssetsLangResDao dao = new AssetsLangResDao();
+    private InnerTextResDao dao = new InnerTextResDao();
 
     @Test
     public void test() throws Exception {

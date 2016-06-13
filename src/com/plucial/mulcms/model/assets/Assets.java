@@ -8,13 +8,11 @@ import java.util.List;
 import org.slim3.datastore.Attribute;
 import org.slim3.datastore.CreationDate;
 import org.slim3.datastore.Model;
-import org.slim3.datastore.ModelRef;
 import org.slim3.datastore.ModificationDate;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
 import com.plucial.global.Lang;
-import com.plucial.mulcms.model.res.Res;
-import com.plucial.mulcms.model.template.Template;
 
 @Model(schemaVersion = 1)
 public class Assets implements Serializable {
@@ -30,6 +28,12 @@ public class Assets implements Serializable {
     @Attribute(unindexed = true)
     private List<Lang> langList = new ArrayList<Lang>();
     
+    @Attribute(unindexed = true)
+    private Text html;
+    
+    @Attribute(unindexed = true)
+    private Lang htmlLang;
+    
     /**
      * 作成日時
      */
@@ -42,23 +46,13 @@ public class Assets implements Serializable {
     @Attribute(listener = ModificationDate.class)
     private Date updateDate;
     
-    // ----------------------------------------------------------------------
-    // 非永久化項目
-    // ----------------------------------------------------------------------
-    /** テンプレート */
-    @Attribute(persistent = false)
-    private Template template;
-    
-    /** rawResList */
-    @Attribute(persistent = false)
-    private List<Res> resList;
-    
-    // ----------------------------------------------------------------------
-    // 関連
-    // ----------------------------------------------------------------------
-    
-    /** テンプレートとの関連 */
-    private ModelRef<Template> templateRef = new ModelRef<Template>(Template.class);
+    /**
+     * コンテンツの文字列を取得
+     * @return
+     */
+    public String getHtmlString() {
+        return html == null ? null : html.getValue();
+    }
 
     /**
      * Returns the key.
@@ -128,18 +122,6 @@ public class Assets implements Serializable {
         return true;
     }
 
-    public Template getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(Template template) {
-        this.template = template;
-    }
-
-    public ModelRef<Template> getTemplateRef() {
-        return templateRef;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -156,19 +138,27 @@ public class Assets implements Serializable {
         this.updateDate = updateDate;
     }
 
-    public List<Res> getResList() {
-        return resList;
-    }
-
-    public void setResList(List<Res> resList) {
-        this.resList = resList;
-    }
-
     public List<Lang> getLangList() {
         return langList;
     }
 
     public void setLangList(List<Lang> langList) {
         this.langList = langList;
+    }
+
+    public Text getHtml() {
+        return html;
+    }
+
+    public void setHtml(Text html) {
+        this.html = html;
+    }
+
+    public Lang getHtmlLang() {
+        return htmlLang;
+    }
+
+    public void setHtmlLang(Lang htmlLang) {
+        this.htmlLang = htmlLang;
     }
 }

@@ -16,6 +16,6 @@ public class DeleteEntryController extends BaseController {
         
         PageService.delete(page);
         
-        return redirect("/mulcms/page/");
+        return redirect("/mulcms/");
     }
 }

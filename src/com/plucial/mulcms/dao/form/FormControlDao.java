@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.slim3.datastore.DaoBase;
 import org.slim3.datastore.Datastore;
-import org.slim3.datastore.Sort;
 
 import com.plucial.mulcms.meta.form.FormControlMeta;
+import com.plucial.mulcms.model.form.Form;
 import com.plucial.mulcms.model.form.FormControl;
 
 public class FormControlDao extends DaoBase<FormControl>{
@@ -18,9 +18,10 @@ public class FormControlDao extends DaoBase<FormControl>{
      * リストの取得
      * @return
      */
-    public List<FormControl> getList() {
-        return  Datastore.query(meta)
-                    .sort(new Sort(meta.createDate)).asList();
+    public List<FormControl> getList(Form form) {
+        return  Datastore.query(meta).filter(
+            meta.formRef.equal(form.getKey())
+                ).asList();
     }
 
 }

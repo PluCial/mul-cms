@@ -15,7 +15,9 @@ public class IndexController extends BaseController {
     @Override
     public Navigation run() throws Exception {
         
-        List<Form> formList = FormService.getList();
+        Page page = (Page)PageService.get(asString("keyString"));
+        
+        List<Form> formList = FormService.getList(page);
         requestScope("formList", formList);
         
         List<Page> pageList = PageService.getList();

@@ -2,21 +2,22 @@ package com.plucial.mulcms.service.assets;
 
 import java.util.List;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slim3.datastore.Datastore;
 
+import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.datastore.Transaction;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.assets.PageDao;
-import com.plucial.mulcms.enums.MulAttrType;
 import com.plucial.mulcms.exception.TooManyException;
+import com.plucial.mulcms.model.RenderingItem;
 import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.form.Form;
 import com.plucial.mulcms.model.res.Res;
-import com.plucial.mulcms.model.template.PageTemplate;
-import com.plucial.mulcms.model.template.Template;
-import com.plucial.mulcms.service.JsoupService;
 import com.plucial.mulcms.service.form.FormService;
 import com.plucial.mulcms.service.res.ResService;
 
@@ -34,24 +35,59 @@ public class PageService extends AssetsService {
      * @return
      * @throws TooManyException
      */
-    public static Page put(String keyString, PageTemplate template) throws TooManyException {
-        
-        // 重複チェック
-        try {
-            get(keyString);
-            throw new TooManyException();
-        } catch (ObjectNotExistException e) {
-            // 重複してなければ登録可能
-        }
-        
-        Page model = new Page();
-        model.setKey(createKey(keyString));
-        model.getTemplateRef().setModel(template);
-        
-        dao.put(model);
-        
-        return model;
+    public static Page add(String keyString, Lang htmlLang, String html) throws TooManyException {
+     // 重複チェック
+      try {
+          get(keyString);
+          throw new TooManyException();
+      } catch (ObjectNotExistException e) {
+          // 重複してなければ登録可能
+      }
+      
+      Document doc = Jsoup.parse(html);
+      
+      Page model = new Page();
+      model.setKey(createKey(keyString));
+      model.setHtmlLang(htmlLang);
+      model.setHtml(new Text(doc.outerHtml()));
+      model.getLangList().add(htmlLang);
+      
+      Transaction tx = Datastore.beginTransaction();
+      try {
+          Datastore.put(tx, model);
+          
+          ResService.importByDoc(tx, model, model.getHtmlLang(), doc);
+          
+          tx.commit();
+      }finally {
+          if(tx.isActive()) {
+              tx.rollback();
+          }
+      }
+      
+      return model;
     }
+    
+    
+//    public static Page put(String keyString, PageTemplate template) throws TooManyException {
+//        
+//        // 重複チェック
+//        try {
+//            get(keyString);
+//            throw new TooManyException();
+//        } catch (ObjectNotExistException e) {
+//            // 重複してなければ登録可能
+//        }
+//        
+//        Page model = new Page();
+//        model.setKey(createKey(keyString));
+//        model.getTemplateRef().setModel(template);
+//        
+//        dao.put(model);
+//        
+//        return model;
+//    }
+    
     
     /**
      * リストの取得
@@ -59,15 +95,6 @@ public class PageService extends AssetsService {
      */
     public static List<Page> getList() {
         return dao.getList();
-    }
-    
-    /**
-     * 使用しているテンプレートからリストを取得
-     * @param template
-     * @return
-     */
-    public static List<Page> getList(PageTemplate template) {
-        return dao.getList(template);
     }
     
 
@@ -82,15 +109,13 @@ public class PageService extends AssetsService {
      * @return
      */
     public static Document getRenderedDoc(Page page, Lang localeLang, String gcsBucketName, String domainUrl, boolean isSigned) {
-        
-        Template template = page.getTemplateRef().getModel();
-        JsoupService jsoupService = new JsoupService(template.getHtmlString());
+        Document doc = Jsoup.parse(page.getHtmlString());
         
         // ----------------------------------------------------
         // base URL を追加
         // ----------------------------------------------------
-        Element head = jsoupService.getDoc().head();
-        head.prepend("<base href='" + "https://storage.googleapis.com/" + gcsBucketName + "/'>");
+        Element head = doc.head();
+        doc.head().prepend("<base href='" + "https://storage.googleapis.com/" + gcsBucketName + "/'>");
         
         // ----------------------------------------------------
         // 言語Alternate の追加
@@ -104,27 +129,27 @@ public class PageService extends AssetsService {
         // ----------------------------------------------------
         // BodyのLang属性を追加
         // ----------------------------------------------------
-        jsoupService.getDoc().body().attr("lang", localeLang.toString());
+        doc.body().attr("lang", localeLang.toString());
         
         // ----------------------------------------------------
         // Form
         // ----------------------------------------------------
-        List<Form> formList = FormService.getList(page);
-        for(Form form: formList) {
-            Element formElem = jsoupService.getDoc().select("[" + MulAttrType.formId.getAttr() + "=" + form.getKey().getName() + "]").first();
-            if(formElem != null) {
-                formElem.attr("action", domainUrl + "/mulcms/form/action");
-                formElem.attr("method", "post");
-                formElem.append("<input type='hidden' name='lang' value='" + localeLang.toString() + "'>");
-                formElem.append("<input type='hidden' name='formId' value='" + form.getKey().getName() + "'>");
-            }
-            formElem.removeAttr(MulAttrType.formId.getAttr());
-        }
+//        List<Form> formList = FormService.getList(page);
+//        for(Form form: formList) {
+//            Element formElem = jsoupService.getDoc().select("[" + MulAttrType.formId.getAttr() + "=" + form.getKey().getName() + "]").first();
+//            if(formElem != null) {
+//                formElem.attr("action", domainUrl + "/mulcms/form/action");
+//                formElem.attr("method", "post");
+//                formElem.append("<input type='hidden' name='lang' value='" + localeLang.toString() + "'>");
+//                formElem.append("<input type='hidden' name='formId' value='" + form.getKey().getName() + "'>");
+//            }
+//            formElem.removeAttr(MulAttrType.formId.getAttr());
+//        }
         
         // ----------------------------------------------------
         // リンクの書き換え
         // ----------------------------------------------------
-        Elements links = jsoupService.getDoc().select("a");
+        Elements links = doc.select("a");
         for(Element link: links) {
             if(!link.hasAttr("href")) continue;
             String linkHref = link.attr("href");
@@ -143,7 +168,7 @@ public class PageService extends AssetsService {
         // ----------------------------------------------------
         // 言語切り替え
         // ----------------------------------------------------
-        Element langSelectElm = jsoupService.getDoc().getElementById("lang-select");
+        Element langSelectElm = doc.getElementById("lang-select");
         if(langSelectElm != null) {
             for(Lang lang: page.getLangList()) {
                 if(lang == localeLang) {
@@ -153,15 +178,27 @@ public class PageService extends AssetsService {
                 }
             }
         }
-        jsoupService.getDoc().body().append("<script>jQuery(function() {$('select#lang-select').change(function() {var selectedval = $(this).val();location.href = $('link[hreflang=' + selectedval + ']').eq(0).attr('href');});});</script>");
+        doc.body().append("<script>jQuery(function() {$('select#lang-select').change(function() {var selectedval = $(this).val();location.href = $('link[hreflang=' + selectedval + ']').eq(0).attr('href');});});</script>");
         
         // ----------------------------------------------------
-        // テキストリソースの挿入
-        // ----------------------------------------------------     
-        List<Res> textResList = ResService.getAssetsAllResList(page, localeLang);
-        renderedRes(jsoupService, textResList, domainUrl, isSigned);
+        // テキストリソースのレンダーリング
+        // ----------------------------------------------------
+        List<? extends Res> textResList = ResService.getList(page, localeLang);
+        for(Res res: textResList) {
+            RenderingItem item = (RenderingItem)res;
+            item.reenderingDoc(doc, localeLang, domainUrl, isSigned);
+        }
         
-        return jsoupService.getDoc();
+        // ----------------------------------------------------
+        // Form のレンダリング
+        // ----------------------------------------------------
+        List<Form> fromList = FormService.getList(page);
+        for(Form form: fromList) {
+            RenderingItem item = (RenderingItem)form;
+            item.reenderingDoc(doc, localeLang, domainUrl, isSigned);
+        }
+        
+        return doc;
     }
     
     

@@ -55,8 +55,8 @@ public class FormControlService {
      * リストの取得
      * @return
      */
-    public static List<FormControl> getList() {
-        return dao.getList();
+    public static List<FormControl> getList(Form form) {
+        return dao.getList(form);
     }
     
     /**

@@ -19,6 +19,6 @@ public class ExtractionResEntryController extends BaseController {
         
         PageService.extractionRes(page);
         
-        return redirect("/mulcms/page/setting?keyString=" + page.getKey().getName() + "&lang=" + pageLang.toString());
+        return redirect("/mulcms/page/resource?keyString=" + page.getKey().getName() + "&lang=" + pageLang.toString());
     }
 }

@@ -4,10 +4,9 @@ import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
 import com.plucial.gae.global.exception.ObjectNotExistException;
+import com.plucial.global.Lang;
 import com.plucial.mulcms.controller.mulcms.BaseController;
-import com.plucial.mulcms.model.template.PageTemplate;
 import com.plucial.mulcms.service.assets.PageService;
-import com.plucial.mulcms.service.template.PageTemplateService;
 import com.plucial.mulcms.validator.NGValidator;
 
 public class AddEntryController extends BaseController {
@@ -17,11 +16,10 @@ public class AddEntryController extends BaseController {
         
         // 入力チェック
         if (!isPost() || !validate()) {
-            return forward("/mulcms/page/");
+            return forward("/mulcms/page/add");
         }
         
         String url = asString("url");
-        String templateKey = asString("template");
         
         String keyString = url.replace("../", "");
         if(!keyString.startsWith("/")) {
@@ -48,11 +46,12 @@ public class AddEntryController extends BaseController {
             
         }catch(ObjectNotExistException e) {}
         
-        PageTemplate template = (PageTemplate)PageTemplateService.get(templateKey);
+        Lang lang = Lang.valueOf(asString("lang"));
+        String html = asString("html");
         
-        PageService.put(keyString, template);
+        PageService.add(keyString, lang, html);
         
-        return redirect("/mulcms/page/");
+        return redirect("/mulcms/");
     }
     
     /**
@@ -63,7 +62,8 @@ public class AddEntryController extends BaseController {
         Validators v = new Validators(request);
 
         v.add("url", v.required());
-        v.add("template", v.required());
+        v.add("html", v.required());
+        v.add("lang", v.required());
         
         return v.validate();
     }

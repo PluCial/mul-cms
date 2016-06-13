@@ -4,8 +4,7 @@ import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
-import com.google.appengine.api.datastore.Text;
-import com.plucial.mulcms.model.res.Res;
+import com.plucial.mulcms.model.res.InnerTextRes;
 import com.plucial.mulcms.service.res.ResService;
 
 public class UpdateResEntryController extends Controller {
@@ -22,11 +21,9 @@ public class UpdateResEntryController extends Controller {
         String content = asString("content");
         
         
-        Res model = ResService.get(keyString);
-
-        model.setValue(new Text(content));        
+        InnerTextRes model = (InnerTextRes)ResService.get(keyString);
+        model.setStringToValue(content);
         ResService.update(model);
-        
         
         requestScope("status", "OK");
         return forward("/ajax_response.jsp");

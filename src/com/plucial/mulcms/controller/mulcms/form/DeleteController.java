@@ -12,7 +12,7 @@ public class DeleteController extends BaseController {
     public Navigation run() throws Exception {
         
         String keyString = asString("keyString");
-        Form form = FormService.get(keyString);
+        Form form = (Form)FormService.get(keyString);
         
         requestScope("form", form);
         

@@ -49,7 +49,7 @@ Lang lang = Lang.valueOf((String) request.getAttribute("lang"));
 			                  <form action="/mulcms/page/deleteLangEntry" method="post">
 			                  	<input type="hidden" name="keyString" value="<%=pageObj.getKey().getName() %>">
 			                  	<input type="hidden" name="lang" value="<%=lang.toString() %>">
-			                  	<a href="/mulcms/page/setting?keyString=<%=pageObj.getKey().getName() %>&lang=<%=lang.toString() %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  	<a href="/mulcms/page/resource?keyString=<%=pageObj.getKey().getName() %>&lang=<%=lang.toString() %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
 			                  </form>
 			                </div>

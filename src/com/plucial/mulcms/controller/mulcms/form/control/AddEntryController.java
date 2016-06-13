@@ -21,7 +21,7 @@ public class AddEntryController extends BaseController {
             return forward("/mulcms/form/setting?keyString=" + keyString);
         }
         
-        Form form = FormService.get(keyString);
+        Form form = (Form)FormService.get(keyString);
         
         String controlName = asString("controlName");
         boolean required = !StringUtil.isEmpty(asString("required"));

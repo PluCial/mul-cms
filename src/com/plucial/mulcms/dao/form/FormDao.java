@@ -30,8 +30,8 @@ public class FormDao extends DaoBase<Form>{
      */
     public List<Form> getList(Page page) {
         return  Datastore.query(meta).filter(
-            meta.pageRef.equal(page.getKey())
-            ).asList();
+            meta.assetsRef.equal(page.getKey())
+            ).sort(new Sort(meta.createDate)).asList();
     }
 
 }

@@ -15,7 +15,7 @@ public class UpdateEntryController extends BaseController {
     public Navigation run() throws Exception {
         
         String keyString = asString("keyString");
-        Form model = FormService.get(keyString);
+        Form model = (Form)FormService.get(keyString);
         
         // 入力チェック
         if (!isPost() || !validate()) {
@@ -27,7 +27,7 @@ public class UpdateEntryController extends BaseController {
         Page transitionPage = (Page)PageService.get(asString("transitionPageKey"));
         
         model.setName(name);
-        model.getPageRef().setModel(page);
+        model.getAssetsRef().setModel(page);
         model.getTransitionPageRef().setModel(transitionPage);
         
         FormService.update(model);

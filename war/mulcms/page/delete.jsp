@@ -16,16 +16,11 @@ Page pageObj = (Page) request.getAttribute("page");
 <head>
 	<jsp:include page="/mulcms/includes/html_head.jsp" />
 </head>
-<body class="skin-blue sidebar-mini">
+<body class="skin-blue layout-top-nav">
 	<div class="wrapper">
 		<!-- site-header -->
 		<jsp:include page="/mulcms/includes/site_header.jsp" />
 		<!-- /site-header -->
-      
-		<!-- Left side column. contains the logo and sidebar -->
-		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
-			<jsp:param name="contentsType" value="page" />
-		</jsp:include>
       
 
 		<!-- Content Wrapper. Contains page content -->
@@ -38,15 +33,15 @@ Page pageObj = (Page) request.getAttribute("page");
             		<div class="col-md-6 col-md-offset-3">
 						<div class="box box-danger box-solid">
 			                <div class="box-header with-border">
-			                  <h3 class="box-title">Delete</h3>
+			                  <h3 class="box-title">削除</h3>
 			                </div><!-- /.box-header -->
 			                <div class="box-body">
-			                  Do you really want to delete the <b>[<%=pageObj.getKey().getName() %>]</b>?
+			                  ページ <b>[<%=pageObj.getKey().getName() %>]</b> を本当に削除しますか?
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
 			                  <form action="/mulcms/page/deleteEntry" method="post">
 			                  	<input type="hidden" name="keyString" value="<%=pageObj.getKey().getName() %>">
-			                  	<a href="/mulcms/page/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  	<a href="/mulcms/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
 			                  </form>
 			                </div>

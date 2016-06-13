@@ -2,17 +2,18 @@ package com.plucial.mulcms.service.assets;
 
 import java.util.List;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slim3.datastore.Datastore;
 
+import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.datastore.Transaction;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.dao.assets.MailDao;
 import com.plucial.mulcms.exception.TooManyException;
+import com.plucial.mulcms.model.RenderingItem;
 import com.plucial.mulcms.model.assets.Mail;
 import com.plucial.mulcms.model.res.Res;
-import com.plucial.mulcms.model.template.MailTemplate;
-import com.plucial.mulcms.model.template.PageTemplate;
-import com.plucial.mulcms.model.template.Template;
-import com.plucial.mulcms.service.JsoupService;
 import com.plucial.mulcms.service.res.ResService;
 
 
@@ -29,14 +30,29 @@ public class MailService extends AssetsService {
      * @return
      * @throws TooManyException
      */
-    public static Mail put(String name, PageTemplate template) throws TooManyException {
+    public static Mail add(String name, String html, Lang htmlLang) throws TooManyException {
+        
+        Document doc = Jsoup.parse(html);
         
         Mail model = new Mail();
         model.setKey(createKey());
         model.setName(name);
-        model.getTemplateRef().setModel(template);
+        model.setHtmlLang(htmlLang);
+        model.setHtml(new Text(doc.outerHtml()));
+        model.getLangList().add(htmlLang);
         
-        dao.put(model);
+        Transaction tx = Datastore.beginTransaction();
+        try {
+            Datastore.put(tx, model);
+            
+            ResService.importByDoc(tx, model, model.getHtmlLang(), doc);
+            
+            tx.commit();
+        }finally {
+            if(tx.isActive()) {
+                tx.rollback();
+            }
+        }
         
         return model;
     }
@@ -47,15 +63,6 @@ public class MailService extends AssetsService {
      */
     public static List<Mail> getList() {
         return dao.getList();
-    }
-    
-    /**
-     * 使用しているテンプレートからリストを取得
-     * @param template
-     * @return
-     */
-    public static List<Mail> getList(MailTemplate template) {
-        return dao.getList(template);
     }
     
 
@@ -71,20 +78,27 @@ public class MailService extends AssetsService {
      */
     public static Document getRenderedDoc(Mail mail, Lang localeLang, String gcsBucketName, String domainUrl, boolean isSigned) {
         
-        Template template = mail.getTemplateRef().getModel();
-        JsoupService jsoupService = new JsoupService(template.getHtmlString());
+        Document doc = Jsoup.parse(mail.getHtmlString());
         
         // ----------------------------------------------------
         // BodyのLang属性を追加
         // ----------------------------------------------------
-        jsoupService.getDoc().body().attr("lang", localeLang.toString());
+        doc.body().attr("lang", localeLang.toString());
         
         // ----------------------------------------------------
-        // テキストリソースの挿入
-        // ----------------------------------------------------     
-        List<Res> textResList = ResService.getAssetsAllResList(mail, localeLang);
-        renderedRes(jsoupService, textResList, domainUrl, isSigned);
+        // base URL を追加
+        // ----------------------------------------------------
+        doc.head().prepend("<base href='" + "https://storage.googleapis.com/" + gcsBucketName + "/'>");
         
-        return jsoupService.getDoc();
+        // ----------------------------------------------------
+        // リソースのレンダリング
+        // ----------------------------------------------------     
+        List<? extends Res> textResList = ResService.getList(mail, localeLang);
+        for(Res res: textResList) {
+            RenderingItem item = (RenderingItem)res;
+            item.reenderingDoc(doc, localeLang, domainUrl, isSigned);
+        }
+        
+        return doc;
     }
 }

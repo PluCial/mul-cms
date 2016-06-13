@@ -19,16 +19,11 @@ List<Page> pageList = (List<Page>) request.getAttribute("pageList");
 <head>
 	<jsp:include page="/mulcms/includes/html_head.jsp" />
 </head>
-<body class="skin-blue sidebar-mini">
+<body class="skin-blue layout-top-nav">
 	<div class="wrapper">
 		<!-- site-header -->
 		<jsp:include page="/mulcms/includes/site_header.jsp" />
 		<!-- /site-header -->
-      
-		<!-- Left side column. contains the logo and sidebar -->
-		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
-			<jsp:param name="contentsType" value="form" />
-		</jsp:include>
       
 
 		<!-- Content Wrapper. Contains page content -->

@@ -18,7 +18,7 @@ public class SettingController extends BaseController {
     public Navigation run() throws Exception {
         
         String keyString = asString("keyString");
-        Form form = FormService.get(keyString);
+        Form form = (Form)FormService.get(keyString);
         requestScope("form", form);
         
         requestScope("name", form.getName());
@@ -26,7 +26,7 @@ public class SettingController extends BaseController {
         List<Page> pageList = PageService.getList();
         requestScope("pageList", pageList);
         
-        List<FormControl> controlList = FormControlService.getList();
+        List<FormControl> controlList = FormControlService.getList(form);
         requestScope("controlList", controlList);
         
         return forward("setting.jsp");

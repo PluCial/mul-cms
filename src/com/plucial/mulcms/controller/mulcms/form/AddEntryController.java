@@ -5,10 +5,8 @@ import org.slim3.controller.validator.Validators;
 
 import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.model.assets.Page;
-import com.plucial.mulcms.model.template.MailTemplate;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.form.FormService;
-import com.plucial.mulcms.service.template.MailTemplateService;
 
 public class AddEntryController extends BaseController {
 
@@ -20,15 +18,11 @@ public class AddEntryController extends BaseController {
             return forward("/mulcms/form/");
         }
         
-        String formId = asString("formId");
         String name = asString("name");
-        Page page = (Page)PageService.get(asString("pageKey"));
+        Page page = (Page)PageService.get(asString("pageKeyString"));
         Page transitionPage = (Page)PageService.get(asString("transitionPageKey"));
         
-        // メールテンプレート
-        MailTemplate mailTemplate = (MailTemplate)MailTemplateService.get("mailTemplateKey");
-        
-        FormService.add(formId, name, page, transitionPage, mailTemplate, super.getAdminUser());
+        FormService.add(name, page, transitionPage);
         
         
         return redirect("/mulcms/form/");
@@ -41,9 +35,8 @@ public class AddEntryController extends BaseController {
     private boolean validate() {
         Validators v = new Validators(request);
 
-        v.add("formId", v.required());
         v.add("name", v.required());
-        v.add("pageKey", v.required());
+        v.add("pageKeyString", v.required());
         v.add("transitionPageKey", v.required());
         
         return v.validate();
