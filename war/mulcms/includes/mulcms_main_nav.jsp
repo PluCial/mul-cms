@@ -22,21 +22,6 @@ String contentsType = request.getParameter("contentsType");
 							</ul>
 						</div><!-- /.box-body -->
 					</div><!-- /. box -->
-					
-					<div class="box box-solid">
-						<div class="box-header with-border">
-							<h3 class="box-title">Template</h3>
-							<div class='box-tools'>
-								<button class='btn btn-box-tool' data-widget='collapse'><i class='fa fa-minus'></i></button>
-							</div>
-						</div>
-						<div class="box-body no-padding">
-							<ul class="nav nav-pills nav-stacked">
-								<li class="<%=contentsType.equals("pageTemplate") ? "active" : "" %>"><a href="/mulcms/template/page/"><i class="fa fa-file-text-o"></i> Page Template</a></li>
-								<li class="<%=contentsType.equals("widgetTemplate") ? "active" : "" %>"><a href="/mulcms/template/widget/"><i class="fa fa-files-o"></i> Widget Template</a></li>
-							</ul>
-						</div><!-- /.box-body -->
-					</div><!-- /. box -->
               
 					<div class="box box-solid">
 						<div class="box-header with-border">

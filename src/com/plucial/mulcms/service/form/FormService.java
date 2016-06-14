@@ -25,12 +25,13 @@ public class FormService extends RenderingService {
      * @param transitionPage
      * @return
      */
-    public static Form add(String name, Page page, Page transitionPage) {
+    public static Form add(String cssQuery, String name, Page page, Page transitionPage) {
         
         Transaction tx = Datastore.beginTransaction();
         Form model = null;
         try {
             model = new Form();
+            model.setCssQuery(cssQuery);
             model.setKey(createKey());
             model.setName(name);
             model.getAssetsRef().setModel(page);

@@ -22,6 +22,7 @@ public class SettingController extends BaseController {
         requestScope("form", form);
         
         requestScope("name", form.getName());
+        requestScope("cssQuery", form.getCssQuery());
         
         List<Page> pageList = PageService.getList();
         requestScope("pageList", pageList);

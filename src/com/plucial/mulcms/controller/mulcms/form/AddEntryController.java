@@ -19,13 +19,14 @@ public class AddEntryController extends BaseController {
         }
         
         String name = asString("name");
+        String cssQuery = asString("cssQuery");
         Page page = (Page)PageService.get(asString("pageKeyString"));
         Page transitionPage = (Page)PageService.get(asString("transitionPageKey"));
         
-        FormService.add(name, page, transitionPage);
+        FormService.add(cssQuery, name, page, transitionPage);
         
         
-        return redirect("/mulcms/form/");
+        return redirect("/mulcms/form/?keyString=" + page.getKey().getName());
     }
     
     /**
@@ -36,6 +37,7 @@ public class AddEntryController extends BaseController {
         Validators v = new Validators(request);
 
         v.add("name", v.required());
+        v.add("cssQuery", v.required());
         v.add("pageKeyString", v.required());
         v.add("transitionPageKey", v.required());
         

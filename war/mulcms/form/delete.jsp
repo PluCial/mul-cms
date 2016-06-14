@@ -4,10 +4,12 @@
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="com.plucial.mulcms.model.form.*" %>
+<%@ page import="com.plucial.mulcms.model.assets.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
+Page pageObj = (Page) request.getAttribute("page");
 Form form = (Form) request.getAttribute("form");
 %>
 <!DOCTYPE html>
@@ -15,16 +17,11 @@ Form form = (Form) request.getAttribute("form");
 <head>
 	<jsp:include page="/mulcms/includes/html_head.jsp" />
 </head>
-<body class="skin-blue sidebar-mini">
+<body class="skin-blue layout-top-nav">
 	<div class="wrapper">
 		<!-- site-header -->
 		<jsp:include page="/mulcms/includes/site_header.jsp" />
 		<!-- /site-header -->
-      
-		<!-- Left side column. contains the logo and sidebar -->
-		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
-			<jsp:param name="contentsType" value="pageTemplate" />
-		</jsp:include>
       
 
 		<!-- Content Wrapper. Contains page content -->
@@ -40,12 +37,12 @@ Form form = (Form) request.getAttribute("form");
 			                  <h3 class="box-title">Delete</h3>
 			                </div><!-- /.box-header -->
 			                <div class="box-body">
-			                  Do you really want to delete the <b>[<%=form.getName() %>]</b>?
+			                  <b>[<%=form.getName() %>]</b>を本当に削除しますか?
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
 			                  <form action="/mulcms/form/deleteEntry" method="post">
 			                  	<input type="hidden" name="keyString" value="<%=form.getKey().getName() %>">
-			                  	<a href="/mulcms/form/" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  	<a href="/mulcms/form/?keyString=<%=pageObj.getKey().getName() %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
 			                  </form>
 			                </div>

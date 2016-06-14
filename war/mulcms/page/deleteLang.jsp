@@ -4,7 +4,6 @@
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="com.plucial.mulcms.model.assets.*" %>
-<%@ page import="com.plucial.mulcms.model.template.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>

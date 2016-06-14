@@ -23,11 +23,12 @@ public class UpdateEntryController extends BaseController {
         }
         
         String name = asString("name");
-        Page page = (Page)PageService.get(asString("pageKey"));
+        String cssQuery = asString("cssQuery");
+        
         Page transitionPage = (Page)PageService.get(asString("transitionPageKey"));
         
         model.setName(name);
-        model.getAssetsRef().setModel(page);
+        model.setCssQuery(cssQuery);
         model.getTransitionPageRef().setModel(transitionPage);
         
         FormService.update(model);
@@ -43,7 +44,8 @@ public class UpdateEntryController extends BaseController {
     private boolean validate() {
         Validators v = new Validators(request);
         v.add("name", v.required());
-        v.add("pageKey", v.required());
+        v.add("cssQuery", v.required());
+        v.add("keyString", v.required());
         v.add("transitionPageKey", v.required());
         
         return v.validate();

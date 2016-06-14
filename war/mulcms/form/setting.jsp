@@ -9,6 +9,7 @@
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.slim3.controller.validator.Errors" %>
+<%@ page import="com.plucial.mulcms.utils.*" %>
 <%
 Errors errors = (Errors) request.getAttribute("errors");
 Form form = (Form) request.getAttribute("form");
@@ -20,16 +21,11 @@ List<FormControl> controlList = (List<FormControl>) request.getAttribute("contro
 <head>
 	<jsp:include page="/mulcms/includes/html_head.jsp" />
 </head>
-<body class="skin-blue sidebar-mini">
+<body class="skin-blue layout-top-nav">
 	<div class="wrapper">
 		<!-- site-header -->
 		<jsp:include page="/mulcms/includes/site_header.jsp" />
 		<!-- /site-header -->
-      
-		<!-- Left side column. contains the logo and sidebar -->
-		<jsp:include page="/mulcms/includes/main_sidebar.jsp">
-			<jsp:param name="contentsType" value="form" />
-		</jsp:include>
       
 
 		<!-- Content Wrapper. Contains page content -->
@@ -53,22 +49,19 @@ List<FormControl> controlList = (List<FormControl>) request.getAttribute("contro
 					
 						<div class="box box-primary">
 							<div class="box-header with-border">
-								<h3 class="box-title">フォームID: <%=form.getKey().getName() %></h3>
+								<h3 class="box-title"><%=form.getName() %></h3>
 							</div>
 							<form action="/mulcms/form/updateEntry" method="post">
 								<div class="box-body">
 									<div class="form-group">
-										<label>フォーム名</label>
-										<input ${f:text("name")} class="form-control" placeholder="コンタクトフォーム">
+	                    				<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-css3"></i></span>
+											<input ${f:text("cssQuery")} class="form-control" placeholder="Css Query">
+										</div>
 									</div>
 									<div class="form-group">
-										<label>このフォームを表示するページ</label>
-										<select name="pageKey" class="form-control">
-											<option value="">-- Select Page --</option>
-											<%for(Page pageObj: pageList) { %>
-											<option value="<%=pageObj.getKey().getName() %>" <%=form.getPageRef().getKey().equals(pageObj.getKey()) ? "selected" : "" %>><%=pageObj.getKey().getName() %></option>
-											<%} %>
-										</select>
+										<label>フォーム名</label>
+										<input ${f:text("name")} class="form-control" placeholder="コンタクトフォーム">
 									</div>
 									<div class="form-group">
 										<label>処理後に遷移するページ</label>
@@ -122,7 +115,7 @@ List<FormControl> controlList = (List<FormControl>) request.getAttribute("contro
 		                	</div><!-- /.box-body -->
 		                	
 		                	<div class="box-footer with-border">
-		                		<form action="/mulcms/form/control/addEntry" method="post">
+		                		<form action="/mulcms/form/control/addEntry" method="post" style="margin-top: 15px;">
 			                		<div class="row">
 			                			<div class="form-group col-md-6">
 											<input ${f:text("controlName")} class="form-control" placeholder="コントローラーの Name属性">

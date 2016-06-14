@@ -5,7 +5,6 @@
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="org.slim3.controller.validator.Errors" %>
 <%@ page import="com.plucial.mulcms.model.assets.*" %>
-<%@ page import="com.plucial.mulcms.model.template.*" %>
 <%@ page import="com.plucial.mulcms.enums.*" %>
 <%@ page import="com.plucial.mulcms.model.res.*" %>
 <%@ page import="com.plucial.global.Lang" %>

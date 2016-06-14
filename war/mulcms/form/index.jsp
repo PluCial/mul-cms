@@ -9,10 +9,13 @@
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.slim3.controller.validator.Errors" %>
+<%@ page import="com.plucial.mulcms.utils.*" %>
 <%
 Errors errors =(Errors) request.getAttribute("errors");
 List<Form> formList = (List<Form>) request.getAttribute("formList");
 List<Page> pageList = (List<Page>) request.getAttribute("pageList");
+
+Page targetPage = (Page)request.getAttribute("page");
 %>
 <!DOCTYPE html>
 <html>
@@ -52,21 +55,14 @@ List<Page> pageList = (List<Page>) request.getAttribute("pageList");
 							<form action="/mulcms/form/addEntry" method="post">
 								<div class="box-body">
 									<div class="form-group">
-										<label>フォームID</label>
-										<input ${f:text("formId")} class="form-control" placeholder="contact">
+	                    				<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-css3"></i></span>
+											<input ${f:text("cssQuery")} class="form-control" placeholder="Css Query">
+										</div>
 									</div>
 									<div class="form-group">
 										<label>フォーム名</label>
 										<input ${f:text("name")} class="form-control" placeholder="コンタクトフォーム">
-									</div>
-									<div class="form-group">
-										<label>このフォームを表示するページ</label>
-										<select name="pageKey" class="form-control">
-											<option value="">-- Select Page --</option>
-											<%for(Page pageObj: pageList) { %>
-											<option value="<%=pageObj.getKey().getName() %>"><%=pageObj.getKey().getName() %></option>
-											<%} %>
-										</select>
 									</div>
 									<div class="form-group">
 										<label>処理後に遷移するページ</label>
@@ -78,6 +74,7 @@ List<Page> pageList = (List<Page>) request.getAttribute("pageList");
 										</select>
 									</div>
 								</div><!-- /.box-body -->
+								<input type="hidden" name="pageKeyString" value="<%=targetPage.getKey().getName() %>">
 								<div class="box-footer text-right">
 									<button type="submit" class="btn btn-primary">追加</button>
 								</div>
@@ -96,7 +93,7 @@ List<Page> pageList = (List<Page>) request.getAttribute("pageList");
 									</div>
 									<span class="info-box-icon bg-yellow disabled color-palette"><i class="fa fa-object-group"></i></span>
 									<div class="info-box-content">
-										<span class="info-box-text"><%=form.getKey().getName() %></span>
+										<span class="info-box-text" style="text-transform: none;"><i class="fa fa-css3"></i> <%=HtmlUtils.htmlEscape(form.getCssQuery()) %></span>
 										<span class="info-box-number"><a href="/mulcms/form/setting?keyString=<%=form.getKey().getName() %>"><%=form.getName() %></a></span>
 									</div><!-- /.info-box-content -->
 								</div>

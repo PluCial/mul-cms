@@ -1,11 +1,16 @@
-<!-- Indices written at Tue, 14 Jun 2016 11:05:34 JST -->
+<!-- Indices written at Tue, 14 Jun 2016 20:22:47 JST -->
 
 <datastore-indexes>
 
-    <!-- Used 16 times in query history -->
+    <!-- Used 24 times in query history -->
+    <datastore-index kind="Assets" ancestor="false" source="auto">
+        <property name="slim3.classHierarchyList" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 4 times in query history -->
     <datastore-index kind="Rendering" ancestor="false" source="auto">
         <property name="assetsRef" direction="asc"/>
-        <property name="lang" direction="asc"/>
         <property name="slim3.classHierarchyList" direction="asc"/>
         <property name="createDate" direction="asc"/>
     </datastore-index>
@@ -13,18 +18,7 @@
     <!-- Used 2 times in query history -->
     <datastore-index kind="Rendering" ancestor="false" source="auto">
         <property name="assetsRef" direction="asc"/>
-        <property name="slim3.classHierarchyList" direction="asc"/>
-        <property name="createDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Template" ancestor="false" source="auto">
-        <property name="slim3.classHierarchyList" direction="asc"/>
-        <property name="createDate" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Assets" ancestor="false" source="auto">
+        <property name="lang" direction="asc"/>
         <property name="slim3.classHierarchyList" direction="asc"/>
         <property name="createDate" direction="asc"/>
     </datastore-index>
