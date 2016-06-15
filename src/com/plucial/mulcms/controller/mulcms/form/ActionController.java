@@ -18,6 +18,8 @@ import com.plucial.mulcms.enums.AppProperty;
 import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.widgets.form.Form;
 import com.plucial.mulcms.model.widgets.form.FormControl;
+import com.plucial.mulcms.model.widgets.form.MailAction;
+import com.plucial.mulcms.service.EMailService;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.widgets.form.FormControlService;
 import com.plucial.mulcms.service.widgets.form.FormService;
@@ -100,7 +102,12 @@ public class ActionController extends AppController {
         
         Document mailBody = ReceptionMailActionService.getMailBody(userLang, localeLang, controlList, userLocaleProp, googleApiPublicServerKey, googleApiApplicationName);
         mailBody.head().append("<meta charset='UTF-8'>");
-        System.out.println(mailBody.outerHtml());
+        
+        List<MailAction> mailActionList = ReceptionMailActionService.getList(form);
+        String adminEmail = appPropertyMap.get(AppProperty.APP_ADMIN_EMAIL.toString());
+        
+        // 送信
+        EMailService.receptionMail(adminEmail, form.getName(), mailBody.outerHtml(), super.isLocal(), mailActionList);
         
         return redirect("/" + super.getLocaleLang() + form.getTransitionPageRef().getKey().getName());
     }
