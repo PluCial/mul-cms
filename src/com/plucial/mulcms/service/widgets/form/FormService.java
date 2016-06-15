@@ -4,10 +4,8 @@ import java.util.List;
 
 import org.slim3.datastore.Datastore;
 
-import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Transaction;
 import com.plucial.mulcms.dao.widgets.form.FormDao;
-import com.plucial.mulcms.meta.widgets.form.FormMeta;
 import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.widgets.form.Form;
 import com.plucial.mulcms.service.RenderingService;
@@ -31,8 +29,8 @@ public class FormService extends RenderingService {
         Form model = null;
         try {
             model = new Form();
-            model.setCssQuery(cssQuery);
             model.setKey(createKey());
+            model.setCssQuery(cssQuery);
             model.setName(name);
             model.getAssetsRef().setModel(page);
             model.getTransitionPageRef().setModel(transitionPage);
@@ -56,19 +54,5 @@ public class FormService extends RenderingService {
      */
     public static List<Form> getList(Page page) {
         return dao.getList(page);
-    }
-    
-    
-    
-    // ----------------------------------------------------------------------
-    // キーの作成
-    // ----------------------------------------------------------------------
-    /**
-     * キーの作成
-     * @param keyString
-     * @return
-     */
-    protected static Key createKey(String keyString) {
-        return Datastore.createKey(FormMeta.get(), keyString);
     }
 }

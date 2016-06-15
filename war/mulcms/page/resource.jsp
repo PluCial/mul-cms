@@ -9,6 +9,7 @@
 <%@ page import="org.slim3.controller.validator.Errors" %>
 <%@ page import="com.plucial.mulcms.utils.*" %>
 <%@ page import="com.plucial.global.Lang" %>
+<%@ page import="java.util.Properties" %>
 <%
 Errors errors =(Errors) request.getAttribute("errors");
 Page pageObj =  (Page) request.getAttribute("page");
@@ -19,6 +20,8 @@ Lang targetLang = Lang.valueOf((String) request.getAttribute("lang"));
 
 List<AttrRes> attrResList = (List<AttrRes>) request.getAttribute("attrResList");
 List<InnerTextRes> innerTextResList = (List<InnerTextRes>) request.getAttribute("innerTextResList");
+
+Properties userProp = (Properties) request.getAttribute("userProp");
 %>
 <!DOCTYPE html>
 <html>
@@ -36,7 +39,7 @@ List<InnerTextRes> innerTextResList = (List<InnerTextRes>) request.getAttribute(
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-				<h1><%=pageObj.getKey().getName() %><small><%=targetLang.getName() %></small></h1>
+				<h1><%=pageObj.getKey().getName() %><small><%=userProp.getProperty("lang." + targetLang.toString()) %></small></h1>
 			</section>
 			
 			<section class="content">
@@ -129,7 +132,7 @@ List<InnerTextRes> innerTextResList = (List<InnerTextRes>) request.getAttribute(
 											<%for(Lang lang: supportLangList) { 
 												if(lang != targetLang) {
 											%>
-											<option value="<%=lang.toString() %>"><%=lang.getName() %></option>
+											<option value="<%=lang.toString() %>"><%=userProp.getProperty("lang." + lang.toString()) %></option>
 											<%} %>
 											<%} %>
 										</select>
@@ -138,25 +141,25 @@ List<InnerTextRes> innerTextResList = (List<InnerTextRes>) request.getAttribute(
 										<input type="hidden" name="targetLang" value="<%=targetLang.toString() %>" />
 										<button name="keyString" value="<%=pageObj.getKey().getName() %>" type="submit" class="btn btn-primary">翻訳</button>
 									</div>
-									<%if(supportLangList.indexOf(targetLang) >= 0) { %>
+									<%-- <%if(supportLangList.indexOf(targetLang) >= 0) { %>
 									<p>すでに翻訳されている項目は再翻訳されません。<p>
 									<p>全てを再翻訳したい場合は、このページを一度削除してから再度翻訳を行ってください。</p>
-									<%} %>
+									<%} %> --%>
 								</div><!-- /.box-body -->
 							</form>
 						</div>
 						<%} %>
 						
 						<%if(supportLangList.indexOf(targetLang) >= 0) { %>
-						<a class="btn btn-default btn-block margin-bottom" target="view" href="/<%=targetLang.toString() %><%=pageObj.getKey().getName() %>"><i class="fa fa-external-link"></i> ページの確認</a>
+						<a class="btn btn-default btn-block margin-bottom" target="view" href="/<%=targetLang.toString() %><%=pageObj.getKey().getName() %>"><i class="fa fa-external-link"></i> ページを確認</a>
 						<%} %>
 						
 						<%if(pageObj.getHtmlLang() == targetLang) { %>
-						<a href="/mulcms/page/extractionResEntry?keyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang.toString() %>" class="btn btn-primary btn-block margin-bottom"><i class="fa fa-refresh"></i> リソースの更新</a>
+						<a href="/mulcms/page/extractionResEntry?keyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang.toString() %>" class="btn btn-primary btn-block margin-bottom"><i class="fa fa-refresh"></i> リソースを更新</a>
 						<%} %>
 						
 						<%if(supportLangList.indexOf(targetLang) >= 0) { %>
-						<a class="btn btn-danger btn-block margin-bottom" href="/mulcms/page/deleteLang?keyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang.toString() %>"><i class="fa fa-trash"></i> <%=targetLang.getName() %>ページの削除</a>
+						<a class="btn btn-danger btn-block margin-bottom" href="/mulcms/page/deleteLang?keyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang.toString() %>"><i class="fa fa-trash"></i> <%=userProp.getProperty("lang." + targetLang.toString()) %>を削除</a>
 						<%} %>
 					</div>
 					
@@ -259,9 +262,9 @@ List<InnerTextRes> innerTextResList = (List<InnerTextRes>) request.getAttribute(
 						<a href="/mulcms/page/resource?keyString=<%=pageObj.getKey().getName() %>&lang=<%=lang.toString() %>">
 							<span class="control-sidebar-subheading">
 								<%if(targetLang == lang) { %>
-									<b><%=lang.getName() %></b>
+									<b><%=userProp.getProperty("lang." + lang.toString()) %></b>
 								<%}else { %>
-									<%=lang.getName() %>
+									<%=userProp.getProperty("lang." + lang.toString()) %>
 								<%} %>
 								
 								<%if(pageObj.getLangList().indexOf(lang) >= 0) { %>

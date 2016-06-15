@@ -11,8 +11,6 @@ public class MailAction extends FormAction implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    private Email adminEmail;
-    
     private Email sendEmail;
 
     public Email getSendEmail() {
@@ -22,14 +20,5 @@ public class MailAction extends FormAction implements Serializable {
     public void setSendEmail(Email sendEmail) {
         this.sendEmail = sendEmail;
     }
-
-    public Email getAdminEmail() {
-        return adminEmail;
-    }
-
-    public void setAdminEmail(Email adminEmail) {
-        this.adminEmail = adminEmail;
-    }
-
     
 }

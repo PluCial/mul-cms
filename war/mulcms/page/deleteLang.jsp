@@ -8,9 +8,12 @@
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="com.plucial.global.Lang" %>
+<%@ page import="java.util.Properties" %>
 <%
 Page pageObj = (Page) request.getAttribute("page");
 Lang lang = Lang.valueOf((String) request.getAttribute("lang"));
+
+Properties userProp = (Properties) request.getAttribute("userProp");
 %>
 <!DOCTYPE html>
 <html>
@@ -42,7 +45,7 @@ Lang lang = Lang.valueOf((String) request.getAttribute("lang"));
 			                  <h3 class="box-title">削除</h3>
 			                </div><!-- /.box-header -->
 			                <div class="box-body">
-			                  <b>[<%=pageObj.getKey().getName() %>]</b> の <b><%=lang.getName() %></b> バージョンを削除してよろしいですか？
+			                  <b>[<%=pageObj.getKey().getName() %>]</b> の <b><%=userProp.getProperty("lang." + lang.toString()) %></b> を削除してよろしいですか？
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
 			                  <form action="/mulcms/page/deleteLangEntry" method="post">

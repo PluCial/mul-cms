@@ -11,9 +11,11 @@ import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.widgets.form.Form;
 import com.plucial.mulcms.model.widgets.form.FormControl;
+import com.plucial.mulcms.model.widgets.form.MailAction;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.widgets.form.FormControlService;
 import com.plucial.mulcms.service.widgets.form.FormService;
+import com.plucial.mulcms.service.widgets.form.MailActionService;
 
 public class SettingController extends BaseController {
 
@@ -33,6 +35,9 @@ public class SettingController extends BaseController {
         
         List<FormControl> controlList = FormControlService.getList(form);
         requestScope("controlList", controlList);
+        
+        List<MailAction> mailActionList = MailActionService.getList(form);
+        requestScope("mailActionList", mailActionList);
         
         return forward("setting.jsp");
     }

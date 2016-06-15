@@ -192,7 +192,9 @@ public abstract class AppController extends Controller {
         
         try {
             User user = getAdminUser();
+            
             Properties userProp = getAppProp(Lang.ja);
+            requestScope("userProp", userProp);
             
             Lang localeLang = Lang.valueOf(appPropertyMap.get(AppProperty.APP_BASE_LANG.toString()));
             

@@ -15,6 +15,7 @@ Errors errors = (Errors) request.getAttribute("errors");
 Form form = (Form) request.getAttribute("form");
 List<Page> pageList = (List<Page>) request.getAttribute("pageList");
 List<FormControl> controlList = (List<FormControl>) request.getAttribute("controlList");
+List<MailAction> mailActionList = (List<MailAction>) request.getAttribute("mailActionList");
 %>
 <!DOCTYPE html>
 <html>
@@ -141,9 +142,51 @@ List<FormControl> controlList = (List<FormControl>) request.getAttribute("contro
 			                		</div>
 		                		</form>
 		                	</div>
-						</div><!-- /. box -->
-						
+						</div><!-- /. box -->	
 					</div><!-- /.col -->
+					
+					<div class="col-md-3">
+						<div class="box box-warning">
+							<div class="box-header with-border">
+								<h3 class="box-title"><i class="fa fa-envelope"></i> 送信先</h3>
+							</div><!-- /.box-header -->
+	
+							<div class=".box-body">
+								<div class="table-responsive mailbox-messages">
+									<table class="table table-hover table-striped">
+										<tbody>
+											<%for(MailAction action: mailActionList) { %>
+											<tr>
+												<td><%=action.getSendEmail().getEmail() %></td>
+												<td style="width:60px">
+													<a class="btn btn-box-tool btn-sm" href="/mulcms/form/action/deleteEntry?keyString=<%=action.getKey().getName() %>">
+														<i class="fa fa-times"></i>
+													</a>
+												</td>
+											</tr>
+											<%} %>
+										</tbody>
+									</table><!-- /.table -->
+								</div><!-- /.mail-box-messages -->
+		                	</div><!-- /.box-body -->
+		                	
+		                	<div class="box-footer with-border">
+		                		<form action="/mulcms/form/action/addReceptionMailEntry" method="post" style="margin-top: 15px;">
+		                			<input type="hidden" name="keyString" value="<%=form.getKey().getName() %>" />
+			                		<div class="form-group">
+			                			<div class="input-group input-group-sm">
+			                				<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+											<input type="email" name="email" class="form-control" placeholder="メールアドレス">
+											<span class="input-group-btn">
+												<button class="btn btn-primary btn-flat" type="submit">追加</button>
+											</span>
+										</div>
+			               			</div>
+		                		</form>
+		                	</div>
+						</div><!-- /. box -->	
+					</div><!-- /.col -->
+					
 				</div><!-- /.row -->
 			</section><!-- /.content -->
 			<!-- /.content -->
