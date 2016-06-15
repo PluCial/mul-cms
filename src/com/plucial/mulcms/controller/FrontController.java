@@ -21,14 +21,16 @@ public class FrontController extends AppController {
             Lang localeLang) throws Exception {
         
         String gcsBucketName = appPropertyMap.get(AppProperty.APP_GCS_BUCKET_NAME.toString());
+        
         renderingPageDoc(localeLang, gcsBucketName, false);
         return forward("/front.jsp");
     }
 
     @Override
     protected Navigation signed(Map<String, String> appPropertyMap, User user,
-            Lang localeLang, Properties userLocaleProp) throws Exception {
+            Lang userLang, Properties userLocaleProp) throws Exception {
         
+        Lang localeLang = super.getLocaleLang();
         String gcsBucketName = appPropertyMap.get(AppProperty.APP_GCS_BUCKET_NAME.toString());
         renderingPageDoc(localeLang, gcsBucketName, true);
         return forward("/front.jsp");

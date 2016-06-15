@@ -37,6 +37,9 @@ public class FormControl implements Serializable {
     /** Form との関連 */
     private ModelRef<Form> formRef = new ModelRef<Form>(Form.class);
     
+    @Attribute(persistent = false)
+    private String postValue;
+    
     // ----------------------------------------------------------------------
     // その他
     // ----------------------------------------------------------------------
@@ -170,5 +173,13 @@ public class FormControl implements Serializable {
 
     public void setEmail(boolean isEmail) {
         this.isEmail = isEmail;
+    }
+
+    public String getPostValue() {
+        return postValue;
+    }
+
+    public void setPostValue(String postValue) {
+        this.postValue = postValue;
     }
 }

@@ -21,19 +21,25 @@ import com.plucial.mulcms.model.widgets.form.FormControl;
 import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.widgets.form.FormControlService;
 import com.plucial.mulcms.service.widgets.form.FormService;
+import com.plucial.mulcms.service.widgets.form.ReceptionMailActionService;
 
 public class ActionController extends AppController {
     
     @Override
     protected Navigation notSigned(Map<String, String> appPropertyMap,
             Lang localeLang) throws Exception {
-        return execute(appPropertyMap, false);
+        
+        Lang userLang = Lang.valueOf(appPropertyMap.get(AppProperty.APP_BASE_LANG.toString()));
+        Properties userLocaleProp = super.getAppProp(userLang);
+        return execute(appPropertyMap, localeLang, userLang, userLocaleProp, false);
     }
 
     @Override
     protected Navigation signed(Map<String, String> appPropertyMap, User user,
-            Lang localeLang, Properties userLocaleProp) throws Exception {
-        return execute(appPropertyMap, true);
+            Lang userLang, Properties userLocaleProp) throws Exception {
+        Lang localeLang = super.getLocaleLang();
+        
+        return execute(appPropertyMap, localeLang, userLang, userLocaleProp, true);
     }
 
     /**
@@ -43,12 +49,12 @@ public class ActionController extends AppController {
      * @return
      * @throws Exception
      */
-    private Navigation execute(Map<String, String> appPropertyMap, boolean isSigned) throws Exception {
+    private Navigation execute(Map<String, String> appPropertyMap, Lang localeLang, Lang userLang, Properties userLocaleProp, boolean isSigned) throws Exception {
 
         // ----------------------------------------------------
         // Formの取得
         // ----------------------------------------------------
-        String keyString = asString("keyString");
+        String keyString = asString("formId");
         if(StringUtil.isEmpty(keyString)) throw new NoContentsException();
 
         Form form = null;
@@ -81,6 +87,20 @@ public class ActionController extends AppController {
             
             return forward("/front.jsp");
         }
+        
+        // ----------------------------------------------------
+        // アクション
+        // ----------------------------------------------------
+        for(FormControl control: controlList) {
+            String postValue = asString(control.getControlName());
+            control.setPostValue(postValue);
+        }
+        String googleApiPublicServerKey = appPropertyMap.get(AppProperty.GOOGLE_API_PUBLIC_SERVER_KEY.toString());
+        String googleApiApplicationName = appPropertyMap.get(AppProperty.APP_ID.toString());
+        
+        Document mailBody = ReceptionMailActionService.getMailBody(userLang, localeLang, controlList, userLocaleProp, googleApiPublicServerKey, googleApiApplicationName);
+        mailBody.head().append("<meta charset='UTF-8'>");
+        System.out.println(mailBody.outerHtml());
         
         return redirect("/" + super.getLocaleLang() + form.getTransitionPageRef().getKey().getName());
     }

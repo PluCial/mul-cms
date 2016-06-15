@@ -22,6 +22,7 @@ import com.plucial.global.Lang;
 import com.plucial.mulcms.model.assets.Assets;
 import com.plucial.mulcms.model.res.InnerRes;
 import com.plucial.mulcms.model.res.InnerTextRes;
+import com.plucial.mulcms.model.widgets.form.FormControl;
 import com.plucial.mulcms.service.res.InnerTextResService;
 import com.plucial.mulcms.service.res.ResService;
 
@@ -131,6 +132,40 @@ public class GoogleTransService {
         return Jsoup.parse(transResult);
     }
     
+    /**
+     * 機械翻訳
+     * @param contents
+     * @return
+     * @throws ArgumentException 
+     * @throws IOException 
+     * @throws Exception 
+     */
+    public Document mailTrans(
+            Lang srcLang, 
+            Lang targetLang,
+            List<FormControl> transSrcList) throws TransException, IOException {
+        
+        if(transSrcList == null || transSrcList.size() <= 0) {
+            throw new TransException("翻訳するコンテンツはありません。");
+        }
+        
+        // 通常モード
+        String transSrc = "";
+        
+        for(FormControl tc: transSrcList) {
+            String content = tc.getPostValue();
+            content = StringUtil.changeIndentionToHtml(content); // 改行コードを<br /> に変換して翻訳する
+
+            transSrc = transSrc + "<div id=\"" + tc.getKey().getName() + "\">" + content +  "</div>";
+        }
+        
+        // 翻訳処理
+        String transResult = machineTrans(srcLang, targetLang, transSrc);
+        
+        // HTMLに変換
+        return Jsoup.parse(transResult);
+    }
+    
     
     /**
      * Google 翻訳
@@ -138,7 +173,7 @@ public class GoogleTransService {
      * @return
      * @throws IOException 
      */
-    private String machineTrans(Lang srcLang, Lang targetLang, String source) throws IOException {
+    public String machineTrans(Lang srcLang, Lang targetLang, String source) throws IOException {
         
         // 翻訳Translate の生成
         Translate translate = new Translate.Builder(new NetHttpTransport(), new JacksonFactory(), null)

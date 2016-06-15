@@ -218,11 +218,11 @@ public abstract class AppController extends Controller {
      * リクエスト処理
      * @param appPropertyMap
      * @param user
-     * @param localeLang
+     * @param userLang
      * @param userLocaleProp
      * @return
      * @throws Exception
      */
-    protected abstract Navigation signed(Map<String, String> appPropertyMap, User user, Lang localeLang, Properties userLocaleProp) throws Exception;
+    protected abstract Navigation signed(Map<String, String> appPropertyMap, User user, Lang userLang, Properties userLocaleProp) throws Exception;
 
 }
