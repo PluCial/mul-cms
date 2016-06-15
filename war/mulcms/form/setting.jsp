@@ -4,7 +4,7 @@
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
 <%@ page import="com.plucial.mulcms.model.assets.*" %>
-<%@ page import="com.plucial.mulcms.model.form.*" %>
+<%@ page import="com.plucial.mulcms.model.widgets.form.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -33,7 +33,7 @@ List<FormControl> controlList = (List<FormControl>) request.getAttribute("contro
 
 	        <!-- Main content -->
 			<section class="content">
-				<h2 class="page-header"><i class="fa fa-users"></i> フォームの管理</h2>
+				<h2 class="page-header"><i class="fa fa-users"></i> <%=form.getName() %></h2>
 				
 				<div class="row">
 					<div class="col-md-3">
@@ -47,9 +47,9 @@ List<FormControl> controlList = (List<FormControl>) request.getAttribute("contro
 						<!-- /alert -->
 						<%} %>
 					
-						<div class="box box-primary">
+						<div class="box">
 							<div class="box-header with-border">
-								<h3 class="box-title"><%=form.getName() %></h3>
+								<h3 class="box-title">フォームの修正</h3>
 							</div>
 							<form action="/mulcms/form/updateEntry" method="post">
 								<div class="box-body">
@@ -84,7 +84,7 @@ List<FormControl> controlList = (List<FormControl>) request.getAttribute("contro
 					<div class="col-md-6">
 						<div class="box box-primary">
 							<div class="box-header with-border">
-								<h3 class="box-title">コントローラーリスト</h3>
+								<h3 class="box-title">コントローラー</h3>
 							</div><!-- /.box-header -->
 	
 							<div class=".box-body">

@@ -3,7 +3,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="f" uri="http://www.slim3.org/functions"%>
 <%@ page import="com.plucial.mulcms.App" %>
-<%@ page import="com.plucial.mulcms.model.form.*" %>
+<%@ page import="com.plucial.mulcms.model.widgets.form.*" %>
 <%@ page import="com.plucial.mulcms.model.assets.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.TimeZone" %>

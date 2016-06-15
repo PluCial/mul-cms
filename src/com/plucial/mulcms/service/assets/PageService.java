@@ -16,10 +16,10 @@ import com.plucial.mulcms.dao.assets.PageDao;
 import com.plucial.mulcms.exception.TooManyException;
 import com.plucial.mulcms.model.RenderingItem;
 import com.plucial.mulcms.model.assets.Page;
-import com.plucial.mulcms.model.form.Form;
 import com.plucial.mulcms.model.res.Res;
-import com.plucial.mulcms.service.form.FormService;
+import com.plucial.mulcms.model.widgets.form.Form;
 import com.plucial.mulcms.service.res.ResService;
+import com.plucial.mulcms.service.widgets.form.FormService;
 
 
 public class PageService extends AssetsService {

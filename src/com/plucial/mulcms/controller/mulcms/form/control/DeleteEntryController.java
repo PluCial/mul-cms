@@ -3,7 +3,7 @@ package com.plucial.mulcms.controller.mulcms.form.control;
 import org.slim3.controller.Navigation;
 
 import com.plucial.mulcms.controller.mulcms.BaseController;
-import com.plucial.mulcms.service.form.FormControlService;
+import com.plucial.mulcms.service.widgets.form.FormControlService;
 
 public class DeleteEntryController extends BaseController {
 

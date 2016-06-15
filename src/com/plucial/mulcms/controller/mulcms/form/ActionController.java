@@ -13,11 +13,11 @@ import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.controller.AppController;
 import com.plucial.mulcms.enums.AppProperty;
 import com.plucial.mulcms.model.assets.Page;
-import com.plucial.mulcms.model.form.Form;
-import com.plucial.mulcms.model.form.FormControl;
+import com.plucial.mulcms.model.widgets.form.Form;
+import com.plucial.mulcms.model.widgets.form.FormControl;
 import com.plucial.mulcms.service.assets.PageService;
-import com.plucial.mulcms.service.form.FormControlService;
-import com.plucial.mulcms.service.form.FormService;
+import com.plucial.mulcms.service.widgets.form.FormControlService;
+import com.plucial.mulcms.service.widgets.form.FormService;
 
 public class ActionController extends AppController {
 
