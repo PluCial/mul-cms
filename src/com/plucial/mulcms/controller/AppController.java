@@ -11,11 +11,14 @@ import org.slim3.controller.Controller;
 import org.slim3.controller.Navigation;
 import org.slim3.util.ServletContextLocator;
 
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.NoLangParameterException;
 import com.plucial.global.Lang;
+import com.plucial.mulcms.enums.AppProperty;
+import com.plucial.mulcms.exception.NoSignedException;
 import com.plucial.mulcms.service.AppService;
 
 /**
@@ -121,13 +124,14 @@ public abstract class AppController extends Controller {
     /**
      * App Property Map
      * @return
+     * @throws NoSignedException 
      */
-    public Map<String, String> getAppPropertyMap() {
+    public Map<String, String> getAppPropertyMap() throws NoSignedException {
 //        Map<String, String> appPropertyMap = sessionScope("appPropertyMap");
 //
 //        if(appPropertyMap != null) return appPropertyMap;
         
-        Map<String, String> appPropertyMap = AppService.getPropertyMap(isLocal());
+        Map<String, String> appPropertyMap = AppService.getPropertyMap(getAdminUser(), isLocal());
 //        sessionScope("appPropertyMap", appPropertyMap);
         
         return appPropertyMap;
@@ -166,21 +170,57 @@ public abstract class AppController extends Controller {
     /**
      * ログインチェック
      * @return
+     * @throws NoSignedException 
      */
-    public boolean isSigned() {
+    public User getAdminUser() throws NoSignedException {
         
         UserService userService = UserServiceFactory.getUserService();
-
-        // 一般ユーザーとしてログインしているか調べる
-        boolean isLoggedIn = userService.isUserLoggedIn();
         
         // サインしていない場合
-        if(!isLoggedIn) return false;
+        if(!userService.isUserLoggedIn()) throw new NoSignedException();
         
         // 管理者の場合
-        if(userService.isUserAdmin()) return true;
+        if(!userService.isUserAdmin()) throw new NoSignedException();
         
-        return false;
+        return userService.getCurrentUser();
     }
+    
+    @Override
+    public Navigation run() throws Exception {
+        
+        Map<String, String> appPropertyMap = getAppPropertyMap();
+        
+        try {
+            User user = getAdminUser();
+            Properties userProp = getAppProp(Lang.ja);
+            
+            Lang localeLang = Lang.valueOf(appPropertyMap.get(AppProperty.APP_BASE_LANG.toString()));
+            
+            return signed(appPropertyMap, user, localeLang, userProp);
+            
+        }catch(NoSignedException e) {
+            return notSigned(appPropertyMap, getLocaleLang());
+        }
+    }
+    
+    /**
+     * リクエスト処理
+     * @param appPropertyMap
+     * @param localeLang
+     * @return
+     * @throws Exception
+     */
+    protected abstract Navigation notSigned(Map<String, String> appPropertyMap, Lang localeLang) throws Exception;
+
+    /**
+     * リクエスト処理
+     * @param appPropertyMap
+     * @param user
+     * @param localeLang
+     * @param userLocaleProp
+     * @return
+     * @throws Exception
+     */
+    protected abstract Navigation signed(Map<String, String> appPropertyMap, User user, Lang localeLang, Properties userLocaleProp) throws Exception;
 
 }

@@ -8,6 +8,7 @@ import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.users.User;
 import com.google.apphosting.api.ApiProxy;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.AppDao;
@@ -45,7 +46,7 @@ public class AppService {
      * App Map を取得
      * @return
      */
-    public static Map<String, String> getPropertyMap(boolean isLocal) {
+    public static Map<String, String> getPropertyMap(User user, boolean isLocal) {
         List<App> list = getList();
         
         Map<String,String> map = new HashMap<String,String>();
@@ -57,6 +58,12 @@ public class AppService {
             String value = getAppId(isLocal);
             put(AppProperty.APP_ID, value);
             map.put(AppProperty.APP_ID.toString(), value);
+        }
+        
+        if(!map.containsKey(AppProperty.APP_ADMIN_EMAIL.toString())) {
+            String value = user.getEmail();
+            put(AppProperty.APP_ADMIN_EMAIL, value);
+            map.put(AppProperty.APP_ADMIN_EMAIL.toString(), value);
         }
         
         if(!map.containsKey(AppProperty.APP_BASE_LANG.toString())) {

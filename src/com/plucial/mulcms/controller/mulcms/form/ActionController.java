@@ -2,14 +2,17 @@ package com.plucial.mulcms.controller.mulcms.form;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.jsoup.nodes.Document;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 import org.slim3.util.StringUtil;
 
+import com.google.appengine.api.users.User;
 import com.plucial.gae.global.exception.NoContentsException;
 import com.plucial.gae.global.exception.ObjectNotExistException;
+import com.plucial.global.Lang;
 import com.plucial.mulcms.controller.AppController;
 import com.plucial.mulcms.enums.AppProperty;
 import com.plucial.mulcms.model.assets.Page;
@@ -20,9 +23,27 @@ import com.plucial.mulcms.service.widgets.form.FormControlService;
 import com.plucial.mulcms.service.widgets.form.FormService;
 
 public class ActionController extends AppController {
+    
+    @Override
+    protected Navigation notSigned(Map<String, String> appPropertyMap,
+            Lang localeLang) throws Exception {
+        return execute(appPropertyMap, false);
+    }
 
     @Override
-    public Navigation run() throws Exception {
+    protected Navigation signed(Map<String, String> appPropertyMap, User user,
+            Lang localeLang, Properties userLocaleProp) throws Exception {
+        return execute(appPropertyMap, true);
+    }
+
+    /**
+     * リクエスト処理
+     * @param appPropertyMap
+     * @param isSigned
+     * @return
+     * @throws Exception
+     */
+    private Navigation execute(Map<String, String> appPropertyMap, boolean isSigned) throws Exception {
 
         // ----------------------------------------------------
         // Formの取得
@@ -45,7 +66,6 @@ public class ActionController extends AppController {
         // ----------------------------------------------------
         // App 設定情報の取得
         // ----------------------------------------------------
-        Map<String, String> appPropertyMap = super.getAppPropertyMap();
         String gcsBucketName = appPropertyMap.get(AppProperty.APP_GCS_BUCKET_NAME.toString());
         
         // ----------------------------------------------------
@@ -56,7 +76,7 @@ public class ActionController extends AppController {
             // ----------------------------------------------------
             // Page 生成
             // ----------------------------------------------------
-            Document pageDoc = PageService.getRenderedDoc((Page)form.getAssetsRef().getModel(), super.getLocaleLang(), gcsBucketName, super.getDomainUrl(), isSigned());
+            Document pageDoc = PageService.getRenderedDoc((Page)form.getAssetsRef().getModel(), super.getLocaleLang(), gcsBucketName, super.getDomainUrl(), isSigned);
             requestScope("pageHtml", pageDoc.outerHtml());
             
             return forward("/front.jsp");

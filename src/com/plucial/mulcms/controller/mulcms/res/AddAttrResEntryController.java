@@ -1,11 +1,15 @@
 package com.plucial.mulcms.controller.mulcms.res;
 
+import java.util.Map;
+import java.util.Properties;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
+import com.google.appengine.api.users.User;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.model.assets.Assets;
@@ -16,7 +20,8 @@ import com.plucial.mulcms.validator.NGValidator;
 public class AddAttrResEntryController extends BaseController {
 
     @Override
-    public Navigation run() throws Exception {
+    public Navigation execute(Map<String, String> appPropertyMap, User user,
+            Properties userLocaleProp) throws Exception {
         
         String assetsKeyString = asString("assetsKeyString");
         Lang lang = Lang.valueOf(asString("lang"));
@@ -41,14 +46,6 @@ public class AddAttrResEntryController extends BaseController {
             v.validate();
             return forward(returnUrl);
         }
-//        
-//        if(!elements.first().hasAttr(attr)) {
-//            Validators v = new Validators(request);
-//            v.add("attr",
-//                new NGValidator("要素の属性が存在しません。"));
-//            v.validate();
-//            return forward(returnUrl);
-//        }
         
         AttrResService.add(assets, cssQuery, lang, attr, elements.first().attr(attr));
         

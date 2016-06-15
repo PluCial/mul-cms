@@ -1,9 +1,13 @@
 package com.plucial.mulcms.controller.mulcms.res;
 
+import java.util.Map;
+import java.util.Properties;
+
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 import org.slim3.util.StringUtil;
 
+import com.google.appengine.api.users.User;
 import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.model.res.InnerTextRes;
 import com.plucial.mulcms.service.res.ResService;
@@ -11,7 +15,8 @@ import com.plucial.mulcms.service.res.ResService;
 public class UpdateInnerTextResEntryController extends BaseController {
 
     @Override
-    public Navigation run() throws Exception {
+    public Navigation execute(Map<String, String> appPropertyMap, User user,
+            Properties userLocaleProp) throws Exception {
         
         // 入力チェック
         if (!isPost() || !validate()) {

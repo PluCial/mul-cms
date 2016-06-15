@@ -1,17 +1,22 @@
 package com.plucial.mulcms.controller.mulcms.setting;
 
-import org.slim3.controller.Controller;
+import java.util.Map;
+import java.util.Properties;
+
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
+import com.google.appengine.api.users.User;
+import com.plucial.mulcms.controller.mulcms.BaseController;
 import com.plucial.mulcms.enums.AppProperty;
 import com.plucial.mulcms.service.AppService;
 import com.plucial.mulcms.validator.NGValidator;
 
-public class UpdateEntryController extends Controller {
+public class UpdateEntryController extends BaseController {
 
     @Override
-    public Navigation run() throws Exception {
+    public Navigation execute(Map<String, String> appPropertyMap, User user,
+            Properties userLocaleProp) throws Exception {
         
         // 入力チェック
         if (!isPost() || !validate()) {
@@ -32,6 +37,17 @@ public class UpdateEntryController extends Controller {
             return forward("/mulcms/setting/");
         }
         
+        // 管理者メールチェック
+        if(appProperty == AppProperty.APP_ADMIN_EMAIL) {
+            if(!user.getEmail().equals(value)) {
+                Validators v = new Validators(request);
+                v.add("propertyKey",
+                    new NGValidator("このメールアドレスは使用できません。"));
+                v.validate();
+                return forward("/mulcms/setting/");
+            }
+        }
+        
         AppService.put(appProperty, value);
         
         return redirect("/mulcms/setting/");
@@ -44,8 +60,8 @@ public class UpdateEntryController extends Controller {
     private boolean validate() {
         Validators v = new Validators(request);
 
-        v.add("propertyKey", v.required());
-        v.add("propertyValue", v.required());
+        v.add("propertyKey", v.required("キーがありません"));
+        v.add("propertyValue", v.required("内容を入力してください。"));
         
         return v.validate();
     }

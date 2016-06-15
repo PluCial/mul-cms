@@ -1,8 +1,12 @@
 package com.plucial.mulcms.controller.mulcms.page;
 
+import java.util.Map;
+import java.util.Properties;
+
 import org.slim3.controller.Navigation;
 import org.slim3.controller.validator.Validators;
 
+import com.google.appengine.api.users.User;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.controller.mulcms.BaseController;
@@ -12,7 +16,8 @@ import com.plucial.mulcms.validator.NGValidator;
 public class AddEntryController extends BaseController {
 
     @Override
-    public Navigation run() throws Exception {
+    public Navigation execute(Map<String, String> appPropertyMap, User user,
+            Properties userLocaleProp) throws Exception {
         
         // 入力チェック
         if (!isPost() || !validate()) {
