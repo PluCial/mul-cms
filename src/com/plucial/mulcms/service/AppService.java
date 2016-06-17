@@ -8,7 +8,6 @@ import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
-import com.google.appengine.api.users.User;
 import com.google.apphosting.api.ApiProxy;
 import com.plucial.gae.global.exception.ObjectNotExistException;
 import com.plucial.mulcms.dao.AppDao;
@@ -46,41 +45,12 @@ public class AppService {
      * App Map を取得
      * @return
      */
-    public static Map<String, String> getPropertyMap(User user, boolean isLocal) {
+    public static Map<String, String> getPropertyMap() {
         List<App> list = getList();
         
         Map<String,String> map = new HashMap<String,String>();
         for (App app : list) {
             map.put(app.getKey().getName(),app.getValueString());
-        }
-        
-        if(!map.containsKey(AppProperty.APP_ID.toString())) {
-            String value = getAppId(isLocal);
-            put(AppProperty.APP_ID, value);
-            map.put(AppProperty.APP_ID.toString(), value);
-        }
-        
-        if(!map.containsKey(AppProperty.APP_ADMIN_EMAIL.toString())) {
-            String value = user.getEmail();
-            put(AppProperty.APP_ADMIN_EMAIL, value);
-            map.put(AppProperty.APP_ADMIN_EMAIL.toString(), value);
-        }
-        
-        if(!map.containsKey(AppProperty.APP_BASE_LANG.toString())) {
-            put(AppProperty.APP_BASE_LANG, com.plucial.mulcms.App.APP_BASE_LANG.toString());
-            map.put(AppProperty.APP_BASE_LANG.toString(), com.plucial.mulcms.App.APP_BASE_LANG.toString());
-        }
-
-        if(!map.containsKey(AppProperty.APP_DEFAULT_HOST_NAME.toString())) {
-            String value = getAppDefaultHostName(isLocal);
-            put(AppProperty.APP_DEFAULT_HOST_NAME, value);
-            map.put(AppProperty.APP_DEFAULT_HOST_NAME.toString(), value);
-        }
-
-        if(!map.containsKey(AppProperty.APP_GCS_BUCKET_NAME.toString())) {
-            String value = getAppDefaultHostName(isLocal);
-            put(AppProperty.APP_GCS_BUCKET_NAME, value);
-            map.put(AppProperty.APP_GCS_BUCKET_NAME.toString(), value);
         }
         
         return map;
@@ -91,7 +61,7 @@ public class AppService {
      * @param isLocal
      * @return
      */
-    private static String getAppId(boolean isLocal) {
+    public static String getAppId(boolean isLocal) {
         String hostName = getAppDefaultHostName(isLocal);
         String[] strArray = hostName.split("\\.");
         
@@ -105,7 +75,7 @@ public class AppService {
      * <app_id>.appspot.com
      * @return
      */
-    private static String getAppDefaultHostName(boolean isLocal) {
+    public static String getAppDefaultHostName(boolean isLocal) {
         if(isLocal) return "localhost:8888";
         
         ApiProxy.Environment env = ApiProxy.getCurrentEnvironment();

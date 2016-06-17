@@ -1,4 +1,4 @@
-package com.plucial.mulcms.controller.mulcms.form;
+package com.plucial.mulcms.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ import com.plucial.mulcms.service.widgets.form.FormControlService;
 import com.plucial.mulcms.service.widgets.form.FormService;
 import com.plucial.mulcms.service.widgets.form.ReceptionMailActionService;
 
-public class ActionController extends AppController {
+public class FormActionController extends AppController {
     
     @Override
     protected Navigation notSigned(Map<String, String> appPropertyMap,

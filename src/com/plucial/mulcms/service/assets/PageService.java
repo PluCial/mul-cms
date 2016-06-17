@@ -132,21 +132,6 @@ public class PageService extends AssetsService {
         doc.body().attr("lang", localeLang.toString());
         
         // ----------------------------------------------------
-        // Form
-        // ----------------------------------------------------
-//        List<Form> formList = FormService.getList(page);
-//        for(Form form: formList) {
-//            Element formElem = jsoupService.getDoc().select("[" + MulAttrType.formId.getAttr() + "=" + form.getKey().getName() + "]").first();
-//            if(formElem != null) {
-//                formElem.attr("action", domainUrl + "/mulcms/form/action");
-//                formElem.attr("method", "post");
-//                formElem.append("<input type='hidden' name='lang' value='" + localeLang.toString() + "'>");
-//                formElem.append("<input type='hidden' name='formId' value='" + form.getKey().getName() + "'>");
-//            }
-//            formElem.removeAttr(MulAttrType.formId.getAttr());
-//        }
-        
-        // ----------------------------------------------------
         // リンクの書き換え
         // ----------------------------------------------------
         Elements links = doc.select("a");

@@ -19,23 +19,24 @@ public class EMailService {
     
     /**
      * メール送信
-     * @param recipientAddress
+     * @param adminEmail
      * @param subject
      * @param message
-     * @param environment
+     * @param isLocal
+     * @param mailActionList
      * @throws UnsupportedEncodingException
      * @throws MessagingException
      */
     public static void receptionMail(
             String adminEmail,
             String subject, 
-            String html,
+            String message,
             boolean isLocal,
             List<MailAction> mailActionList) throws UnsupportedEncodingException, MessagingException {
         
         if(isLocal) {
             System.out.println(subject);
-            System.out.println(html.toString());
+            System.out.println(message.toString());
             return;
         }
         
@@ -55,8 +56,7 @@ public class EMailService {
             (InternetAddress[])recipientAddressList.toArray());
 
         msg.setSubject(subject, "ISO-2022-JP");
-        msg.setContent(html, "text/html; charset=utf-8");
-        msg.setHeader("Content-Transfer-Encoding", "base64");
+        msg.setText(message);
 
         Transport.send(msg);
     }

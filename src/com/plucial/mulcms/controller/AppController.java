@@ -122,22 +122,6 @@ public abstract class AppController extends Controller {
     }
     
     /**
-     * App Property Map
-     * @return
-     * @throws NoSignedException 
-     */
-    public Map<String, String> getAppPropertyMap() throws NoSignedException {
-//        Map<String, String> appPropertyMap = sessionScope("appPropertyMap");
-//
-//        if(appPropertyMap != null) return appPropertyMap;
-        
-        Map<String, String> appPropertyMap = AppService.getPropertyMap(getAdminUser(), isLocal());
-//        sessionScope("appPropertyMap", appPropertyMap);
-        
-        return appPropertyMap;
-    }
-    
-    /**
      * リクエストURIを取得
      * <pre>
      * 例：/xxxx/xxxx
@@ -188,7 +172,7 @@ public abstract class AppController extends Controller {
     @Override
     public Navigation run() throws Exception {
         
-        Map<String, String> appPropertyMap = getAppPropertyMap();
+        Map<String, String> appPropertyMap = AppService.getPropertyMap();
         
         try {
             User user = getAdminUser();

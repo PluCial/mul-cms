@@ -32,7 +32,7 @@ public class Form extends Widget implements Serializable, RenderingItem {
         Element elements = doc.select(super.getCssQuery()).first();
         if(elements == null) return;
 
-        elements.attr("action", domainUrl + "/mulcms/form/action");
+        elements.attr("action", domainUrl + "/formAction");
         elements.attr("method", "post");
         elements.append("<input type='hidden' name='lang' value='" + localeLang.toString() + "'>");
         elements.append("<input type='hidden' name='formId' value='" + super.getKey().getName() + "'>");

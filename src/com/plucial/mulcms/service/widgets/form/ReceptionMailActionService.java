@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import com.google.appengine.api.datastore.Email;
 import com.plucial.gae.global.exception.TransException;
@@ -51,18 +49,18 @@ public class ReceptionMailActionService extends MailActionService {
      * @param googleApiApplicationName
      * @return
      */
-    public static Document getMailBody(Lang userLang, Lang mailSrcLang, List<FormControl> controlList, Properties userLocaleProp, String googleApiPublicServerKey, String googleApiApplicationName) {
-        Document mailBody = getMailBodyBaseHtml();
+    public static String getMailBody(Lang userLang, Lang mailSrcLang, List<FormControl> controlList, Properties userLocaleProp, String googleApiPublicServerKey, String googleApiApplicationName) {
+        StringBuilder body = new StringBuilder();
         // 翻訳必要なコントローラーリスト
         List<FormControl> transSrcControlList = new ArrayList<FormControl>();
         
         
         // オリジナルコンテンツの生成
-        Element originalElem = mailBody.select("#original").first();
         for(FormControl cl: controlList) {
-            originalElem.append("<p><b>" + cl.getControlName() + "</b></p>");
-            originalElem.append("<p>" + StringUtil.changeIndentionToHtml(cl.getPostValue()) + "</p>");
-            originalElem.append("<br />");
+            body.append("[" + cl.getControlName() + "]");
+            body.append("\n");
+            body.append(StringUtil.changeIndentionToHtml(cl.getPostValue()));
+            body.append("\n\n");
             
             // 翻訳対象に追加
             if(cl.isTransFlg()) {
@@ -72,10 +70,13 @@ public class ReceptionMailActionService extends MailActionService {
                 
         // 翻訳コンテンツの生成
         if(userLang != mailSrcLang && transSrcControlList.size() > 0) { 
-            Element transElem = mailBody.select("#trans").first();
-            transElem.append("<hr>");
-            transElem.append("<p><b>" + userLocaleProp.getProperty("lang." + mailSrcLang.toString()) + "&nbsp;-&gt;&nbsp;" + userLang.getName() + "</b></p>");
-            transElem.append("<hr>");
+            body.append("\n");
+            body.append("-------------------------------------------------");
+            body.append("\n");
+            body.append(userLocaleProp.getProperty("lang." + mailSrcLang.toString()) + " -> " + userLang.getName());
+            body.append("\n");
+            body.append("-------------------------------------------------");
+            body.append("\n");
             try {
                 Document transResult = getTranslatedMailBody(userLang, mailSrcLang, transSrcControlList, googleApiPublicServerKey, googleApiApplicationName);
                 
@@ -84,17 +85,18 @@ public class ReceptionMailActionService extends MailActionService {
                     // 改行が含まれるため、text()ではなくhtml()で取得する
                     String translatedPostValue = transResult.getElementById(cl.getKey().getName()).html();
                     
-                    transElem.append("<p><b>" + cl.getControlName() + "</b></p>");
-                    transElem.append("<p>" + translatedPostValue + "</p>");
-                    transElem.append("<br />");
+                    body.append("[" + cl.getControlName() + "]");
+                    body.append("\n");
+                    body.append(StringUtil.changeIndentionToHtml(translatedPostValue));
+                    body.append("\n\n");
                 }
                 
             } catch (Exception e) {
-                return mailBody;
+                return new String(body);
             }
         }
         
-        return mailBody;
+        return new String(body);
     }
     
     /**
@@ -118,21 +120,6 @@ public class ReceptionMailActionService extends MailActionService {
         }
         
         return transResult;
-    }
-    
-    private static Document getMailBodyBaseHtml() {
-        StringBuilder html = new StringBuilder();
-        
-        html.append("<div id='original'>");
-        html.append("</div>");
-        html.append("</br>");
-        html.append("</br>");
-        html.append("<div id='trans'>");
-        html.append("</div>");
-        
-        Document mailBodeyDoc = Jsoup.parse(new String(html));
-        
-        return mailBodeyDoc;
     }
 
 }

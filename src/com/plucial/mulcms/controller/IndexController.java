@@ -8,13 +8,14 @@ import org.slim3.controller.Navigation;
 import com.google.appengine.api.users.User;
 import com.plucial.global.Lang;
 import com.plucial.mulcms.enums.AppProperty;
+import com.plucial.mulcms.service.AppService;
 
 public class IndexController extends AppController {
 
     @Override
     public Navigation run() throws Exception {
         
-        Map<String, String> appPropertyMap = super.getAppPropertyMap();
+        Map<String, String> appPropertyMap = AppService.getPropertyMap();;
         Lang lang = Lang.valueOf(appPropertyMap.get(AppProperty.APP_BASE_LANG.toString()));
         
         
