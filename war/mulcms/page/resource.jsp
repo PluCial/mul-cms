@@ -120,7 +120,7 @@ Properties userProp = (Properties) request.getAttribute("userProp");
 						<%}else { %>
 						<div class="box box-solid">
 							<div class="box-header with-border">
-								<h3 class="box-title"><%=supportLangList.indexOf(targetLang) < 0 ? "翻訳" : "再翻訳" %></h3>
+								<h3 class="box-title"><%=supportLangList.indexOf(targetLang) < 0 ? "翻訳してぺージを追加" : "再翻訳" %></h3>
 								<div class="box-tools">
 									<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 								</div>
@@ -129,6 +129,7 @@ Properties userProp = (Properties) request.getAttribute("userProp");
 								<div class="box-body">
 									<div class="form-group">
 										<select name="srcLang" class="form-control">
+											<option value="">--- 翻訳元の言語 ---</option>
 											<%for(Lang lang: supportLangList) { 
 												if(lang != targetLang) {
 											%>
@@ -137,6 +138,18 @@ Properties userProp = (Properties) request.getAttribute("userProp");
 											<%} %>
 										</select>
 									</div>
+									
+									<%if(supportLangList.indexOf(targetLang) >= 0) { %>
+									<div class="form-group">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" name="transAll">全てを再翻訳する
+											</label>
+										</div>
+										<small class="text-muted">[全てを再翻訳する] をチェックして翻訳すると、既に翻訳済みの項目も再翻訳されます。</small>
+									</div>
+									<%} %>
+									
 									<div class="form-group text-right">
 										<input type="hidden" name="targetLang" value="<%=targetLang.toString() %>" />
 										<button name="keyString" value="<%=pageObj.getKey().getName() %>" type="submit" class="btn btn-primary">翻訳</button>

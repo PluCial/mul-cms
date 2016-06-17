@@ -125,10 +125,11 @@ public class AssetsService {
      * @param model
      * @param transSrcLang
      * @param transTargetLang
+     * @param transAll
      * @throws TransException
      * @throws ObjectNotExistException
      */
-    public static void trans(String googleApiPublicServerKey, String googleApiApplicationName, Assets model, Lang transSrcLang, Lang transTargetLang) throws TransException, ObjectNotExistException {
+    public static void trans(String googleApiPublicServerKey, String googleApiApplicationName, Assets model, Lang transSrcLang, Lang transTargetLang, boolean transAll) throws TransException, ObjectNotExistException {
         // ---------------------------------------------------
         // 翻訳元のコンテンツリスト
         // ---------------------------------------------------
@@ -140,7 +141,7 @@ public class AssetsService {
             
             GoogleTransService googleTransService = 
                     new GoogleTransService(googleApiPublicServerKey, googleApiApplicationName);
-            googleTransService.machineTrans(tx, model, transSrcLang, transTargetLang, transSrcList);
+            googleTransService.machineTrans(tx, model, transSrcLang, transTargetLang, transSrcList, transAll);
 
             if(model.getLangList().indexOf(transTargetLang) < 0) {
                 model.getLangList().add(transTargetLang);

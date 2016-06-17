@@ -1,0 +1,39 @@
+<!-- Indices written at Fri, 17 Jun 2016 13:35:47 JST -->
+
+<datastore-indexes>
+
+    <!-- Used 11 times in query history -->
+    <datastore-index kind="Assets" ancestor="false" source="auto">
+        <property name="slim3.classHierarchyList" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 18 times in query history -->
+    <datastore-index kind="Rendering" ancestor="false" source="auto">
+        <property name="assetsRef" direction="asc"/>
+        <property name="lang" direction="asc"/>
+        <property name="slim3.classHierarchyList" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 5 times in query history -->
+    <datastore-index kind="Rendering" ancestor="false" source="auto">
+        <property name="assetsRef" direction="asc"/>
+        <property name="slim3.classHierarchyList" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="FormControl" ancestor="false" source="auto">
+        <property name="formRef" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="FormAction" ancestor="false" source="auto">
+        <property name="formRef" direction="asc"/>
+        <property name="slim3.classHierarchyList" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

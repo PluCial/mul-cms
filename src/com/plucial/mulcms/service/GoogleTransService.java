@@ -51,7 +51,7 @@ public class GoogleTransService {
 	 * @param updateAll
 	 * @throws TransException
 	 */
-	public void machineTrans(Transaction tx, Assets assets, Lang transSrcLang, Lang transTargetLang, List<? extends InnerRes> transSrcList) throws TransException {
+	public void machineTrans(Transaction tx, Assets assets, Lang transSrcLang, Lang transTargetLang, List<? extends InnerRes> transSrcList, boolean transAll) throws TransException {
 		try {
             Document transResult = machineTrans(transSrcLang, transTargetLang, transSrcList);
             
@@ -71,12 +71,14 @@ public class GoogleTransService {
                         InnerTextRes targetRes = InnerTextResService.get(assets, srcRes.getCssQuery(), transTargetLang);
                         
                         // 更新
-                        targetRes.setCssQuery(srcRes.getCssQuery());
-                        targetRes.setStringToValue(content);
-                        targetRes.setLongText(((InnerTextRes) srcRes).isLongText());
-                        targetRes.setEditMode(srcRes.isEditMode());
+                        if(transAll) {
+                            targetRes.setCssQuery(srcRes.getCssQuery());
+                            targetRes.setStringToValue(content);
+                            targetRes.setLongText(((InnerTextRes) srcRes).isLongText());
+                            targetRes.setEditMode(srcRes.isEditMode());
 
-                        ResService.update(tx, targetRes);
+                            ResService.update(tx, targetRes);
+                        }
                         
                     }catch(ObjectNotExistException e) {
                         // 追加

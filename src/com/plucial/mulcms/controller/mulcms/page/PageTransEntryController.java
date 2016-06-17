@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.slim3.controller.Navigation;
+import org.slim3.controller.validator.Validators;
+import org.slim3.util.StringUtil;
 
 import com.google.appengine.api.users.User;
 import com.plucial.global.Lang;
@@ -18,20 +20,39 @@ public class PageTransEntryController extends BaseController {
     public Navigation execute(Map<String, String> appPropertyMap, User user,
             Properties userLocaleProp) throws Exception {
         
+        // 入力チェック
+        if (!isPost() || !validate()) {
+            return forward("/mulcms/page/resource?keyString=" + asString("keyString") + "&lang=" + asString("targetLang"));
+        }
+        
         Lang srcLang = Lang.valueOf(asString("srcLang"));
         Lang targetLang = Lang.valueOf(asString("targetLang"));
-        
         Page page = (Page)PageService.get(asString("keyString"));
+        boolean transAll = !StringUtil.isEmpty(asString("transAll"));
         
         // App Property 取得
         String googleApiPublicServerKey = appPropertyMap.get(AppProperty.GOOGLE_API_PUBLIC_SERVER_KEY.toString());
         String googleApiApplicationName = appPropertyMap.get(AppProperty.APP_ID.toString());
         
         // 翻訳
-        PageService.trans(googleApiPublicServerKey, googleApiApplicationName, page, srcLang, targetLang);
+        PageService.trans(googleApiPublicServerKey, googleApiApplicationName, page, srcLang, targetLang, transAll);
         // 項目コピー
         PageService.copyNotTransRes(page, srcLang, targetLang);
         
         return redirect("/mulcms/page/resource?keyString=" + page.getKey().getName() + "&lang=" + targetLang.toString());
+    }
+    
+    /**
+     * バリデーション
+     * @return
+     */
+    private boolean validate() {
+        Validators v = new Validators(request);
+
+        v.add("keyString", v.required());
+        v.add("srcLang", v.required("翻訳元の言語を選択してください"));
+        v.add("targetLang", v.required());
+        
+        return v.validate();
     }
 }

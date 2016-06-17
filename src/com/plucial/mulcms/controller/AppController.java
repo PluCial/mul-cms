@@ -180,7 +180,12 @@ public abstract class AppController extends Controller {
             Properties userProp = getAppProp(Lang.ja);
             requestScope("userProp", userProp);
             
-            Lang localeLang = Lang.valueOf(appPropertyMap.get(AppProperty.APP_BASE_LANG.toString()));
+            Lang localeLang = null;
+            try {
+                localeLang = Lang.valueOf(appPropertyMap.get(AppProperty.APP_BASE_LANG.toString()));
+            }catch(NullPointerException e) {
+                localeLang = Lang.ja;
+            }
             
             return signed(appPropertyMap, user, localeLang, userProp);
             
