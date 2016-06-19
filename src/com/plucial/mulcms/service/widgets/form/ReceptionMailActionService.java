@@ -59,7 +59,7 @@ public class ReceptionMailActionService extends MailActionService {
         for(FormControl cl: controlList) {
             body.append("[" + cl.getControlName() + "]");
             body.append("\n");
-            body.append(StringUtil.changeIndentionToHtml(cl.getPostValue()));
+            body.append(cl.getPostValue());
             body.append("\n\n");
             
             // 翻訳対象に追加
@@ -85,9 +85,13 @@ public class ReceptionMailActionService extends MailActionService {
                     // 改行が含まれるため、text()ではなくhtml()で取得する
                     String translatedPostValue = transResult.getElementById(cl.getKey().getName()).html();
                     
+                    // getElementById から取得した値に余計な改行が含まれるため、一度手動で除去してからhtml改行をtext改行に置き換える
+                    String strTmp = StringUtil.clearTextIndention(translatedPostValue);
+                    String content = StringUtil.changeBrToTextIndention(strTmp);
+                    
                     body.append("[" + cl.getControlName() + "]");
                     body.append("\n");
-                    body.append(StringUtil.changeIndentionToHtml(translatedPostValue));
+                    body.append(content);
                     body.append("\n\n");
                 }
                 

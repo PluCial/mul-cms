@@ -1,7 +1,6 @@
 package com.plucial.mulcms.service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -40,6 +39,8 @@ public class EMailService {
             return;
         }
         
+        if(mailActionList.size() <= 0) return;
+        
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
         MimeMessage msg = new MimeMessage(session);
@@ -48,12 +49,14 @@ public class EMailService {
         msg.setFrom(new InternetAddress(adminEmail));
 
         //送信先情報
-        List<InternetAddress> recipientAddressList = new ArrayList<InternetAddress>();
+        InternetAddress[] recipientAddress = new InternetAddress[mailActionList.size()];
+        
+        int counter = 0;
         for(MailAction action: mailActionList) {
-            recipientAddressList.add(new InternetAddress(action.getSendEmail().getEmail()));
+            recipientAddress[counter] = new InternetAddress(action.getSendEmail().getEmail());
+            counter++;
         }
-        msg.addRecipients(Message.RecipientType.TO,
-            (InternetAddress[])recipientAddressList.toArray());
+        msg.addRecipients(Message.RecipientType.TO, recipientAddress);
 
         msg.setSubject(subject, "ISO-2022-JP");
         msg.setText(message);

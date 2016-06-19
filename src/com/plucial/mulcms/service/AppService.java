@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.slim3.datastore.Datastore;
 
+import com.google.appengine.api.appidentity.AppIdentityServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 import com.google.apphosting.api.ApiProxy;
@@ -80,6 +81,16 @@ public class AppService {
         
         ApiProxy.Environment env = ApiProxy.getCurrentEnvironment();
         return env.getAttributes().get("com.google.appengine.runtime.default_version_hostname").toString();
+    }
+    
+    /**
+     * デフォルトバケット名
+     * @param isLocal
+     * @return
+     */
+    public static String getDefaultGcsBucketName(boolean isLocal) {
+        if(isLocal) return "localhost:8888";
+        return AppIdentityServiceFactory.getAppIdentityService().getDefaultGcsBucketName();
     }
     
     /**
