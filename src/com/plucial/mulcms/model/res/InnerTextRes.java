@@ -103,7 +103,7 @@ public class InnerTextRes extends InnerRes implements Serializable, RenderingIte
         sb.append("             <div class='modal-body'>");
         sb.append("                 <p><i class='fa fa-info-circle'></i> リソースの言語に合わせて修正してください。</p>");
         sb.append("                     <div class='form-group'>");
-        sb.append("                         <label class='control-label validate-error' for='inputError' style='color:#dd4b39'><i class='fa fa-times-circle-o'></i> <span class='validate-error-msg'></span></label>");
+        sb.append("                         <label class='control-label validate-error' for='inputError' style='color:#dd4b39;display:none;'><i class='fa fa-times-circle-o'></i> <span class='validate-error-msg'></span></label>");
         if(isLongText) {
             sb.append("                         <textarea name='content' class='form-control' rows='7'>" + super.getValueString() + "</textarea>");
         }else {

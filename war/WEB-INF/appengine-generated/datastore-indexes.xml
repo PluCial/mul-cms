@@ -15,6 +15,11 @@
         <property name="slim3.classHierarchyList" direction="asc"/>
         <property name="createDate" direction="asc"/>
     </datastore-index>
+    
+    <datastore-index kind="Rendering" ancestor="false" source="manual">
+        <property name="assetsRef" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
 
     <!-- Used 5 times in query history -->
     <datastore-index kind="Rendering" ancestor="false" source="auto">

@@ -69,26 +69,6 @@ public class PageService extends AssetsService {
     }
     
     
-//    public static Page put(String keyString, PageTemplate template) throws TooManyException {
-//        
-//        // 重複チェック
-//        try {
-//            get(keyString);
-//            throw new TooManyException();
-//        } catch (ObjectNotExistException e) {
-//            // 重複してなければ登録可能
-//        }
-//        
-//        Page model = new Page();
-//        model.setKey(createKey(keyString));
-//        model.getTemplateRef().setModel(template);
-//        
-//        dao.put(model);
-//        
-//        return model;
-//    }
-    
-    
     /**
      * リストの取得
      * @return
