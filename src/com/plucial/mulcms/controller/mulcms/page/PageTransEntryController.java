@@ -34,10 +34,8 @@ public class PageTransEntryController extends BaseController {
         String googleApiPublicServerKey = appPropertyMap.get(AppProperty.GOOGLE_API_PUBLIC_SERVER_KEY.toString());
         String googleApiApplicationName = appPropertyMap.get(AppProperty.APP_ID.toString());
         
-        // 翻訳
+        // 翻訳 & 言語ページの作成
         PageService.trans(googleApiPublicServerKey, googleApiApplicationName, page, srcLang, targetLang, transAll);
-        // 項目コピー
-        PageService.copyNotTransRes(page, srcLang, targetLang);
         
         return redirect("/mulcms/page/resource?keyString=" + page.getKey().getName() + "&lang=" + targetLang.toString());
     }

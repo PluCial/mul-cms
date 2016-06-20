@@ -134,15 +134,20 @@ public class AssetsService {
         // 翻訳元のコンテンツリスト
         // ---------------------------------------------------
         List<? extends InnerRes> transSrcList = (List<? extends InnerRes>)InnerTextResService.getList(model, transSrcLang);
-        if(transSrcList.size() <= 0) return;
 
         Transaction tx = Datastore.beginTransaction();
         try {
+            // 翻訳
+            if(transSrcList.size() > 0) {
+                GoogleTransService googleTransService = 
+                        new GoogleTransService(googleApiPublicServerKey, googleApiApplicationName);
+                googleTransService.machineTrans(tx, model, transSrcLang, transTargetLang, transSrcList, transAll);
+            }
             
-            GoogleTransService googleTransService = 
-                    new GoogleTransService(googleApiPublicServerKey, googleApiApplicationName);
-            googleTransService.machineTrans(tx, model, transSrcLang, transTargetLang, transSrcList, transAll);
+            // 翻訳しない項目をコピー
+            PageService.copyNotTransRes(tx, model, transSrcLang, transTargetLang);
 
+            // 対応言語の追加
             if(model.getLangList().indexOf(transTargetLang) < 0) {
                 model.getLangList().add(transTargetLang);
                 Datastore.put(tx, model);
@@ -162,28 +167,18 @@ public class AssetsService {
      * @param srcLang
      * @param targetLang
      */
-    public static void copyNotTransRes(Assets model, Lang srcLang, Lang targetLang) {
+    public static void copyNotTransRes(Transaction tx, Assets model, Lang srcLang, Lang targetLang) {
         // ---------------------------------------------------
         // 翻訳しないコンテンツをコピー
         // ---------------------------------------------------
         List<AttrRes> srcResList = AttrResService.getList(model, srcLang);
         
-        Transaction tx = Datastore.beginTransaction();
-        try {
-            for(AttrRes srcRes: srcResList) {
-                try {
-                    AttrResService.get(model, targetLang, srcRes.getCssQuery(), srcRes.getAttr());
-                    
-                }catch(ObjectNotExistException e) {
-                    AttrResService.add(model, srcRes.getCssQuery(), targetLang, srcRes.getAttr(), srcRes.getValueString());
-                }
-            }
-            
-            tx.commit();
-            
-        }finally {
-            if(tx.isActive()) {
-                tx.rollback();
+        for(AttrRes srcRes: srcResList) {
+            try {
+                AttrResService.get(model, targetLang, srcRes.getCssQuery(), srcRes.getAttr());
+                
+            }catch(ObjectNotExistException e) {
+                AttrResService.add(model, srcRes.getCssQuery(), targetLang, srcRes.getAttr(), srcRes.getValueString());
             }
         }
         
