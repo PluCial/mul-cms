@@ -9,7 +9,9 @@ import org.slim3.util.StringUtil;
 
 import com.google.appengine.api.users.User;
 import com.plucial.mulcms.controller.mulcms.BaseController;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.res.InnerTextRes;
+import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.res.ResService;
 
 public class UpdateInnerTextResEntryController extends BaseController {
@@ -29,11 +31,11 @@ public class UpdateInnerTextResEntryController extends BaseController {
         boolean isEditMode = !StringUtil.isEmpty(asString("editMode"));
         boolean isLongText = !StringUtil.isEmpty(asString("longText"));
         
-        String pageKey = asString("pageKey");
         String lang = asString("lang");
         
+        Page page = (Page)PageService.get(asString("parentKeyString"));
         
-        InnerTextRes model = (InnerTextRes)ResService.get(keyString);
+        InnerTextRes model = (InnerTextRes)ResService.get(page, keyString);
         model.setEditMode(isEditMode);
         model.setLongText(isLongText);
         model.setCssQuery(cssQuery);
@@ -41,7 +43,7 @@ public class UpdateInnerTextResEntryController extends BaseController {
       
         ResService.update(model);
         
-        return redirect("/mulcms/page/resource?keyString=" + pageKey + "&lang=" + lang);
+        return redirect("/mulcms/page/resource?keyString=" + page.getKey().getName() + "&lang=" + lang);
     }
     
     /**

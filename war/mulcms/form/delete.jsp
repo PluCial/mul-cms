@@ -41,6 +41,7 @@ Form form = (Form) request.getAttribute("form");
 			                </div><!-- /.box-body -->
 			                <div class="box-footer">
 			                  <form action="/mulcms/form/deleteEntry" method="post">
+			                  	<input type="hidden" name="parentKeyString" value="<%=pageObj.getKey().getName() %>">
 			                  	<input type="hidden" name="keyString" value="<%=form.getKey().getName() %>">
 			                  	<a href="/mulcms/form/?keyString=<%=pageObj.getKey().getName() %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>

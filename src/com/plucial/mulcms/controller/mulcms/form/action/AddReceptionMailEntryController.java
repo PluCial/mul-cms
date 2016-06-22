@@ -8,7 +8,9 @@ import org.slim3.controller.validator.Validators;
 
 import com.google.appengine.api.users.User;
 import com.plucial.mulcms.controller.mulcms.BaseController;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.widgets.form.Form;
+import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.widgets.form.FormService;
 import com.plucial.mulcms.service.widgets.form.ReceptionMailActionService;
 
@@ -26,11 +28,12 @@ public class AddReceptionMailEntryController extends BaseController {
         String formKeyString = asString("keyString");
         String sendEmail = asString("email");
         
-        Form form = (Form)FormService.get(formKeyString);
+        Page page = (Page)PageService.get(asString("parentKeyString"));
+        Form form = (Form)FormService.get(page, formKeyString);
         
         ReceptionMailActionService.add(form, sendEmail);
         
-        return redirect("/mulcms/form/setting?keyString=" + form.getKey().getName());
+        return redirect("/mulcms/form/setting?keyString=" + form.getKey().getName() + "&parentKeyString=" + page.getKey().getName());
     }
     
     /**

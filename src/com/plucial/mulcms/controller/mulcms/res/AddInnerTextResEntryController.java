@@ -24,10 +24,10 @@ public class AddInnerTextResEntryController extends BaseController {
     public Navigation execute(Map<String, String> appPropertyMap, User user,
             Properties userLocaleProp) throws Exception {
         
-        String assetsKeyString = asString("assetsKeyString");
+        String parentKeyString = asString("parentKeyString");
         Lang lang = Lang.valueOf(asString("lang"));
         
-        String returnUrl = "/mulcms/page/resource?keyString=" + assetsKeyString + "&lang=" + lang.toString();
+        String returnUrl = "/mulcms/page/resource?keyString=" + parentKeyString + "&lang=" + lang.toString();
         
         // 入力チェック
         if (!isPost() || !validate()) {
@@ -38,13 +38,26 @@ public class AddInnerTextResEntryController extends BaseController {
         boolean isEditMode = !StringUtil.isEmpty(asString("editMode"));
         boolean isLongText = !StringUtil.isEmpty(asString("longText"));
         
-        Assets assets = AssetsService.get(assetsKeyString);
+        Assets assets = AssetsService.get(parentKeyString);
+        // 言語翻訳済みかチェック
+        if(assets.getLangList().indexOf(lang) < 0) {
+            return redirect(returnUrl);
+        }
+        
         Document doc = Jsoup.parse(assets.getHtmlString());
         Elements elements = doc.select(cssQuery);
         if(elements == null || elements.size() <= 0) {
             Validators v = new Validators(request);
             v.add("cssQuery",
                 new NGValidator("Css Queryで指定した要素はHTMLに存在しません。"));
+            v.validate();
+            return forward(returnUrl);
+        }
+        
+        if(StringUtil.isEmpty(elements.first().text())) {
+            Validators v = new Validators(request);
+            v.add("cssQuery",
+                new NGValidator("指定した要素の値がありません。"));
             v.validate();
             return forward(returnUrl);
         }
@@ -61,7 +74,7 @@ public class AddInnerTextResEntryController extends BaseController {
     private boolean validate() {
         Validators v = new Validators(request);
 
-        v.add("assetsKeyString", v.required());
+        v.add("parentKeyString", v.required());
         
         // コンテンツ
         v.add("cssQuery", v.required());

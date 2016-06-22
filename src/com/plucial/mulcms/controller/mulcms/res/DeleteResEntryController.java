@@ -18,12 +18,14 @@ public class DeleteResEntryController extends BaseController {
     @Override
     public Navigation execute(Map<String, String> appPropertyMap, User user,
             Properties userLocaleProp) throws Exception {
+        
+        Page page = (Page)PageService.get(asString("parentKeyString"));
         String keyString = asString("keyString");
         Lang lang = Lang.valueOf(asString("lang"));
         
-        Res model = (Res)ResService.get(keyString);
+        Res model = (Res)ResService.get(page, keyString);
         
-        Page page = (Page)PageService.get(asString("assetsKeyString"));
+        
         
         ResService.delete(model);
         

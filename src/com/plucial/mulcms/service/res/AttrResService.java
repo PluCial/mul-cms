@@ -88,7 +88,7 @@ public class AttrResService extends ResService {
      */
     public static AttrRes add(Transaction tx, Assets assets, String cssQuery, Lang lang, String attr, String attrValue) {
         AttrRes model = new AttrRes();
-        model.setKey(createKey());
+        model.setKey(createKey(assets));
         model.setCssQuery(cssQuery);
         model.setLang(lang);
         model.setAttr(attr);

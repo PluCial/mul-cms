@@ -9,7 +9,7 @@
 
 <%
 Res res = (Res) request.getAttribute("res");
-String assetsKeyString = (String) request.getAttribute("assetsKeyString");
+String parentKeyString = (String) request.getAttribute("parentKeyString");
 String lang = (String) request.getAttribute("lang");
 %>
 <!DOCTYPE html>
@@ -43,9 +43,9 @@ String lang = (String) request.getAttribute("lang");
 			                <div class="box-footer">
 			                  <form action="/mulcms/res/deleteResEntry" method="post">
 			                  	<input type="hidden" name="keyString" value="<%=res.getKey().getName() %>">
-			                  	<input type="hidden" name="assetsKeyString" value="<%=assetsKeyString %>">
+			                  	<input type="hidden" name="parentKeyString" value="<%=parentKeyString %>">
 			                  	<input type="hidden" name="lang" value="<%=lang %>">
-			                  	<a href="/mulcms/page/resource?keyString=<%=assetsKeyString %>&lang=<%=lang %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
+			                  	<a href="/mulcms/page/resource?keyString=<%=parentKeyString %>&lang=<%=lang %>" class="btn btn-default pull-left"><i class="fa fa-reply"></i></a>
 			                    <button type="submit" class="btn btn-danger btn-flat pull-right">Delete</button>
 			                  </form>
 			                </div>

@@ -9,7 +9,9 @@ import org.slim3.controller.validator.Validators;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.users.User;
 import com.plucial.mulcms.controller.mulcms.BaseController;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.res.AttrRes;
+import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.res.ResService;
 
 public class UpdateAttrResEntryController extends BaseController {
@@ -28,17 +30,17 @@ public class UpdateAttrResEntryController extends BaseController {
         String attr = asString("attr");
         String content = asString("content");
         
-        String assetsKeyString = asString("assetsKeyString");
         String lang = asString("lang");
         
+        Page page = (Page)PageService.get(asString("parentKeyString"));
         
-        AttrRes model = (AttrRes)ResService.get(keyString);
+        AttrRes model = (AttrRes)ResService.get(page, keyString);
         model.setValue(new Text(content));
         model.setAttr(attr);
         model.setCssQuery(cssQuery);
         ResService.update(model);
         
-        return redirect("/mulcms/page/resource?keyString=" + assetsKeyString + "&lang=" + lang);
+        return redirect("/mulcms/page/resource?keyString=" + page.getKey().getName() + "&lang=" + lang);
     }
     
     /**

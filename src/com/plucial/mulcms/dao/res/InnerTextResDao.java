@@ -24,11 +24,13 @@ public class InnerTextResDao extends DaoBase<InnerTextRes>{
      * @return
      */
     public InnerTextRes get(Assets assets, String cssQuery, Lang lang) {
-        return Datastore.query(meta).filter(
+        List<InnerTextRes> resList = Datastore.query(meta).filter(
             meta.assetsRef.equal(assets.getKey()),
             meta.cssQuery.equal(cssQuery),
             meta.lang.equal(lang)
-            ).asSingle();
+            ).asList();
+        
+        return resList.size() > 0 ? resList.get(0) :  null;
     }
     
     /**

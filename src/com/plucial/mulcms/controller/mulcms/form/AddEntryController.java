@@ -18,14 +18,17 @@ public class AddEntryController extends BaseController {
     public Navigation execute(Map<String, String> appPropertyMap, User user,
             Properties userLocaleProp) throws Exception {
         
+        
         // 入力チェック
         if (!isPost() || !validate()) {
             return forward("/mulcms/form/");
         }
         
+        Page page = (Page)PageService.get(asString("keyString"));
+        
         String name = asString("name");
         String cssQuery = asString("cssQuery");
-        Page page = (Page)PageService.get(asString("pageKeyString"));
+        
         Page transitionPage = (Page)PageService.get(asString("transitionPageKey"));
         
         FormService.add(cssQuery, name, page, transitionPage);
@@ -43,7 +46,7 @@ public class AddEntryController extends BaseController {
 
         v.add("name", v.required());
         v.add("cssQuery", v.required());
-        v.add("pageKeyString", v.required());
+        v.add("keyString", v.required());
         v.add("transitionPageKey", v.required());
         
         return v.validate();

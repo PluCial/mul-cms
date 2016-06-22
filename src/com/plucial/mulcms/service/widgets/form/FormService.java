@@ -29,7 +29,7 @@ public class FormService extends RenderingService {
         Form model = null;
         try {
             model = new Form();
-            model.setKey(createKey());
+            model.setKey(createKey(page));
             model.setCssQuery(cssQuery);
             model.setName(name);
             model.getAssetsRef().setModel(page);

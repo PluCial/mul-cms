@@ -74,7 +74,7 @@ Page targetPage = (Page)request.getAttribute("page");
 										</select>
 									</div>
 								</div><!-- /.box-body -->
-								<input type="hidden" name="pageKeyString" value="<%=targetPage.getKey().getName() %>">
+								<input type="hidden" name="keyString" value="<%=targetPage.getKey().getName() %>">
 								<div class="box-footer text-right">
 									<button type="submit" class="btn btn-primary">追加</button>
 								</div>
@@ -89,12 +89,12 @@ Page targetPage = (Page)request.getAttribute("page");
 							<div class="col-md-4">
 								<div class="info-box">
 									<div class="box-tools pull-right">
-										<a class="btn btn-box-tool" href="/mulcms/form/delete?keyString=<%=form.getKey().getName() %>"><i class="fa fa-times"></i></a>
+										<a class="btn btn-box-tool" href="/mulcms/form/delete?keyString=<%=form.getKey().getName() %>&parentKeyString=<%=form.getAssetsRef().getKey().getName() %>"><i class="fa fa-times"></i></a>
 									</div>
 									<span class="info-box-icon bg-yellow disabled color-palette"><i class="fa fa-object-group"></i></span>
 									<div class="info-box-content">
 										<span class="info-box-text" style="text-transform: none;"><i class="fa fa-css3"></i> <%=HtmlUtils.htmlEscape(form.getCssQuery()) %></span>
-										<span class="info-box-number"><a href="/mulcms/form/setting?keyString=<%=form.getKey().getName() %>"><%=form.getName() %></a></span>
+										<span class="info-box-number"><a href="/mulcms/form/setting?keyString=<%=form.getKey().getName() %>&parentKeyString=<%=form.getAssetsRef().getKey().getName() %>"><%=form.getName() %></a></span>
 									</div><!-- /.info-box-content -->
 								</div>
 							</div>

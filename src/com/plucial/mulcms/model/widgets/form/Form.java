@@ -35,6 +35,7 @@ public class Form extends Widget implements Serializable, RenderingItem {
         elements.attr("action", domainUrl + "/formAction");
         elements.attr("method", "post");
         elements.append("<input type='hidden' name='lang' value='" + localeLang.toString() + "'>");
+        elements.append("<input type='hidden' name='parentKeyString' value='" + super.getAssetsRef().getKey().getName() + "'>");
         elements.append("<input type='hidden' name='formId' value='" + super.getKey().getName() + "'>");
 
         elements.removeAttr(MulAttrType.formId.getAttr());

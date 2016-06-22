@@ -55,7 +55,7 @@ Properties userProp = (Properties) request.getAttribute("userProp");
 						<!-- /alert -->
 						<%} %>
 						
-						<%if(pageObj.getHtmlLang() == targetLang) { %>
+						<%if(supportLangList.indexOf(targetLang) >= 0) { %>
 						<div class="nav-tabs-custom">
 							<ul class="nav nav-tabs pull-right">
 								<li><a href="#tab_2-2" data-toggle="tab"><i class="fa fa-code"></i> 属性</a></li>
@@ -87,7 +87,7 @@ Properties userProp = (Properties) request.getAttribute("userProp");
 												</div>
 											</div>
 										</div>
-										<input type="hidden" name="assetsKeyString" value="<%=pageObj.getKey().getName() %>" />
+										<input type="hidden" name="parentKeyString" value="<%=pageObj.getKey().getName() %>" />
 										<input type="hidden" name="lang" value="<%=targetLang.toString() %>" />
 										<div class="form-group text-right">
 											<button type="submit" class="btn btn-default">追加</button>
@@ -108,7 +108,7 @@ Properties userProp = (Properties) request.getAttribute("userProp");
 												<input type="text" name="attr" class="form-control" placeholder="class, src, href...">
 											</div>
 										</div>
-										<input type="hidden" name="assetsKeyString" value="<%=pageObj.getKey().getName() %>" />
+										<input type="hidden" name="parentKeyString" value="<%=pageObj.getKey().getName() %>" />
 										<input type="hidden" name="lang" value="<%=targetLang.toString() %>" />
 										<div class="form-group text-right">
 											<button type="submit" class="btn btn-default">追加</button>
@@ -117,7 +117,9 @@ Properties userProp = (Properties) request.getAttribute("userProp");
 								</div><!-- /.tab-pane -->
 							</div><!-- /.tab-content -->
 						</div>
-						<%}else { %>
+						<%} %>
+						
+						<%if(pageObj.getHtmlLang() != targetLang) { %>
 						<div class="box box-solid">
 							<div class="box-header with-border">
 								<h3 class="box-title"><%=supportLangList.indexOf(targetLang) < 0 ? "翻訳してぺージを追加" : "再翻訳" %></h3>
@@ -207,8 +209,8 @@ Properties userProp = (Properties) request.getAttribute("userProp");
 												</td>
 												<td  style="width:40%"><code><%=HtmlUtils.htmlEscape(res.getCssQuery()) %></code></td>
 												<td><%=res.getValueString() %></td>
-												<td style="width:60px"><a class="btn btn-default btn-sm" href="/mulcms/res/updateInnerTextRes?keyString=<%=res.getKey().getName() %>&assetsKeyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang %>"><i class="fa fa fa-edit"></i></a></td>
-												<td style="width:60px"><a class="btn btn-danger btn-sm" href="/mulcms/res/deleteRes?keyString=<%=res.getKey().getName() %>&assetsKeyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang %>"><i class="fa fa-trash"></i></a></td>
+												<td style="width:60px"><a class="btn btn-default btn-sm" href="/mulcms/res/updateInnerTextRes?keyString=<%=res.getKey().getName() %>&parentKeyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang %>"><i class="fa fa fa-edit"></i></a></td>
+												<td style="width:60px"><a class="btn btn-danger btn-sm" href="/mulcms/res/deleteRes?keyString=<%=res.getKey().getName() %>&parentKeyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang %>"><i class="fa fa-trash"></i></a></td>
 											</tr>
 											<%} %>
 
@@ -239,9 +241,9 @@ Properties userProp = (Properties) request.getAttribute("userProp");
 												<td>
 													<%=res.getValueString() %>
 												</td>
-												<td style="width:60px"><a class="btn btn-default btn-sm" href="/mulcms/res/updateAttrRes?keyString=<%=res.getKey().getName() %>&assetsKeyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang %>"><i class="fa fa fa-edit"></i></a></td>
+												<td style="width:60px"><a class="btn btn-default btn-sm" href="/mulcms/res/updateAttrRes?keyString=<%=res.getKey().getName() %>&parentKeyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang %>"><i class="fa fa fa-edit"></i></a></td>
 												<td style="width:60px">
-													<a class="btn btn-danger btn-sm" href="/mulcms/res/deleteRes?keyString=<%=res.getKey().getName() %>&assetsKeyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang %>">
+													<a class="btn btn-danger btn-sm" href="/mulcms/res/deleteRes?keyString=<%=res.getKey().getName() %>&parentKeyString=<%=pageObj.getKey().getName() %>&lang=<%=targetLang %>">
 														<i class="fa fa-trash"></i>
 													</a>
 												</td>

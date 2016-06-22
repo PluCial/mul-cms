@@ -110,6 +110,7 @@ public class InnerTextRes extends InnerRes implements Serializable, RenderingIte
             sb.append("                         <input type='text' name='content' class='form-control' value='" + super.getValueString() +"' />");
         }
         sb.append("                     </div>");
+        sb.append("                     <input type='hidden' name='parentKeyString' value='" + super.getAssetsRef().getKey().getName() + "' />");
         sb.append("                     <input type='hidden' name='keyString' value='" + super.getKey().getName() + "' />");
         sb.append("             </div>");
         sb.append("             <div class='modal-footer'>");

@@ -1,6 +1,5 @@
-<!-- Indices written at Fri, 17 Jun 2016 13:35:47 JST -->
-
-<datastore-indexes>
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="false">
 
     <!-- Used 11 times in query history -->
     <datastore-index kind="Assets" ancestor="false" source="auto">

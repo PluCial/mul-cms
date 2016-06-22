@@ -61,7 +61,8 @@ public class FormActionController extends AppController {
 
         Form form = null;
         try {
-            form = (Form)FormService.get(keyString);
+            Page page = (Page)PageService.get(asString("parentKeyString"));
+            form = (Form)FormService.get(page, keyString);
         }catch(ObjectNotExistException e) {
             throw new NoContentsException();
         }

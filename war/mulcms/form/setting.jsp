@@ -75,6 +75,7 @@ List<MailAction> mailActionList = (List<MailAction>) request.getAttribute("mailA
 									</div>
 								</div><!-- /.box-body -->
 								<div class="box-footer text-right">
+									<input type="hidden" name="parentKeyString" value="<%=form.getAssetsRef().getKey().getName() %>" />
 									<input type="hidden" name="keyString" value="<%=form.getKey().getName() %>" />
 									<button type="submit" class="btn btn-primary">更新</button>
 								</div>
@@ -104,7 +105,7 @@ List<MailAction> mailActionList = (List<MailAction>) request.getAttribute("mailA
 												<td><%=control.isRequired() %></td>
 												<td><%=control.isTransFlg() %></td>
 												<td style="width:60px">
-													<a class="btn btn-danger btn-sm" href="/mulcms/form/control/deleteEntry?keyString=<%=control.getKey().getName() %>&formKey=<%=form.getKey().getName() %>">
+													<a class="btn btn-danger btn-sm" href="/mulcms/form/control/deleteEntry?keyString=<%=control.getKey().getName() %>&formKey=<%=form.getKey().getName() %>&parentKeyString=<%=form.getAssetsRef().getKey().getName() %>">
 														<i class="fa fa-trash"></i>
 													</a>
 												</td>
@@ -136,6 +137,7 @@ List<MailAction> mailActionList = (List<MailAction>) request.getAttribute("mailA
 											</div>
 			                			</div>
 			                			<div class="form-group col-md-2">
+			                				<input type="hidden" name="parentKeyString" value="<%=form.getAssetsRef().getKey().getName() %>" />
 			                				<input type="hidden" name="keyString" value="<%=form.getKey().getName() %>" />
 			                				<button type="submit" class="btn btn-primary">追加</button>
 			                			</div>
@@ -159,7 +161,7 @@ List<MailAction> mailActionList = (List<MailAction>) request.getAttribute("mailA
 											<tr>
 												<td><%=action.getSendEmail().getEmail() %></td>
 												<td style="width:60px">
-													<a class="btn btn-box-tool btn-sm" href="/mulcms/form/action/deleteEntry?keyString=<%=action.getKey().getName() %>">
+													<a class="btn btn-box-tool btn-sm" href="/mulcms/form/action/deleteEntry?keyString=<%=action.getKey().getName() %>&parentKeyString=<%=form.getAssetsRef().getKey().getName() %>">
 														<i class="fa fa-times"></i>
 													</a>
 												</td>
@@ -172,6 +174,7 @@ List<MailAction> mailActionList = (List<MailAction>) request.getAttribute("mailA
 		                	
 		                	<div class="box-footer with-border">
 		                		<form action="/mulcms/form/action/addReceptionMailEntry" method="post" style="margin-top: 15px;">
+		                			<input type="hidden" name="parentKeyString" value="<%=form.getAssetsRef().getKey().getName() %>" />
 		                			<input type="hidden" name="keyString" value="<%=form.getKey().getName() %>" />
 			                		<div class="form-group">
 			                			<div class="input-group input-group-sm">

@@ -13,7 +13,7 @@
 Errors errors =(Errors) request.getAttribute("errors");
 AttrRes res = (AttrRes)request.getAttribute("res");
 
-String assetsKeyString = (String)request.getAttribute("assetsKeyString");
+String parentKeyString = (String)request.getAttribute("parentKeyString");
 String lang = (String)request.getAttribute("lang");
 String content = (String)request.getAttribute("lang");
 %>
@@ -78,10 +78,10 @@ String content = (String)request.getAttribute("lang");
 								</div><!-- /.box-body -->
 
 								<input type="hidden" name="keyString" value="<%=res.getKey().getName() %>">
-								<input type="hidden" name="assetsKeyString" value="<%=assetsKeyString %>">
+								<input type="hidden" name="parentKeyString" value="<%=parentKeyString %>">
 								<input type="hidden" name="lang" value="<%=lang %>">
 								<div class="box-footer">
-									<a class="btn btn-default pull-left" href="/mulcms/page/resource?keyString=<%=assetsKeyString %>&lang=<%=lang %>"><i class="fa fa-reply"></i></a>
+									<a class="btn btn-default pull-left" href="/mulcms/page/resource?keyString=<%=parentKeyString %>&lang=<%=lang %>"><i class="fa fa-reply"></i></a>
 									<button type="submit" class="btn btn-primary pull-right">Submit</button>
 								</div>
 							</form>

@@ -24,7 +24,9 @@ public class SettingController extends BaseController {
             Properties userLocaleProp) throws Exception {
         
         String keyString = asString("keyString");
-        Form form = (Form)FormService.get(keyString);
+        Page page = (Page)PageService.get(asString("parentKeyString"));
+        
+        Form form = (Form)FormService.get(page, keyString);
         requestScope("form", form);
         
         requestScope("name", form.getName());

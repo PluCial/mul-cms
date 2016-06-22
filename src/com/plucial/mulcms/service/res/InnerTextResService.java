@@ -89,7 +89,7 @@ public class InnerTextResService extends ResService {
      */
     public static InnerTextRes add(Transaction tx, Assets assets, String cssQuery, Lang lang, String value, boolean editMode, boolean isLongText) {
         InnerTextRes model = new InnerTextRes();
-        model.setKey(createKey());
+        model.setKey(createKey(assets));
         model.setCssQuery(cssQuery);
         model.setStringToValue(value);
         model.setEditMode(editMode);

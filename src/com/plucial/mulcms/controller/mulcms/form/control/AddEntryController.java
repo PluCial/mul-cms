@@ -9,7 +9,9 @@ import org.slim3.util.StringUtil;
 
 import com.google.appengine.api.users.User;
 import com.plucial.mulcms.controller.mulcms.BaseController;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.widgets.form.Form;
+import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.widgets.form.FormControlService;
 import com.plucial.mulcms.service.widgets.form.FormService;
 
@@ -26,7 +28,8 @@ public class AddEntryController extends BaseController {
             return forward("/mulcms/form/setting?keyString=" + keyString);
         }
         
-        Form form = (Form)FormService.get(keyString);
+        Page page = (Page)PageService.get(asString("parentKeyString"));
+        Form form = (Form)FormService.get(page, keyString);
         
         String controlName = asString("controlName");
         boolean required = !StringUtil.isEmpty(asString("required"));
@@ -34,7 +37,7 @@ public class AddEntryController extends BaseController {
 
         FormControlService.put(form, controlName, required, transFlg);
         
-        return redirect("/mulcms/form/setting?keyString=" + keyString);
+        return redirect("/mulcms/form/setting?keyString=" + keyString + "&parentKeyString=" + page.getKey().getName());
     }
     
     /**

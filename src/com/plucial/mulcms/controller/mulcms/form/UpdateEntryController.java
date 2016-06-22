@@ -20,7 +20,9 @@ public class UpdateEntryController extends BaseController {
             Properties userLocaleProp) throws Exception {
         
         String keyString = asString("keyString");
-        Form model = (Form)FormService.get(keyString);
+        Page page = (Page)PageService.get(asString("parentKeyString"));
+        
+        Form model = (Form)FormService.get(page, keyString);
         
         // 入力チェック
         if (!isPost() || !validate()) {
@@ -39,7 +41,7 @@ public class UpdateEntryController extends BaseController {
         FormService.update(model);
         
         
-        return redirect("/mulcms/form/setting?keyString=" + keyString);
+        return redirect("/mulcms/form/setting?keyString=" + keyString + "&parentKeyString=" + page.getKey().getName());
     }
     
     /**

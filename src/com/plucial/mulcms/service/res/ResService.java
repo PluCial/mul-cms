@@ -120,9 +120,9 @@ public class ResService extends RenderingService {
                     try {
                         // 重複チェック & 更新
                         InnerTextRes model = InnerTextResService.get(assets, cssQuery, lang);
-                        model.setEditMode(editMode);
-                        model.setLongText(isLongText);
-                        ResService.update(tx, model);
+////                        model.setEditMode(editMode);
+//                        model.setLongText(isLongText);
+//                        ResService.update(tx, model);
                         
                     } catch (ObjectNotExistException e) {
                         // 追加
@@ -135,9 +135,9 @@ public class ResService extends RenderingService {
                     // Attr Res
                     // ------------------------------------------------------
                     // 指定した属性が存在しない場合は次の処理へ
-                    if(!elem.hasAttr(rendering)) continue;
+//                    if(!elem.hasAttr(rendering)) continue;
                     // 指定した属性の値が存在しない場合は次の処理へ
-                    if(StringUtil.isEmpty(elem.attr(rendering))) continue;
+//                    if(StringUtil.isEmpty(elem.attr(rendering))) continue;
 
                     String attr = rendering;
                     String attrValue = elem.attr(rendering);

@@ -8,7 +8,9 @@ import org.slim3.controller.validator.Validators;
 
 import com.google.appengine.api.users.User;
 import com.plucial.mulcms.controller.mulcms.BaseController;
+import com.plucial.mulcms.model.assets.Page;
 import com.plucial.mulcms.model.res.InnerTextRes;
+import com.plucial.mulcms.service.assets.PageService;
 import com.plucial.mulcms.service.res.ResService;
 
 public class UpdateResEntryController extends BaseController {
@@ -25,8 +27,8 @@ public class UpdateResEntryController extends BaseController {
         String keyString = asString("keyString");
         String content = asString("content");
         
-        
-        InnerTextRes model = (InnerTextRes)ResService.get(keyString);
+        Page page = (Page)PageService.get(asString("parentKeyString"));
+        InnerTextRes model = (InnerTextRes)ResService.get(page, keyString);
         model.setStringToValue(content);
         ResService.update(model);
         

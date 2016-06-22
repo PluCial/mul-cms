@@ -26,8 +26,8 @@ public class RenderingService {
      * @return
      * @throws ObjectNotExistException
      */
-    public static Rendering get(String keyString) throws ObjectNotExistException {
-        Rendering model =  dao.getOrNull(createKey(keyString));
+    public static Rendering get(Assets assets, String keyString) throws ObjectNotExistException {
+        Rendering model =  dao.getOrNull(createKey(assets, keyString));
         if(model == null) throw new ObjectNotExistException();
         return model;
     }
@@ -78,8 +78,8 @@ public class RenderingService {
      * 削除
      * @param keyString
      */
-    public static void delete(String keyString) {
-        dao.delete(createKey(keyString));
+    public static void delete(Assets assets, String keyString) {
+        dao.delete(createKey(assets, keyString));
     }
     
     // ----------------------------------------------------------------------
@@ -90,16 +90,16 @@ public class RenderingService {
      * @param keyString
      * @return
      */
-    protected static Key createKey(String keyString) {
-        return Datastore.createKey(RenderingMeta.get(), keyString);
+    protected static Key createKey(Assets assets, String keyString) {
+        return Datastore.createKey(assets.getKey(), RenderingMeta.get(), keyString);
     }
 
     /**
      * キーの作成
      * @return
      */
-    protected static Key createKey() {
+    protected static Key createKey(Assets assets) {
         UUID uuid = UUID.randomUUID();
-        return Datastore.createKey(RenderingMeta.get(), uuid.toString());
+        return Datastore.createKey(assets.getKey(), RenderingMeta.get(), uuid.toString());
     }
 }
