@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- Indices written at Tue, 5 Jul 2016 16:39:45 JST -->
+
 <datastore-indexes>
 
     <!-- Used 11 times in query history -->
@@ -41,3 +42,4 @@
     </datastore-index>
 
 </datastore-indexes>
+
